@@ -1,0 +1,1998 @@
+create table mes_system_config  (
+  item        varchar2(20),
+  value       char(1),
+  validation  varchar2(255),
+  constraint pk_system_config primary key(item)  
+);
+
+create table mes_system_config_file
+(
+	item          varchar2(20),
+	user_id       varchar2(20),
+	file_name     varchar2(50),
+	contents	    varchar2(2000),
+	constraint pk_system_config_file primary key(item,user_id)
+);
+
+create table mes_system_version
+(
+	name 				varchar2(60),
+	version			varchar2(20),
+	active_date	date,
+  previous_version varchar2(20),
+	modify_user	varchar2(10),
+	modify_date	date,
+	constraint pk_system_version primary key(name)
+);
+
+create table mes_system_serial
+(
+  item               varchar2(40)  ,
+  key                varchar2(200) ,
+  serial             integer       ,
+  modify_date        date          ,
+  constraint pk_system_serial primary key(item,key)
+);
+
+create table language_map  (
+  language  varchar2(10),
+  key       varchar2(50),
+  value     varchar2(255),
+  constraint pk_language_map primary key(language,key)  
+);
+
+create table mes_client_sessions
+(
+  client_id   varchar2(255),
+  machine_id  varchar2(100),
+  server_id   varchar2(20),
+  start_date  date,
+  constraint pk_client_sessions primary key(client_id)
+);
+
+--廠別資訊
+create table mes_fab(
+  sysid         varchar2(38)  ,
+  fab           varchar2(20)  ,
+  fab_code      varchar2(20)  ,
+  org_id        varchar2(20)  ,
+  create_user   varchar2(10)  ,
+  create_date   date          ,
+  modify_user   varchar2(10)  ,
+  modify_date   date          ,
+  delete_flag   char(1)       default '0',
+  constraint pk_fab primary key(sysid),
+  constraint uk_fab unique(fab)
+);
+
+create table mes_lot_type
+(
+  sysid         				varchar2(38)  ,
+  lot_type   						varchar2(40)  ,
+  description						varchar2(255)	,
+  check_future_hold    	char(1)       ,
+  check_q_time    			char(1)       ,
+  check_dc_self    			char(1)       , --收集項目自我檢查(比對目標設定)
+  check_recipe    			char(1)       ,
+  check_dc_spec				char(1)       , --收集項目比對參數規格
+  check_material 			char(1)       ,
+  check_tooling 			char(1)       ,
+  create_user   			varchar2(10)  ,
+  create_date   			date          ,
+  modify_user   			varchar2(10)  ,
+  modify_date   			date          ,
+  delete_flag   			char(1)       default '0',
+  constraint pk_lot_type primary key(sysid),
+  constraint uk_lot_type unique(lot_type)
+);
+
+
+create table mes_reason_code(
+  sysid         varchar2(38)  ,
+  reason_code   varchar2(40)  ,
+  reason_type   varchar2(20)  ,
+  owner_dept    varchar2(20)  ,
+  create_user   varchar2(10)  ,
+  create_date   date          ,
+  modify_user   varchar2(10)  ,
+  modify_date   date          ,
+  delete_flag   char(1)       default '0',
+  constraint pk_reason_code primary key(sysid),
+  constraint uk_reason_code unique(reason_code)
+);
+create index idx_reason_code_1 on mes_reason_code
+(delete_flag);
+
+create table mes_reason_group(
+  sysid         varchar2(38)  ,
+  group_id      varchar2(20)  ,
+  description   varchar2(255)  ,
+  create_user   varchar2(10)  ,
+  create_date   date          ,
+  modify_user   varchar2(10)  ,
+  modify_date   date          ,
+  delete_flag   char(1)       default '0',
+  constraint pk_reason_group primary key(sysid),
+  constraint uk_reason_group unique(group_id)
+);
+
+create table mes_reason_group_link(
+  reason_group_sysid    varchar2(38)  ,
+  reason_code_sysid     varchar2(38)  ,
+  constraint pk_reason_group_link primary key(reason_group_sysid,reason_code_sysid)
+);
+
+create table mes_reason_category(
+  sysid         varchar2(38)  ,
+  reason_category varchar2(40)  ,
+  reason_class    varchar2(40)  ,
+  reason_group    varchar2(20)  ,
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  delete_flag     char(1)       default '0',
+  constraint pk_reason_category primary key(sysid),
+  constraint uk_reason_category unique(reason_category,reason_class)
+);
+create index idx_reason_category_1 on mes_reason_category
+(reason_group);
+
+create table mes_txn_reason(
+  txn_sysid       varchar2(45)  ,
+  reason_code     varchar2(40)  ,
+  comments        varchar2(255) ,
+  constraint pk_txn_reason primary key(txn_sysid)
+);
+
+create table mes_privilege_string(
+  sysid             varchar2(38)  ,
+  privilege_string  varchar2(255) ,
+  description       varchar2(255) ,
+  create_user       varchar2(10)  ,
+  create_date       date          default sysdate,
+  modify_user       varchar2(10)  ,
+  modify_date       date          default sysdate,
+  delete_flag       char(1)       default '0',
+  constraint pk_privilege_string primary key(sysid),
+  constraint uk_privilege_string unique(privilege_string)
+);
+
+--使用者主檔
+create table mes_user_profile ( 
+    sysid                          varchar2(38)  ,
+    user_id                        varchar2(10)  ,    --使用者Id
+    windows_account								 varchar2(30)	 ,		--windows帳號
+    user_name                      varchar2(20)  ,    --使用者姓名
+    fab                            varchar2(40)  ,    --使用者所屬廠別
+    division                       varchar2(40)  ,    --
+    email                          varchar2(50)  ,    --電子郵件
+    email2                         varchar2(50)  ,    --電子郵件
+    mobile                         varchar2(15)  ,    --電話
+    mobile2                        varchar2(15)  ,    --電話
+    pc_address                     varchar2(40)  ,    --電腦位置(ip or name)
+    password                       varchar2(50)  ,    --密碼
+    language                       varchar2(10)  ,
+	privilege_group                varchar2(40)  ,    --維護用戶資訊時的「用戶群組」分組
+    current_login_info             varchar2(100) ,    --當前登入的資訊(WorkFlow.ClientId)
+    create_user                    varchar2(10)  ,
+    create_date                    date          default sysdate,
+    modify_user                    varchar2(10)  ,
+    modify_date                    date          default sysdate,
+    delete_flag                    char(1)        default '0',    --0=deactived|1=actived
+    Constraint pk_user_profile primary Key(sysid),
+    Constraint uk_user_profile unique(user_id),
+    Constraint uk_user_profile_2 unique(windows_account)
+);
+
+--1. userGroup to userId
+--2. userGroup to mes_privilege_string
+--3. userId to mes_privilege_string
+create table mes_group_user_privilege(
+  from_id    varchar2(40)  ,
+  to_id     varchar2(38)  ,
+  constraint pk_group_user_privilege primary key(from_id,to_id)
+);
+create index idx_group_user_1 on mes_group_user_privilege
+(from_id);
+create index idx_group_user_2 on mes_group_user_privilege
+(to_id);
+
+--1. userGroup to stepId
+--2. userId to stepId
+create table mes_group_user_step(
+  from_id    varchar2(40)  ,
+  to_id     varchar2(40)  ,
+  constraint pk_group_user_step primary key(from_id,to_id)
+);
+create index idx_group_user_step_1 on mes_group_user_step
+(from_id);
+
+create table mes_user_login(
+  sysid         varchar2(38)  ,
+  user_id       varchar2(10)  ,
+  pc_name       varchar2(40)  ,
+  login_date    date          ,
+  logout_date   date          ,
+  constraint pk_user_login primary key(sysid)
+);
+
+create table mes_misc(
+  item          varchar2(40)  ,
+  value         varchar2(255) ,
+  remark        varchar2(255) ,
+  modify_user   varchar2(20)  ,
+  modify_date   date          default sysdate,
+  constraint pk_misc primary key(item,value)
+);
+
+create table mes_carrier_type(
+  sysid           varchar2(38)  ,
+  carrier_type    varchar2(20)  ,
+  component_size  number(2,0)   ,
+  capacity        number(5,0)   ,
+  description     varchar2(255) ,
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  delete_flag     char(1)       default '0',
+  constraint pk_carrier_type primary key(sysid),
+  constraint uk_carrier_type unique(carrier_type)
+);
+
+create table mes_carrier_id(
+  sysid           varchar2(38)  ,
+  carrier_id      varchar2(40)  ,
+  carrier_type    varchar2(20)  ,
+  rf_id           varchar2(40)  ,
+  status          varchar2(20)  ,
+  lot_id          varchar2(40)  ,
+  component_qty   number(5,0)   default 0,
+  location        varchar2(40)  ,
+  used_count      number(5,0)   default 0,
+  clean_count     number(5,0)   default 0,
+  last_clean_user varchar2(10)  ,
+  last_clean_date date          ,
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  delete_flag     char(1)       default '0',
+  tag             varchar2(50)  ,
+  txnstamp        integer       default 0,
+  last_txn_sysid  varchar2(38)  ,
+  constraint pk_carrier_id primary key(sysid),
+  constraint uk_carrier_id unique(carrier_id)
+);
+create index idx_carrier_id_1 on mes_carrier_id
+(carrier_type);
+create index idx_carrier_id_2 on mes_carrier_id
+(lot_id);
+create index idx_carrier_id_3 on mes_carrier_id
+(sysid,txnstamp);
+
+create table mes_carrier_history(
+  txn_sysid       varchar2(38)  ,
+  main_txn_sysid  varchar2(38)  ,
+  last_txn_sysid  varchar2(38)  ,
+  carrier_id      varchar2(40)  ,
+  status          varchar2(20)  ,
+  activity        varchar2(20)  ,
+  lot_id          varchar2(40)  ,
+  component_qty   number(5,0)   default 0,
+  location        varchar2(40)  ,
+  used_count      number(5,0)   default 0,
+  clean_count     number(5,0)   default 0,
+  txnstamp        integer       default 0,
+  grouphistkey    varchar2(38)  ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  delete_flag     char(1)       default '0',
+  constraint pk_carrier_history primary key(txn_sysid)
+);
+create index idx_carrier_history_1 on mes_carrier_history
+(last_txn_sysid);
+
+--======Equipment Module======================================
+create table mes_eqp_state(
+  sysid           varchar2(38)  ,
+  state           varchar2(40)  ,
+  description     varchar2(255) ,
+  available       char(1)       ,
+  color           integer       ,
+  create_user     varchar2(10)  ,
+  create_date     date          default sysdate,
+  modify_user     varchar2(10)  ,
+  modify_date     date          default sysdate,
+  delete_flag     char(1)       default '0',
+  constraint pk_eqp_state primary key(sysid),
+  constraint uk_eqp_state unique(state)
+);
+
+create table mes_eqp_state_transfer(
+  from_state    varchar2(40)  not null,
+  to_state      varchar2(40)  not null,
+  division      varchar2(40)  ,
+  constraint uk_eqp_state_transfer unique(from_state,to_state,division)
+);
+
+create table mes_eqp_type(
+  sysid           varchar2(38)  ,
+  eq_type         varchar2(40)  ,
+  description     varchar2(255) ,
+  owner           varchar2(10)  ,
+  tool_type       number(1,0)   default 0,--0:生產機台，1:量測機台，2:機台內生產單元，3:Loader，4:Unlader，5:Both
+  capacity        integer       ,
+  track_count     number(3,0)   default 0,--軌道數
+  parameter_count number(3,0)   default 0,--設備參數數量
+  consume_type    number(1,0)   default 0,--0:by Lot，1:by Lot Qty
+  counter_flag char(1)      default '0',
+  create_user     varchar2(10)  ,
+  create_date     date          default sysdate,
+  modify_user     varchar2(10)  ,
+  modify_date     date          default sysdate,
+  delete_flag     char(1)       default '0',
+  constraint pk_eqp_type primary key(sysid),
+  constraint uk_eqp_type unique(eq_type)
+);
+create index idx_eqp_type_1 on mes_eqp_type
+(tool_type);
+
+create table mes_eqp_type_track
+(
+  eq_type         varchar2(40)  ,
+  track           varchar2(20)  , -- 軌道名
+  seq             number(3,0)   ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  constraint pk_eqp_type_track primary key(eq_type,track)
+);
+create index idx_eqp_type_track_1 on mes_eqp_type_track
+(eq_type);
+
+create table mes_eqp_equipment(
+  sysid           varchar2(38)  ,
+  equipment_id    varchar2(40)  ,
+  issue_state     varchar2(10)  ,
+  description     varchar2(255) ,
+  eq_type         varchar2(40)  ,
+  owner           varchar2(10)  ,
+  state           varchar2(40)  ,
+  reserved_by     varchar2(40)  ,
+  capacity_used   integer       default 0,
+  counter         integer       default 0,
+  last_order_id   varchar2(40)  ,
+  lot_id          varchar2(40)  ,
+  recipe          varchar2(40)  ,
+  fab             varchar2(40)  ,
+  line            varchar2(40)  ,
+  seq             number(2,0)   default 0,
+  txnstamp        integer default 0,
+  setup_info      varchar2(38)  ,
+  last_setup_info varchar2(40)  , --最後一次架機資訊key值，setup_info@setup_info_flag
+  last_setup_date date          , --最後一次更動架機資訊日期
+  setup_info_flag	char(1)	    , --是否已使用(Lot有過帳記錄)
+  last_txn_sysid  varchar2(38)  ,
+  last_change_state     varchar2(38)  ,
+  validated_spec_sysid  varchar2(38)  , --已檢查過的生產規範sysid(setup_info)
+  tooling_setup_info    varchar2(38)  , --tooling上機資訊key值
+  validated_spec_tooling varchar2(38) , --已檢查過的生產規範sysid(tooling)
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,  
+  delete_flag     char(1)       default '0',
+  constraint pk_eqp_equipment primary key(sysid),
+  constraint uk_eqp_equipment unique(equipment_id)
+);
+create index idx_eqp_equipment_1 on mes_eqp_equipment
+(eq_type);
+create index idx_eqp_equipment_2 on mes_eqp_equipment
+(fab);
+create index idx_eqp_equipment_3 on mes_eqp_equipment
+(sysid,txnstamp);
+
+create table mes_eqp_equipment_link(
+  from_sysid    varchar2(38)  ,
+  to_sysid      varchar2(38)  ,
+  constraint pk_eqp_equipment_link primary key(to_sysid)
+);
+create index idx_eqp_equipment_link_1 on mes_eqp_equipment_link
+(from_sysid);
+
+create table mes_eqp_group_link(
+  equipment_group        varchar2(20)  ,
+  equipment_sysid         varchar2(38)  ,
+  constraint pk_eqp_group_link primary key(equipment_group,equipment_sysid)
+);
+
+create table mes_eqp_setup_info(
+  sysid           varchar2(38)  ,
+  eqp_setup_info  varchar2(38)  , --to mes_eqp_equipment.setup_info
+  material_type   varchar2(40)  , --物料類別
+  part_no         varchar2(40)  , --來料料號
+  material_lot_id varchar2(40)  , --來料批號
+  position        varchar2(20)  , --位置
+  quantity        number(10,3) default 0, --數量
+  setup_user      varchar2(10)  , --上料人員
+  setup_date      date          , --上料時間
+  modify_date     date          ,
+  constraint pk_eqp_setup_info primary key(sysid)
+);
+create index idx_eqp_setup_info_1 on mes_eqp_setup_info
+(eqp_setup_info);
+
+create table mes_eqp_history(
+  txn_sysid       varchar2(38)  ,
+  main_txn_sysid  varchar2(38)  ,
+  last_txn_sysid  varchar2(38)  ,
+  last_change_state  varchar2(38)  ,
+  equipment_id    varchar2(40)  ,
+  state           varchar2(40)  ,
+  reserved_by     varchar2(40)  ,
+  activity        varchar2(20)  ,
+  capacity_used   integer       default 0,
+  counter         integer       default 0,
+  lot_id          varchar2(40)  ,
+  recipe          varchar2(40)  ,
+  fab             varchar2(40)  ,
+  txnstamp        integer default 0,
+  setup_info      varchar2(38)  ,
+  grouphistkey    varchar2(38)  ,
+  eq_parm_seq     integer       ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  delete_flag     char(1)       default '0',
+  constraint pk_eqp_history primary key(txn_sysid)
+);
+create index idx_eqp_history_1 on mes_eqp_history
+(equipment_id);
+create index idx_eqp_history_2 on mes_eqp_history
+(last_change_state);
+create index idx_eqp_history_3 on mes_eqp_history
+(activity);
+create index idx_eqp_history_4 on mes_eqp_history
+(modify_date);
+
+create table mes_eqp_history_setup_info(
+  eqp_setup_info  varchar2(38)  , --to mes_eqp_equipment.setup_info
+  material_type   varchar2(40)  , --物料類別
+  part_no         varchar2(40)  , --來料料號
+  material_lot_id varchar2(40)  , --來料批號
+  position        varchar2(20)  , --位置
+  quantity        number(10,3) default 0, --數量
+  setup_user      varchar2(10)  , --上料人員
+  modify_date     date          
+);
+create index idx_history_setup_info_1 on mes_eqp_history_setup_info
+(eqp_setup_info);
+
+create table mes_eqp_setup_remain_info(
+  sysid           varchar2(38)  ,
+  txn_sysid       varchar2(38)  , --sysid of eqp_history
+  equipment_id    varchar2(40)  , 
+  material_type   varchar2(40)  , --物料類別
+  part_no         varchar2(40)  , --來料料號
+  material_lot_id varchar2(40)  , --來料批號
+  quantity        number(10,3) default 0, --數量
+  create_user     varchar2(10)  , --下料人員
+  create_date     date          , --下料時間 
+  modify_user     varchar2(10)  , --退料人員
+  modify_date     date          , --退料時間
+  delete_flag     char(1)       default '0', --0:未退料，1:已退料 
+  constraint pk_eqp_setup_remain_info primary key(sysid)
+);
+create index idx_eqp_setup_remain_info_1 on mes_eqp_setup_remain_info
+(equipment_id,delete_flag);
+
+create table mes_eqp_history_tooling_info(
+  tooling_setup_info  varchar2(38)  , --to mes_eqp_equipment.tooling_setup_info
+  tooling_id          varchar2(40)  , --治工具編號
+  part_no             varchar2(40)	, --治工具料號
+  current_count       number(6,0)   , 
+  use_count           number(6,0)   ,
+  setup_user          varchar2(10)  , --上治工具人員
+  modify_date         date          
+);
+create index idx_history_tooling_info_1 on mes_eqp_history_tooling_info
+(tooling_setup_info);
+
+create table mes_eqp_parameter
+(
+  sysid           varchar2(38)  ,
+  parameter       varchar2(40) ,--參數名
+  eq_data_id      varchar2(40) ,--機台上報資料id
+  data_type       number(1)    default 0, --資料型態。0:number, 1:string, 2:options
+  length          number(3,0)  ,
+  option_list     varchar2(255),
+  description     varchar2(255),
+  modify_user     varchar2(10) ,
+  modify_date     date         ,
+  constraint pk_eqp_parameter primary key(sysid),
+  constraint uk_eqp_parameter unique(parameter)
+);
+
+create table mes_eqp_type_parameter
+(
+  eq_type         varchar2(40)  ,
+  parameter_sysid varchar2(38)  , --mes_eqp_parameter.sysid
+  table_name      varchar2(40)  , --對應的table name
+  column_name     varchar2(40)  , --對應的column name
+  eq_data_id      varchar2(40)  , --機台上報資料id
+  seq             number(3,0)   ,
+  required        number(1)     default 0, --是否一定要有值。0:false, 1:true
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  constraint pk_eqp_type_parameter primary key(eq_type,parameter_sysid),
+  constraint uk_eqp_type_parameter unique(eq_type,table_name,column_name)
+);
+create index idx_eqp_type_parameter_1 on mes_eqp_type_parameter
+(eq_type);
+
+create table mes_eqp_parm_seq--機台當前參數記錄seq
+(
+    equipment_id    varchar2(40)  , --機台編號
+	eq_parm_seq     integer       , 
+	constraint pk_eqp_parm_seq primary key(equipment_id)
+);
+
+--實際存放機台參數值的表(表名及欄位是設定的，此僅為範例)
+create table mes_eqp_parm_data
+(
+  equipment_id    varchar2(40)  , --機台編號
+  eq_parm_seq     integer       ,
+  lot_id          varchar2(40)  , --當前的批號
+  check_result    number(1)     default 0, --規格檢查結果。0:未檢查，1:pass，2:fail
+  fail_info       varchar2(255) , --檢查失敗時，資訊存於此
+  modify_user     varchar2(10)  ,
+  modify_date     date          , --上以7個欄位一定要有的
+  parm_1          varchar2(10)  , --範例欄位
+  parm_2          varchar2(20)  , --範例欄位
+  parm_3          number(3,1)   , --範例欄位
+  constraint pk_eqp_parm_data primary key(equipment_id)
+);
+
+create table mes_eqp_parm_data_his
+(
+  equipment_id    varchar2(40)  ,
+  eq_parm_seq     integer       ,  
+  lot_id          varchar2(40)  , 
+  check_result    number(1)     default 0, --規格檢查結果。0:未檢查，1:pass，2:fail
+  fail_info       varchar2(255) , --檢查失敗時，資訊存於此
+  modify_user     varchar2(10)  ,
+  modify_date     date          , 
+  parm_1          varchar2(10)  , 
+  parm_2          varchar2(20)  , 
+  parm_3          number(3,1)   
+);
+create index idx_eqp_parm_data_his_1 on mes_eqp_parm_data_his
+(equipment_id,eq_parm_seq);
+create index idx_eqp_parm_data_his_2 on mes_eqp_parm_data_his
+(equipment_id,modify_date);
+--======ProcessPlan Module======================================
+create table mes_prp_rule(
+  sysid           varchar2(38)  ,
+  rule_id         varchar2(40)  ,
+  program_class   varchar2(255) ,  
+  description     varchar2(255) ,
+  dispatch_flag       char(1)   ,
+  create_user     varchar2(10)  ,
+  create_date     date          default sysdate,
+  modify_user     varchar2(10)  ,
+  modify_date     date          default sysdate,
+  delete_flag     char(1)       default '0',
+  constraint pk_prp_rule primary key(sysid),
+  constraint uk_prp_rule unique(rule_id)
+);
+
+create table mes_prp_step(
+  sysid           varchar2(38)  ,
+  step_id         varchar2(40)  ,
+  version         number(3,0)   , 
+  description     varchar2(255) ,
+  stage           varchar2(40)  ,
+  step_code       varchar2(40)  ,
+  equipment_group varchar2(40)  ,
+  component_type  varchar2(40)  ,
+  issue_state     varchar2(10)  ,
+  fab             varchar2(40)  ,
+  extension_name  varchar2(40)  ,
+  seq             varchar2(40)  ,
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  delete_flag     char(1)       default '0',
+  flag            number(3,0)   ,
+  constraint pk_prp_step primary key(sysid),
+  constraint uk_prp_step unique(step_id,version)
+);
+create index idx_prp_step_1 on mes_prp_step
+(issue_state);
+create index idx_prp_step_2 on mes_prp_step
+(equipment_group);
+create index idx_prp_step_3 on mes_prp_step
+(step_id,flag);
+create index idx_prp_step_4 on mes_prp_step
+(fab);
+create index idx_prp_step_5 on mes_prp_step
+(step_id,issue_state,stage);
+
+create table mes_prp_step_rule(
+  step_sysid    varchar2(38)  ,
+  rule_sysid    varchar2(38)  ,
+  seq           number(2,0)   ,
+  constraint pk_prp_step_rule primary key(step_sysid,rule_sysid,seq)
+);
+create index idx_prp_step_rule_1 on mes_prp_step_rule
+(step_sysid);
+create index idx_prp_step_rule_2 on mes_prp_step_rule
+(rule_sysid);
+
+create table mes_prp_routing(
+  sysid           varchar2(38)  ,
+  route_id        varchar2(40)  ,
+  version         number(3,0)   ,  
+  description     varchar2(255) ,
+  route_type      varchar2(40)  ,
+  issue_state     varchar2(10)  ,
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  delete_flag     char(1)       default '0',
+  flag            number(3,0)   ,
+  constraint pk_prp_routing primary key(sysid),
+  constraint uk_prp_routing unique(route_id,version)
+);
+create index idx_prp_routing_1 on mes_prp_routing
+(route_type);
+create index idx_prp_routing_2 on mes_prp_routing
+(issue_state);
+create index idx_prp_routing_3 on mes_prp_routing
+(delete_flag);
+create index idx_prp_routing_4 on mes_prp_routing
+(route_id,flag);
+
+create table mes_prp_routing_node(
+  sysid           varchar2(38)  ,
+  route_sysid     varchar2(38)  ,
+  parent_sysid    varchar2(38)  ,  
+  node_id         varchar2(40)  ,
+  node_kind       varchar2(10)  ,
+  node_type       varchar2(10)  ,
+  pos_x           number(3,0)   ,
+  pos_y           number(3,0)   ,
+  node_ref        varchar2(38)  ,
+  handle          varchar2(40)  ,
+  iterate         number(2,0)   default 1,
+  is_rework       char(1)       ,
+  constraint pk_prp_routing_node primary key(sysid)
+);
+create index idx_prp_routing_node_1 on mes_prp_routing_node
+(route_sysid);
+create index idx_prp_routing_node_2 on mes_prp_routing_node
+(parent_sysid);
+create index idx_prp_routing_node_3 on mes_prp_routing_node
+(node_ref);
+create index idx_prp_routing_node_4 on mes_prp_routing_node
+(handle);
+
+create table mes_prp_routing_path(
+  route_sysid     varchar2(38)  ,
+  from_node       varchar2(38)  ,
+  path            varchar2(40)  ,
+  to_node         varchar2(38)  ,
+  color           integer       
+);
+create index idx_prp_routing_path_1 on mes_prp_routing_path
+(route_sysid);
+create index idx_prp_routing_path_2 on mes_prp_routing_path
+(from_node);
+create index idx_prp_routing_path_3 on mes_prp_routing_path
+(to_node);
+
+--料號類型
+create table mes_prp_product_type(
+  sysid         varchar2(38)  ,
+  product_type  varchar2(20)  ,
+  description   varchar2(255) ,
+  create_user   varchar2(10)  ,
+  create_date   date          ,
+  modify_user   varchar2(10)  ,
+  modify_date   date          ,
+  delete_flag   char(1)       default '0',
+  constraint pk_product_type primary key(sysid),
+  constraint uk_product_type unique(product_type)
+);
+
+create table mes_prp_product(
+  sysid           varchar2(38)  ,
+  product_id      varchar2(40)  ,
+  product_type    varchar2(20)  ,
+  fab		          varchar2(40)	,
+  route_id        varchar2(40)  ,
+  compose_size	  number(5,0)	  , --內包數量，批號限定數量
+  product_size	  varchar2(40)	, --產品尺寸
+  packing_quantity number(5,0)  , --外包規則，箱號限定數量
+  issue_state     varchar2(10)  ,
+  description     varchar2(255) ,
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  delete_flag     char(1)       default '0',
+  constraint pk_prp_product primary key(sysid),
+  constraint uk_prp_product unique(product_id)
+);
+create index idx_prp_product_1 on mes_prp_product
+(product_type);
+create index idx_prp_product_2 on mes_prp_product
+(issue_state);
+
+create table mes_prp_product_link(
+  product_sysid     varchar2(38)  , --sysid to mes_prp_product
+  route_id          varchar2(40)  , --route_id to mes_prp_routing
+  constraint pk_prp_product_link primary key(product_sysid,route_id)
+);
+
+create table mes_prp_product_dc_skip
+(
+  product_id        varchar2(40)  , --mes_prp_product.product_id
+  dc_item_sysid     varchar2(38)  , --sysid to mes_prp_step_dc_item
+  constraint pk_prp_product_dc_skip primary key(product_id,dc_item_sysid)
+);
+
+create table mes_prp_step_dc_item(
+  sysid             varchar2(38)  ,
+  name              varchar2(40)  ,
+  description       varchar2(255) ,
+  data_type         varchar2(10)  , --Numeric, String, Options
+  length            number(3,0)   ,
+  option_list       varchar2(255) ,
+  modify_target     varchar2(40)  , --要寫入的物件類型
+  attribute_name    varchar2(40)  , --要寫入物件的屬性名
+  column_name       varchar2(40)  , --Lot屬性名對應的資料庫欄位名
+  assign_from       varchar2(40)  , --自動帶入值的來源物件。Lot, Equipment, Order
+  assign_attribute  varchar2(40)  , --自動帶入值的屬性名
+  compare_value     varchar2(500) , --比對來源。空白:即輸入的值，非空白:查詢結果為單一值的sql(條件中帶?代表輸入的值)
+  compare_source_db varchar2(40)  , --查詢比對來源的資料來源(sqlExtension的dbName)
+  compare_type      char(1) default '0', --比對目標值的方式。0:不比對，1:設定的方式(下列設定)，2:開發自定義組件的方式(組件名放在compare_to欄位)
+  compare_to        varchar2(40)  , --比對值的目標物件。Lot, Equipment, Order
+  compare_attribute varchar2(40)  , --比對值的屬性名
+  compare_to_value  varchar2(500) , --比對目標。空白:即帶入值(compare_to.compare_attribute)，非空白:查詢結果為單一值的sql(條件中帶?代表帶入的值)
+  compare_to_db     varchar2(40)  , --查詢比對目標的資料來源(sqlExtension的dbName) 
+  compare_operator  varchar2(2)   , --比對運算子   
+  enabled           char(1)       default '1', --是否可編輯，只有自動帶值時，才能設為不可編輯
+  visible           char(1)       default '1', --是否可見，只有自動帶值時，才能設為不可見
+  create_user       varchar2(10)  ,
+  create_date       date          ,
+  modify_user       varchar2(10)  ,
+  modify_date       date          ,
+  delete_flag       char(1)       default '0',
+  constraint pk_prp_step_dc_item primary key(sysid),
+  constraint uk_prp_step_dc_item unique(name)
+);
+
+create table mes_prp_step_dc_link(
+  step_id         varchar2(40)  ,
+  dc_item_sysid   varchar2(38)  ,
+  seq             number(2,0)   ,
+  required        char(1)       ,
+  timing          char(1) default '0' ,  --0=trackIn, 1=trackOut
+  check_fail_path varchar2(40),          --檢查失敗時回傳交易的路徑(出機收集才有作用)
+  check_seq       number(2,0) default 0, --多個有回傳交易路徑的項目同時失敗時要回傳的路徑優先級
+  message         varchar2(100),         --檢查失敗時要顯示的訊息
+  constraint pk_prp_step_dc_link primary key(step_id,dc_item_sysid)
+);
+create index idx_prp_step_dc_link_1 on mes_prp_step_dc_link
+(step_id);
+create index idx_prp_step_dc_link_2 on mes_prp_step_dc_link
+(dc_item_sysid);
+
+create table mes_prp_step_station(
+  step_id         varchar2(40)  ,
+  station         varchar2(40)  ,
+  seq             number(2,0)   ,
+  constraint pk_prp_step_station primary key(step_id,station)
+);
+create index idx_prp_step_station_1 on mes_prp_step_station
+(step_id);
+
+--=====WIP Module==================================================================
+create table mes_wip_lot(
+	sysid          varchar2(38)  ,
+	order_id       varchar2(40)  ,
+	lot_id         varchar2(40)  ,
+	description    varchar2(255) ,
+	lot_type       varchar2(40)  ,
+	component_type varchar2(40)  , --lot當下的原料型態(對應step的component_type)
+	product_id     varchar2(40)  ,
+    product_type   varchar2(20)  ,
+	route_id       varchar2(40)  ,
+	route_version  number(3,0)   ,
+	spec_id        varchar2(40)  ,
+	spec_sysid     varchar2(38)  , --參數模組串接鍵
+	status         varchar2(40)  ,
+	last_status    varchar2(40)  ,
+	fab            varchar2(40)  ,	
+	equipment_id   varchar2(40)  ,
+	last_equipment varchar2(40)  ,
+	step_id        varchar2(40)  ,
+	step_version   number(3,0)   ,
+	iterate        number(2,0)   default 1,
+	node_handle     varchar2(40)  , --handle to mes_prp_routing_node
+	last_node_handle varchar2(40) , --handle to mes_prp_routing_node
+	rule_id        varchar2(40)  ,
+	rule_seq       number(2,0)   ,
+	location       varchar2(40)  , --bank時的儲位
+	start_quantity number(10,3)  ,
+	quantity       number(10,3)  ,
+    finished_qty   number(10,3)  , --當前站點已完工數
+	unit           varchar2(20)  ,
+	component_info varchar2(38)  , --lot_component_info to mes_wip_lot_component
+	priority       number(2,0)   ,
+	carrier_id     varchar2(40)  ,
+	carrier_position number(3)   ,
+	q_time_count   number(2,0)   , --queue control count
+	rework_count   number(2,0)   ,
+	last_hold_sysid varchar2(45) , --sysid to mes_wip_lot_hold_release	
+	customer_id    varchar2(40)  ,
+	customer_lot_id varchar2(40) ,
+	due_date       date          ,
+	customer_due_date  date      ,
+	lot_tracking_sysid varchar2(38)  , --sysid to mes_wip_lot_tracking	
+	batch_id       varchar2(40)      ,
+	txnstamp       integer default 0 ,
+	last_txn_sysid varchar2(45)  , --sysid to mes_wip_lot_history************************
+    last_defect_txn  varchar2(45),
+	last_move_date date          , --最後一次移動的時間
+	rule_result		 varchar2(40)  , --最後一個TrackOut Rule的判定結果
+	source_parent  varchar2(38)  , --sysid to mes_wip_lot, 原料批
+	top_parent     varchar2(38)  , --sysid to mes_wip_lot, 分批的最上層母批
+	split_parent   varchar2(38)  , --sysid to mes_wip_lot, 母批(分批的母批)，由哪一批分出來的
+	merge_parent   varchar2(38)  , --sysid to mes_wip_lot, 母批(併批的母批)，併到哪一批了
+	child_count    integer default 0, --子批數量
+	owner          varchar2(10)  ,
+	remark         varchar2(255) ,
+	isDispatching  varchar2(255) ,
+    create_user    varchar2(10)  ,
+	create_date    date          ,	
+	modify_user    varchar2(10)  ,
+	modify_date    date          ,
+	delete_flag    char(1)  default '0',  --for ERP是否已回報(0: not yet, 1: reported)    
+  constraint pk_wip_lot primary key(sysid),
+  constraint uk_wip_lot unique(lot_id)
+);
+create index idx_wip_lot_1 on mes_wip_lot
+(fab);
+create index idx_wip_lot_2 on mes_wip_lot
+(step_id);
+create index idx_wip_lot_3 on mes_wip_lot
+(batch_id);
+create index idx_wip_lot_4 on mes_wip_lot
+(equipment_id);
+create index idx_wip_lot_5 on mes_wip_lot
+(status);
+create index idx_wip_lot_6 on mes_wip_lot
+(carrier_id);
+create index idx_wip_lot_7 on mes_wip_lot
+(order_id);
+create index idx_wip_lot_8 on mes_wip_lot
+(last_txn_sysid);
+
+create table mes_wip_lot_delete(
+	sysid          varchar2(38)  ,
+	order_id       varchar2(40)  ,
+	lot_id         varchar2(40)  ,
+	description    varchar2(255) ,
+	lot_type       varchar2(40)  ,
+	component_type varchar2(40)  , --lot當下的原料型態(對應step的component_type)
+	product_id     varchar2(40)  ,
+    product_type   varchar2(20)  ,
+	route_id       varchar2(40)  ,
+	route_version  number(3,0)   ,
+	spec_id        varchar2(40)  ,
+	spec_sysid     varchar2(38)  , --參數模組串接鍵
+	status         varchar2(40)  ,
+	last_status    varchar2(40)  ,
+	fab            varchar2(40)  ,	
+	equipment_id   varchar2(40)  ,
+	last_equipment varchar2(40)  ,
+	step_id        varchar2(40)  ,
+	step_version   number(3,0)   ,
+	iterate        number(2,0)   default 1,
+	node_handle     varchar2(40)  , --handle to mes_prp_routing_node
+	last_node_handle varchar2(40) , --handle to mes_prp_routing_node
+	rule_id        varchar2(40)  ,
+	rule_seq       number(2,0)   ,
+	location       varchar2(40)  , --bank時的儲位
+	start_quantity number(10,3)  ,
+	quantity       number(10,3)  ,
+    finished_qty   number(10,3)  , --當前站點已完工數
+	unit           varchar2(20)  ,
+	component_info varchar2(38)  , --lot_component_info to mes_wip_lot_component
+	priority       number(2,0)   ,
+	carrier_id     varchar2(40)  ,
+	carrier_position number(3)   ,
+	q_time_count   number(2,0)   , --queue control count
+	rework_count   number(2,0)   ,
+	last_hold_sysid varchar2(45) , --sysid to mes_wip_lot_hold_release	
+	customer_id    varchar2(40)  ,
+	customer_lot_id varchar2(40) ,
+	due_date       date          ,
+	customer_due_date  date      ,
+	lot_tracking_sysid varchar2(38)  , --sysid to mes_wip_lot_tracking	
+	batch_id       varchar2(40)      ,
+	txnstamp       integer default 0 ,
+	last_txn_sysid varchar2(45)  , --sysid to mes_wip_lot_history************************
+    last_defect_txn  varchar2(45),
+	last_move_date date          , --最後一次移動的時間
+	rule_result		 varchar2(40)  , --最後一個TrackOut Rule的判定結果
+	source_parent  varchar2(40)  , --lotId to mes_wip_lot, 原料批
+	top_parent     varchar2(40)  , --lotId to mes_wip_lot, 分批的最上層母批
+	split_parent   varchar2(40)  , --lotId to mes_wip_lot, 母批(分批的母批)，由哪一批分出來的
+	merge_parent   varchar2(40)  , --lotId to mes_wip_lot, 母批(併批的母批)，併到哪一批了
+	child_count    integer default 0, --子批數量
+	owner          varchar2(10)  ,
+	remark         varchar2(255) ,
+	isDispatching  char(1)  default '0',
+    create_user    varchar2(10)  ,
+	create_date    date          ,	
+	modify_user    varchar2(10)  ,
+	modify_date    date          ,
+	delete_flag    char(1)  default '0',  --for ERP是否已回報(0: not yet, 1: reported)    
+  constraint pk_wip_lot_delete primary key(sysid),
+  constraint uk_wip_lot_delete unique(lot_id)
+);
+
+create table mes_wip_batch(
+	sysid          varchar2(38)  ,
+	batch_id       varchar2(40)  ,
+	description    varchar2(255) ,
+	comments       varchar2(255) ,
+	start_step_id  varchar2(40)  ,
+	end_step_id    varchar2(40)  ,
+	create_user    varchar2(10)  ,
+	create_date    date          ,	
+	modify_user    varchar2(10)  ,
+	modify_date    date          ,
+	delete_flag    char(1)  default '0',  --0:作用中，1:取消批次
+  constraint pk_wip_batch primary key (sysid),
+  constraint uk_wip_batch unique (batch_id)
+);
+create index idx_wip_batch_1 on mes_wip_batch 
+(delete_flag);
+
+create table mes_wip_lot_component(
+	lot_component_info varchar2(38)  ,
+	component_sysid    varchar2(38)  ,
+  carrier_id         varchar2(40)  ,
+  position           integer      ,
+  modify_date        date          ,
+  constraint pk_wip_lot_component primary key (component_sysid)
+);
+create index idx_wip_lot_component_1 on mes_wip_lot_component 
+(lot_component_info);
+create index idx_wip_lot_component_2 on mes_wip_lot_component 
+(carrier_id);
+
+create table mes_wip_component(
+	sysid          varchar2(38)  ,
+	component_id   varchar2(50)  ,
+  status         varchar2(40)  , --Active, Defect, Scrap
+  integrity      number(4,3)   default 1,
+  original_lot   varchar2(38)  , --sysid to mes_wip_lot 
+	create_user    varchar2(10)  ,
+	create_date    date          ,	
+	modify_user    varchar2(10)  ,
+	modify_date    date          ,
+	delete_flag    char(1)  default '0',  --0:作用中，1:取消批次          
+  constraint pk_wip_component primary key (sysid),
+  constraint uk_wip_component unique (component_id)
+);
+create index idx_wip_component_1 on mes_wip_component 
+(delete_flag);
+
+create table mes_wip_lot_tracking(
+	sysid          varchar2(38)  ,
+	lot_id         varchar2(40)  ,
+	sub_route_id   varchar2(40)  ,
+  step_id        varchar2(40)  ,
+  step_handle    varchar2(40)  ,
+  stage          varchar2(40)  ,
+  equipment_id   varchar2(40)  ,
+  spec_id        varchar2(40)  ,  --進機時的Spec Id
+  move_in_date   date          ,
+  track_in_date  date          ,
+  track_out_date date          ,
+  move_out_date  date          ,
+  move_in_qty    number(10,3)   ,
+  track_in_qty   number(10,3)   ,
+  track_out_qty  number(10,3)   ,
+  move_out_qty   number(10,3)   ,
+  move_in_sysid  varchar2(45)  ,
+  track_in_sysid varchar2(45)  ,
+  track_out_sysid varchar2(45) ,
+  move_out_sysid varchar2(45)  ,
+  is_rework      char(1)       ,
+  seq            integer       ,
+	delete_flag    char(1)  default '0',  --0:未完整完成站點作業，1:已完整完成站點作業         
+  constraint pk_wip_lot_tracking primary key (sysid)
+);
+create index idx_wip_lot_tracking_1 on mes_wip_lot_tracking 
+(lot_id,seq);
+create index idx_wip_lot_tracking_2 on mes_wip_lot_tracking 
+(track_out_date);
+
+create table mes_wip_future_hold(
+	sysid              varchar2(38)  ,
+	id                 varchar2(40)  , --order_id or lot_id or product_id or route_id
+	kind               char(1)       , --0:order, 1:lot, 2:route, 3:product	
+  step_id            varchar2(40)  ,
+  step_handle        varchar2(40)  ,
+  timing             char(1)  , --0=trackIn, 1=trackOut
+  reason_code        varchar2(40)  , 
+  start_date         date          ,
+  expire_date        date          ,
+  create_user        varchar2(10)  ,
+	create_date        date          ,	
+	modify_user        varchar2(10)  ,
+	modify_date        date          ,
+	active             char(1)  default '1', --是否作用中。1:還在作用中，0:已經執行過(不在作用中)
+	delete_flag        char(1)  default '0',    
+  constraint pk_wip_future_hold primary key (sysid)
+);
+create index idx_wip_future_hold_1 on mes_wip_future_hold 
+(expire_date,active,delete_flag);
+
+create table mes_wip_lot_hold_release(
+	sysid              varchar2(45)  ,
+	lot_id             varchar2(40)  ,
+	step_id            varchar2(40)  ,
+  hold_reason        varchar2(40)  , 
+  release_reason     varchar2(40)  ,  
+  hold_user          varchar2(10)  ,
+	hold_date          date          ,	
+	release_user       varchar2(10)  ,
+	release_date       date          ,
+	future_hold_sysid  varchar2(38)  , --sysid to mes_wip_future_hold,如果是手動即時扣押，就不會有值
+	release_txn_sysid  varchar2(45)  , --sysid to mes_wip_history(with Release Activity)
+	delete_flag        char(1)  default '0', --0:not release yet, 1:released already
+  constraint pk_wip_lot_hold_release primary key (sysid)
+);
+create index idx_wip_lot_hold_release_1 on mes_wip_lot_hold_release 
+(lot_id,delete_flag);
+create index idx_wip_lot_hold_release_2 on mes_wip_lot_hold_release 
+(step_id,delete_flag);
+create index idx_wip_lot_hold_release_3 on mes_wip_lot_hold_release 
+(delete_flag);
+create index idx_wip_lot_hold_release_4 on mes_wip_lot_hold_release 
+(hold_date);
+
+create table mes_wip_q_time_setting(
+	sysid          varchar2(38)  ,
+	product_id     varchar2(40)  ,
+	route_id       varchar2(40)  ,
+	from_step_id   varchar2(40)  ,
+	to_step_id     varchar2(40)  ,
+	q_time         integer       , -- minute
+	q_time_type    char(1)       , -- 0:在設定時間內，1:需超過設定時間
+	action         char(1) default '0', --0:None,1:BackStep,2:Hold,3:BackAndHold
+	create_user    varchar2(10)  ,
+	create_date    date          ,	
+	modify_user    varchar2(10)  ,
+	modify_date    date          ,
+	delete_flag    char(1)  default '0',
+  constraint pk_wip_q_time_setting primary key (sysid),
+  constraint uk_wip_q_time_setting unique (product_id,route_id,from_step_id,to_step_id)
+);
+create index idx_wip_q_time_setting_1 on mes_wip_q_time_setting 
+(product_id,route_id,from_step_id,delete_flag);
+
+create table mes_wip_q_time_monitor(
+	sysid              varchar2(38)  ,
+	lot_id             varchar2(40)  ,
+	from_step_id       varchar2(40)  ,
+  from_step_handle   varchar2(40)  , 
+  to_step_id         varchar2(40)  ,  
+  to_step_handle     varchar2(40)  ,
+	start_date         date          ,	
+	close_date         date          ,
+	close_type         char(1)       , --0:pass, 1:over qTime, 2:人工關閉, 3:Lot Terminate Merge Scrap
+	close_user         varchar2(10)  ,
+	q_time             integer       ,
+  q_time_type        char(1)       , -- 0:在設定時間內，1:需超過設定時間
+    q_time_setting_sysid varchar2(38)  ,  
+	delete_flag        char(1)  default '0', --0:監控中，1:已結束
+  constraint pk_wip_q_time_monitor primary key (sysid)
+);
+create index idx_wip_q_time_monitor_1 on mes_wip_q_time_monitor 
+(lot_id,to_step_handle,delete_flag);
+
+create table mes_wip_q_time_history
+(
+  monitor_sysid      varchar2(38)  , --q_time_monitor.sysid
+  time_pass          integer       , --經過的時間(分)
+  check_result       char(1)       , --0:pass, 1:over qTime
+  create_user        varchar2(10)  ,
+  create_date        date          
+);
+create index idx_wip_q_time_history_1 on mes_wip_q_time_history
+(monitor_sysid);
+
+create table mes_wip_lot_history(
+	txn_sysid          varchar2(45)  ,
+	last_txn_sysid     varchar2(45)  ,
+	main_txn_sysid     varchar2(38)  ,
+	lot_sysid          varchar2(38)  , --sysid to mes_wip_lot
+	lot_id             varchar2(40)  ,
+	activity           varchar2(20)  ,
+	component_type     varchar2(40)  , --lot當下的原料型態(對應step的component_type)
+	product_id         varchar2(40)  ,
+    product_type       varchar2(20)  ,
+	route_id           varchar2(40)  ,
+	route_version      number(3,0)   ,
+	spec_id            varchar2(40)  ,
+	spec_sysid         varchar2(38)  , --參數模組串接鍵
+	status             varchar2(40)  ,
+	fab                varchar2(40)  ,
+	equipment_id       varchar2(40)  ,
+	step_id            varchar2(40)  ,
+	step_version       number(3,0)   ,
+	iterate            number(2,0)   default 1,
+	is_rework          char(1)       , 
+	node_handle        varchar2(40)  , --handle to mes_prp_routing_node
+	rule_id            varchar2(40)  ,
+	rule_seq           number(2,0)   ,
+	rule_result        varchar2(40)  , --rule執行結果/RepositionStep的目的站點
+	location           varchar2(40)  , --bank時的儲位
+	quantity           number(10,3)  ,
+	unit               varchar2(20)  ,
+	component_info     varchar2(38)  , --lot_component_info to mes_wip_lot_component
+	setup_info         varchar2(38)  , --equipment setup info history
+    ta_work_info       varchar2(38)  , --ta_work_info to mes_ta_work_info
+	tooling_setup_info varchar2(38)  , --tooling setup info history
+    finish_qty         number(10,3)  , --完工數
+	order_id           varchar2(40)  ,
+	carrier_id         varchar2(40)  ,
+    carrier_position   number(3)     ,	
+	batch_id           varchar2(40)  ,
+	split_parent       varchar2(40)  ,
+	merge_parent       varchar2(40)  ,
+	txnstamp           integer       ,
+	owner              varchar2(10)  ,
+	remark             varchar2(255) ,
+	grouphistkey       varchar2(38)  ,
+	eq_parm_seq        integer       ,
+	hostname           varchar2(60)  ,
+	modify_user        varchar2(10)  ,
+	modify_date        timestamp(6)  ,
+	delete_flag        char(1)  default '0',           
+  constraint pk_wip_lot_history primary key (txn_sysid)
+);
+create index idx_wip_lot_history_1 on mes_wip_lot_history 
+(last_txn_sysid);
+create index idx_wip_lot_history_2 on mes_wip_lot_history 
+(activity,modify_date);
+create index idx_wip_lot_history_3 on mes_wip_lot_history 
+(lot_id,modify_date);
+
+create table mes_wip_lot_history_component(
+	lot_component_info varchar2(38)  ,
+	component_sysid    varchar2(38)  ,
+  carrier_id         varchar2(40)  ,
+  position           integer       ,
+	status             varchar2(40)  ,
+	integrity          number(4,3)   ,
+  modify_date        date      
+);
+create index idx_wip_lot_history_comp_1 on mes_wip_lot_history_component 
+(lot_component_info);
+
+create table mes_wip_lot_history_dc_item(
+	txn_sysid      	varchar2(45)  ,
+	dc_item_sysid	varchar2(38)  ,
+	value		varchar2(255) ,
+  constraint pk_history_dc_item primary key(txn_sysid,dc_item_sysid)
+);
+
+create table mes_wip_lot_defect
+(
+  txn_sysid    varchar2(45),
+  reason_code  varchar2(40),
+  quantity     number(10,3),
+  comments     varchar2(255)
+);
+create index idx_wip_lot_defect_1 on mes_wip_lot_defect
+(txn_sysid);
+
+create table mes_ta_work_info
+(
+  sysid              varchar2(38)  ,
+  ta_work_info       varchar2(38)  ,
+  step_id            varchar2(40)  ,
+  equipment_id       varchar2(40)  ,
+  shift              varchar2(10)  ,  --班別
+  ta_count           number(3,0)   ,
+  modify_date        date          ,
+  constraint pk_ta_work_info primary key (sysid),
+  constraint uk_ta_work_info unique (ta_work_info),
+  constraint uk_ta_work_info2 unique (step_id,equipment_id)
+);
+
+create table mes_ta_work_info_history
+(
+  ta_work_info       varchar2(38)  ,
+  shift              varchar2(10)  ,  --班別
+  ta_count           number(3,0)   ,
+  modify_date        date          ,
+  constraint pk_work_info_his primary key (ta_work_info)
+);
+create index idx_work_info_history_1 on mes_ta_work_info_history 
+(modify_date);
+
+create table mes_ta_work_info_detail
+(
+  ta_work_info       varchar2(38)  ,
+  station            varchar2(40)  ,
+  user_id            varchar2(10)
+);
+create index idx_work_info_detail_1 on mes_ta_work_info_detail 
+(ta_work_info);
+
+create table mes_ta_work_info_detail_his
+(
+  ta_work_info       varchar2(38)  ,
+  station            varchar2(40)  ,
+  user_id            varchar2(10)
+);
+create index idx_work_info_detail_his_1 on mes_ta_work_info_detail_his 
+(ta_work_info);
+
+create table mes_wip_order(
+	sysid              varchar2(38)  ,
+	order_id           varchar2(40)  ,
+	order_type         varchar2(40)  ,
+	product_id         varchar2(40)  ,
+	fab                varchar2(40)  ,
+  priority           number(2,0)   ,	
+	route_id           varchar2(40)  ,
+	route_version      number(3,0)   ,
+	start_step         varchar2(40)  ,
+	start_step_handle  varchar2(40)  ,
+	spec_id            varchar2(40)  ,
+	spec_sysid         varchar2(38)  , --參數模組串接鍵
+	quantity           integer       ,
+	receive_quantity   integer default 0,
+	start_quantity     integer default 0,
+  scrap_quantity     integer default 0, --報廢數
+  finish_quantity    integer default 0, --完工數
+	lot_count          number(6,0) default 0,
+	owner              varchar2(10)  ,
+	customer_id        varchar2(40)  ,
+  plan_start_date    date          , --計劃投產日期
+	due_date           date          ,
+	customer_due_date  date          ,
+	remark             varchar2(255) ,
+	status             varchar2(40)  , --Created, Confirm, Hold, Closed, Finished
+  txnstamp           integer default 0,
+  create_user        varchar2(10)  ,
+	create_date        date          ,	
+	modify_user        varchar2(10)  ,
+	modify_date        date          ,
+	delete_flag        char(1)  default '0',	--for ERP是否已回報(0: not yet, 1: reported)
+  constraint pk_wip_order primary key (sysid),
+  constraint uk_wip_order unique (order_id)
+);
+create index idx_wip_order_1 on mes_wip_order 
+(fab);
+create index idx_wip_order_2 on mes_wip_order 
+(status);
+create index idx_wip_order_3 on mes_wip_order 
+(receive_quantity);
+create index idx_wip_order_4 on mes_wip_order 
+(start_quantity);
+
+create table mes_wip_instruction(
+	sysid              varchar2(38)  ,
+	id                 varchar2(40)  , --order_id or lot_id or product_id or route_id
+	kind               char(1)       , --0:order, 1:lot, 2:route, 3:product
+	step_id            varchar2(40)  , 
+  instruction        varchar2(255) ,
+  start_date         date          ,
+  expire_date        date          ,
+  create_user        varchar2(10)  ,
+	create_date        date          ,	
+	modify_user        varchar2(10)  ,
+	modify_date        date          ,
+	delete_flag        char(1)  default '0',
+  constraint pk_wip_instruction primary key (sysid)
+) ;
+create index idx_wip_instruction_1 on mes_wip_instruction 
+(id,kind);
+create index idx_wip_instruction_2 on mes_wip_instruction 
+(step_id,start_date,expire_date,delete_flag);
+
+create table mes_wip_carton
+(
+  sysid              varchar2(38)  ,
+  carton_id          varchar2(40)  ,
+  fab                varchar2(40)  ,
+  product_id         varchar2(40)  ,
+  order_id           varchar2(40)  ,
+  location_type      char(1)       , --0:無，1:在機台，2:在棧板
+  location           varchar2(40)  , --所在位置(機台/棧板/None)
+  pallet_use_id      varchar2(55)  , --mes_wip_pallet.use_id
+  status             varchar2(10)  , --WAIT, HOLD, CLOSE, SHIP
+  txnstamp           integer default 0,
+  create_user        varchar2(10)  ,
+  create_date        date          ,	
+  modify_user        varchar2(10)  ,
+  modify_date        date          ,
+  delete_flag        char(1)  default '0',
+  constraint pk_wip_carton primary key (sysid),
+  constraint uk_wip_carton unique (carton_id)
+);
+create index idx_wip_carton_1 on mes_wip_carton 
+(location);
+create index idx_wip_carton_2 on mes_wip_carton 
+(pallet_use_id);
+
+create table mes_wip_pallet
+(
+  sysid              varchar2(38)  ,
+  pallet_id          varchar2(40)  ,
+  use_id             varchar2(55)  , --使用識別碼palletId+yyyymmdd-HHmiss
+  fab                varchar2(40)  ,
+  product_id         varchar2(40)  ,
+  order_id           varchar2(40)  ,
+  location_type      char(1)       , --0:無，1:在機台，2:在暫存區
+  location           varchar2(40)  , --所在位置(機台/暫存區號/None)
+  status             varchar2(10)  , --WAIT, HOLD, CLOSE, SHIP
+  txnstamp           integer default 0,
+  create_user        varchar2(10)  ,
+  create_date        date          ,	
+  modify_user        varchar2(10)  ,
+  modify_date        date          ,
+  delete_flag        char(1)  default '0',
+  constraint pk_wip_pallet primary key (sysid),
+  constraint uk_wip_pallet unique (pallet_id),
+  constraint uk_wip_pallet_2 unique (use_id)
+);
+create index idx_wip_pallet_1 on mes_wip_pallet 
+(location);
+--=====MaterialTracking Module==================================================================
+create table mes_mat_step_material(
+  sysid           varchar2(38)  ,
+  step_id         varchar2(40)  ,
+  material_type   varchar2(40)  ,
+  consume_rate    number(9,4)   default 0,
+  required        char(1)       ,
+  create_user     varchar2(10)  ,
+	create_date     date          ,	
+	modify_user     varchar2(10)  ,
+	modify_date     date          ,
+	delete_flag     char(1)  default '0',
+  constraint pk_mat_step_material primary key(sysid),
+  constraint uk_mat_step_material unique(step_id,material_type)
+);
+create index idx_mat_step_material_1 on mes_mat_step_material
+(step_id);
+
+create table mes_mat_part--耗用物料料號資訊
+(
+  sysid           varchar2(38)  ,
+  part_no         varchar2(40)  ,
+  material_type   varchar2(40)  ,
+  description     varchar2(255) ,
+  create_user     varchar2(10)  ,
+	create_date     date          ,	
+	modify_user     varchar2(10)  ,
+	modify_date     date          ,
+	delete_flag     char(1)  default '0',
+  constraint pk_mat_part primary key(sysid),
+  constraint uk_mat_part unique(part_no)
+);
+
+--=====ProcessParameter Module==================================================================
+create table mes_parm_parameter(
+  sysid           varchar2(38)  ,
+  parameter_id    varchar2(40)  ,
+  description     varchar2(255) ,
+  parm_type       number(1)     , --0:string, 1:numeric, 2:range
+  dc_item_sysid   varchar2(38)  , --mes_prp_step_dc_item.sysid
+  eq_parm_sysid   varchar2(38)  , --mes_eqp_parameter.sysid
+  create_user     varchar2(10)  ,
+  create_date     date          ,	
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  delete_flag     char(1)  default '0',
+  constraint pk_parm_parameter primary key(sysid),
+  constraint uk__parm_parameter unique(parameter_id)
+);
+
+create table mes_parm_step_parameter(
+  step_id         varchar2(40)  ,
+  parameter_sysid varchar2(38)  ,
+  seq             number(2,0)   ,
+  constraint pk_parm_step_parameter primary key(step_id,parameter_sysid)
+);
+
+create table mes_parm_main(
+  sysid           varchar2(38)  ,
+  name            varchar2(40)  ,
+  version         number(3)     ,
+  description     varchar2(255) ,
+  issue_state     varchar2(10)  ,
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  delete_flag     char(1)       default '0',
+  flag            number(3,0)   ,	
+  constraint pk_parm_main primary key(sysid),
+  constraint uk_parm_main unique(name,version)
+);
+create index idx_parm_main_1 on mes_parm_main
+(name,flag);
+create index idx_parm_main_2 on mes_parm_main
+(name,issue_state);
+
+create table mes_parm_main_step(
+  sysid           varchar2(79)  , --mes_parm_main.sysid +'@'+ step_id
+  main_sysid      varchar2(38)  , --mes_parm_main.sysid
+  step_id         varchar2(40)  ,
+  std_process_time number(9,4)  , --標準作業時間(分/片)
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  constraint pk_parm_main_step primary key(sysid),
+  constraint uk_parm_main_step unique(main_sysid,step_id)
+);
+create index idx_parm_main_step_1 on mes_parm_main_step
+(main_sysid);
+
+create table mes_parm_main_step_material(
+  sysid           varchar2(120) , --mes_parm_main_step.sysid +'@'+ material_type
+  main_step_sysid varchar2(79)  , --mes_parm_main_step.sysid
+  material_type   varchar2(40)  ,
+  required        char(1)       , --0:false, 1:true
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  constraint pk_parm_main_step_material primary key(sysid),
+  constraint uk_parm_main_step_material unique(main_step_sysid,material_type)
+);
+create index idx_parm_main_step_material_1 on mes_parm_main_step_material
+(main_step_sysid);
+
+create table mes_parm_main_step_mat_part(
+  from_sysid          varchar2(120) , --mes_parm_main_step_material.sysid
+  part_no             varchar2(40)  ,
+  consume_rate        number(9,4)  default 0,
+  seq                 number(2,0)   ,
+  constraint pk_step_material_part primary key(from_sysid,part_no)
+);
+create index idx_step_material_part_1 on mes_parm_main_step_mat_part
+(from_sysid);
+
+
+create table mes_parm_main_step_recipe(
+  sysid           varchar2(120) , --mes_parm_main_step.sysid +'@'+ eq_type
+  main_step_sysid varchar2(79)  , --mes_parm_main_step.sysid
+  eq_type         varchar2(40)  ,
+  recipe          varchar2(40)  ,
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  constraint pk_parm_main_step_recipe primary key(sysid),
+  constraint uk_parm_main_step_recipe unique(main_step_sysid,eq_type)
+);
+create index idx_parm_main_step_recipe_1 on mes_parm_main_step_recipe
+(main_step_sysid);
+
+create table mes_parm_main_step_eq_track
+(
+  sysid           varchar2(38)  , 
+  main_step_sysid varchar2(79)  , --mes_parm_main_step.sysid
+  eq_type         varchar2(40)  ,
+  track           varchar2(20)  , --軌道
+  seq             number(3,0)   ,
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  constraint pk_parm_main_step_eq_track primary key(sysid)
+);
+create index idx_parm_main_step_eq_track_1 on mes_parm_main_step_eq_track
+(main_step_sysid);
+
+create table mes_parm_main_step_parameter(
+  sysid           varchar2(120) , --mes_parm_main_step.sysid +'@'+ parameter_sysid
+  main_step_sysid varchar2(79)  , --mes_parm_main_step.sysid
+  parameter_sysid varchar2(38)  , --mes_parm_step_parameter.sysid
+  value           varchar2(255) ,
+  max             number(10,4)  ,
+  min             number(10,4)  ,
+  seq             number(2,0)   ,
+  remark          varchar2(255) ,
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  constraint pk_parm_main_step_parameter primary key(sysid),
+  constraint uk_parm_main_step_parameter unique(main_step_sysid,parameter_sysid)
+);
+create index idx_parm_main_step_parameter_1 on mes_parm_main_step_parameter
+(main_step_sysid);
+
+create table mes_parm_product_spec(
+  product_id      varchar2(40) ,
+  spec_name       varchar2(40) ,
+  restriction     varchar2(255),
+  constraint pk_product_spec primary key(product_id,spec_name)
+);
+create index idx_product_spec_1 on mes_parm_product_spec
+(product_id);
+create index idx_product_spec_2 on mes_parm_product_spec
+(spec_name);
+
+create table mes_parm_main_step_eq_tooling
+(
+  sysid              varchar2(120) ,
+  main_step_sysid    varchar2(79)  ,
+  eq_type            varchar2(40)  ,
+  tooling_type       varchar2(40)  ,
+  create_user        varchar2(10)  ,
+  create_date        date          default sysdate,
+  modify_user        varchar2(10)  ,
+  modify_date        date          default sysdate,
+  delete_flag        char(1)       default '0',
+  constraint pk_step_eq_tooling primary key(sysid)
+);
+create index idx_step_eq_tooling_1 on mes_parm_main_step_eq_tooling 
+(main_step_sysid);
+
+create table mes_parm_main_step_eq_tol_part
+(
+  from_sysid    varchar2(120) ,
+  part_no       varchar2(40)  ,
+  seq           number(2,0)   ,
+  constraint pk_step_eq_tol_part primary key(from_sysid,part_no)
+);
+
+--======FAB Monitor Module======================================
+create table fms_area(
+  sysid           varchar2(38)  ,
+  area_id         varchar2(40)  ,
+  description     varchar2(255) ,
+  image_file      varchar2(40)  ,
+  create_user     varchar2(10)  ,
+  create_date     date          ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          ,
+  delete_flag     char(1)       default '0',
+  constraint pk_fms_area primary key(sysid),
+  constraint uk_fms_area unique(area_id)
+);
+
+create table fms_area_equipment(
+  area_sysid      varchar2(38)  ,
+  equipment_sysid varchar2(38)  ,
+  pos_x           integer       ,
+  pos_y           integer       ,
+  width           integer       ,
+  height          integer       ,
+  graph_type      number(2,0)   ,
+  constraint pk_area_equipment primary key(area_sysid,equipment_sysid)
+);
+create index idx_area_equipment_1 on fms_area_equipment
+(area_sysid);
+
+--標籤管理========================================================
+create table mes_lbl_misc  --標籤雜項，a ItemType:LabelType= Carton, Box, Pallet...
+(
+    item            varchar2(20)	,
+    value           varchar2(40)	,
+    description		varchar2(40)	,
+    modify_user     varchar2(10)  ,
+    modify_date     date          ,	
+	constraint pk_lbl_misc primary key(item,value)
+);
+
+create table mes_lbl_printer
+(
+    sysid           varchar2(38)	,
+    model_name      varchar2(40)    , --印表機型號
+	resolution      number(4)		, --解析度
+	landscape       char(1)         , --列印方向。0:直印，1:橫印
+	description     varchar2(100)   ,
+	modify_user     varchar2(10)    ,
+    modify_date     date            ,	
+	constraint pk_lbl_printer primary key(sysid),
+	constraint uk_lbl_printer unique(model_name,resolution)
+);
+
+create table mes_lbl_code
+(
+    sysid           varchar2(38)	,
+    code            varchar2(40)	,
+    description	    varchar2(40)	,
+    modify_user     varchar2(10)  ,
+    modify_date     date          ,	
+	constraint pk_lbl_code primary key(sysid),
+	constraint uk_lbl_code unique(code)
+);
+
+create table mes_lbl_label
+(
+    sysid           varchar2(38)	 ,
+    code_sysid      varchar2(38)	 ,
+    label_type      varchar2(40)	 , --Carton,Box,Pallet...
+	printerModel    varchar2(40)     , --印表機型號
+    resolution      number(4)		 , --解析度
+    height			number(7,2)	     , --標籤高度 
+    width			number(7,2)      , --標籤寬度	
+    modify_user     varchar2(10)     ,
+    modify_date     date             ,
+	constraint pk_lbl_label primary key(sysid),
+	constraint uk_lbl_label unique(code_sysid,label_type,printerModel,resolution)
+);
+
+create table mes_lbl_label_detail
+(
+	sysid			varchar2(38)	,
+	label_sysid		varchar2(38)	,
+	item_type		varchar2(20)	, --項目類型 Text,Barcode,Image,Line,Ellipse,Rectangle
+	item_value		varchar2(100)	,
+	seq				number(2)	    ,
+	color			integer			,
+	pos_x			number(7,2)		,
+	pos_y			number(7,2)		,
+	height			number(7,2)		,
+	width			number(7,2)		,
+	bar_type        varchar2(20)	,
+	bar_size        number(1)		,
+	bar_text_align  number(1)		,
+	bar_rotation    number(1)		,
+	font_name		varchar2(40)	,
+	font_size		number(4,2)		,
+	data_source		varchar2(40)	,
+	data_member		varchar2(40)	,
+    modify_user     varchar2(10)    ,
+    modify_date     date            ,	
+	constraint pk_lbl_label_detail primary key(sysid)
+);
+create index idx_lbl_label_detail_1 on mes_lbl_label_detail(label_sysid);
+--其它==================================================================================================
+create table mes_message_box_record
+(
+    msg_level    char(1), --confirmation=0, askYesNo=1, askOKCancel=2, error=3
+    message        varchar2(255),
+    result    char(1),  
+    hostname    varchar2(40),
+    modify_user    varchar2(10),
+    modify_date date
+);
+create index idx_message_box_1 on mes_message_box_record
+(modify_date);
+
+create table mes_wip_lot_extension
+(
+    item           varchar2(40),
+    step_id        varchar2(40),
+    ext_name       varchar2(40),
+    value          varchar2(255),
+    modify_date    date,
+    constraint pk_wip_lot_extension primary key(item,step_id,ext_name)
+);
+--警報管理==========================================================================================
+create table mes_alm_type
+(
+  sysid               varchar2(38)  ,
+  alarm_type          varchar2(40)  ,
+  description         varchar2(255) ,
+  reason_group        varchar2(40)  ,
+  modify_user         varchar2(10)  ,
+  modify_date         date          default sysdate,
+  delete_flag         char(1)       default '0',
+  constraint pk_alm_type primary key(sysid),
+  constraint uk_alm_type unique(alarm_type)
+);
+
+create table mes_alm_reason
+(
+  sysid               varchar2(38)  ,
+  type_sysid          varchar2(38)  ,
+  reason_code         varchar2(40)  ,
+  level_count         number(1,0)   ,
+  modify_user         varchar2(10)  ,
+  modify_date         date          ,
+  delete_flag         char(1)       default '0',
+  constraint pk_alm_reason primary key(sysid),
+  constraint uk_alm_reason unique(type_sysid,reason_code)
+);
+
+create table mes_alm_level
+(
+  sysid               varchar2(38)  ,
+  reason_sysid        varchar2(38)  ,
+  alm_level           number(1,0)   ,
+  cycle               number(1,0)   ,
+  interval_min        number(3,0)   , --minutes
+  send_wechat         varchar2(255) ,
+  send_email          varchar2(1000),
+  send_line           varchar2(255) ,
+  language            varchar2(10)  ,
+  modify_user         varchar2(10)  ,
+  modify_date         date          ,
+  delete_flag         char(1)       default '0',
+  constraint pk_alm_level primary key(sysid),
+  constraint uk_alm_level unique(reason_sysid,alm_level)
+);
+
+create table mes_alm_message
+(
+  sysid               varchar2(38)  ,
+  alarm_type          varchar2(40)  ,
+  priority            number(3,0)   ,
+  title               varchar2(100) ,
+  message             varchar2(500) ,
+  status              char(1)       , --0:New, Action, Clear 
+  object_id           varchar2(40)  ,
+  object_type         varchar2(40)  ,
+  reason_code         varchar2(40)  ,
+  comments            varchar2(255) ,
+  grouphistkey        varchar2(45)  ,
+  action_comments     varchar2(255) ,
+  clear_reason        varchar2(40)  ,
+  clear_comments      varchar2(255) ,
+  clear_grouphistkey  varchar2(45)  ,
+  cur_level           number(1,0)   ,
+  cur_cycle           number(1,0)   ,
+  last_send           date          ,
+  create_date         date          ,
+  modify_user         varchar2(10)  ,
+  modify_date         date          ,
+  clear_user          varchar2(10)  ,
+  clear_date          date          ,
+  delete_flag         char(1)       default '0',
+  constraint pk_alm_message primary key(sysid),
+  constraint uk_alm_message unique(alarm_type,object_id,reason_code)
+);
+create index idx_alm_message_1 on mes_alm_message
+(object_type);
+
+create table mes_alm_message_his
+(
+  sysid               varchar2(38)  ,
+  alarm_type          varchar2(40)  ,
+  priority            number(3,0)   ,
+  title               varchar2(100) ,
+  message             varchar2(500) ,
+  object_id           varchar2(40)  ,
+  object_type         varchar2(40)  ,
+  reason_code         varchar2(40)  ,
+  comments            varchar2(255) ,
+  grouphistkey        varchar2(45)  ,
+  action_comments     varchar2(255) ,
+  clear_reason        varchar2(40)  ,
+  clear_comments      varchar2(255) ,
+  clear_grouphistkey  varchar2(45)  ,
+  cur_level           number(2,0)   ,
+  create_date         date          ,
+  modify_user         varchar2(10)  ,
+  modify_date         date          ,
+  clear_user          varchar2(10)  ,
+  clear_date          date          ,
+  constraint pk_alm_message_his primary key(sysid)
+);
+create index idx_alm_message_his_1 on mes_alm_message_his
+(alarm_type,reason_code);
+create index idx_alm_message_his_2 on mes_alm_message_his
+(create_date);
+
+--治工具管理==========================================================================================
+create table mes_tol_tooling_type
+(
+  sysid           varchar2(38)  ,
+  tooling_type	  varchar2(40)  ,       --治工具類型
+  description     varchar2(255) ,
+  control_type	  char(1) default '0',  --使用限制類型。0:none，1:counter，2:time
+  consume_type    char(1) default '0',  --累計次數計算方式。0:none，1:by Lot，2:by Lot Qty，3:By Setup
+  verify_flag     char(1) default '1',  --新品是否需驗證。0:不需要，1:需要
+  runtime_flag    char(1) default '0',  --是否在執行階段控卡數量限制
+  owner_dept 	  varchar2(20) 	,       --權責單位
+  create_user     varchar2(10)  ,
+  create_date     date          default sysdate,
+  modify_user     varchar2(10)  ,
+  modify_date     date          default sysdate,
+  delete_flag     char(1)       default '0',
+  constraint pk_tooling_type primary key(sysid),
+  constraint uk_tooling_type unique(tooling_type)
+);
+
+create table mes_tol_tooling_type_link
+(
+  type_sysid      varchar2(38)  ,       --治工具類型sysid
+  eq_type         varchar2(40)  ,       
+  constraint pk_tooling_type_link primary key(type_sysid,eq_type)
+);
+
+create table mes_tol_part
+(
+  sysid           varchar2(38)  ,
+  part_no	      varchar2(40)  ,       --料號
+  description     varchar2(255) ,
+  type_sysid      varchar2(38)  ,       --治工具類型sysid
+  use_limit       number(6,0) default 0,--使用限制(次數或分鐘)
+  use_notice      number(6,0) default 0,--提醒數量(次數或分鐘)
+  create_user     varchar2(10)  ,
+  create_date     date          default sysdate,
+  modify_user     varchar2(10)  ,
+  modify_date     date          default sysdate,
+  delete_flag     char(1)       default '0',
+  constraint pk_tol_part primary key(sysid),
+  constraint uk_tol_part unique(part_no)
+);
+create index idx_part_no_1 on mes_tol_part
+(type_sysid);
+
+create table mes_tol_event
+(
+  sysid           varchar2(38)  ,
+  type_sysid      varchar2(38)  ,            --治工具類型sysid。'-'代表套用所有的治工具類型
+  event_name      varchar2(40)	,            --交易名稱
+  last_status     varchar2(10)	,            --上一個狀態
+  next_status     varchar2(10)	,            --下一個狀態
+  reason_group    varchar2(40)	,            --原因代碼群組
+  location_list	  varchar2(1000),            --儲位清單
+  ide_flag        char(1)       default '1', --是否在管理界面裏執行交易
+  create_user     varchar2(10)  ,
+  create_date     date          default sysdate,
+  modify_user     varchar2(10)  ,
+  modify_date     date          default sysdate,
+  delete_flag     char(1)       default '0',
+  constraint pk_tol_event primary key(sysid),
+  constraint uk_tol_event unique(type_sysid,last_status,event_name)
+);
+
+create table mes_tol_tooling_id
+(
+  sysid           varchar2(38)  ,
+  tooling_id      varchar2(40)  ,            --治工具編號
+  part_no         varchar2(40)	,            --料號
+  location        varchar2(40)	,            --當前位置
+  location_type   char(1)       default '0', --0:儲位, 1:機台
+  status          varchar2(10)  ,            --狀態
+  last_status     varchar2(10)  ,            --前狀態
+  current_count   number(6,0)   default 0  , --當前使用次數(lot生產次數累加在此，在Unload時才加到use_count)
+  use_count       number(6,0)   default 0  , --已使用次數(分鐘)。最後一次PM後已使用的次數(使用限制以此數量控卡)
+  total_count     number(10,0)  default 0  , --總使用次數(分鐘)
+  clean_count     number(6,0)   default 0  , --總清洗次數
+  pm_count        number(6,0)   default 0  , --總保養次數
+  repair_count    number(6,0)   default 0  , --總維修次數
+  last_txn_sysid  varchar2(38)  ,            --最後交易sysid
+  setup_user      varchar2(10)  ,
+  setup_date      date                     , --上機時間(HWSETUP)
+  start_date      date                     , --開始生產時間(LOT_START)
+  txnstamp        integer       default 0  ,
+  create_user     varchar2(10)  ,
+  create_date     date          default sysdate,
+  modify_user     varchar2(10)  ,
+  modify_date     date          default sysdate,
+  delete_flag     char(1)       default '0',
+  constraint pk_tol_tooling_id primary key(sysid),
+  constraint uk_tol_tooling_id unique(tooling_id)
+);
+create index idx_tooling_id_1 on mes_tol_tooling_id
+(part_no);
+create index idx_tooling_id_2 on mes_tol_tooling_id
+(location);
+create index idx_tooling_id_3 on mes_tol_tooling_id
+(status);
+
+
+--Table Tooling History
+create table mes_tol_tooling_history
+(
+  txn_sysid       varchar2(38)  ,
+  main_txn_sysid  varchar2(38)  ,
+  last_txn_sysid  varchar2(38)  ,
+  tooling_id      varchar2(40)  ,     
+  event_name      varchar2(40)  ,    
+  part_no         varchar2(40)	,            
+  location        varchar2(40)	,            
+  location_type   char(1)       default '0',
+  lot_id          varchar2(40)  ,              
+  status          varchar2(10)  ,            
+  last_status     varchar2(10)  ,            
+  current_count   number(6,0)   default 0  , 
+  use_count       number(6,0)   default 0  , 
+  total_count     number(10,0)  default 0  , 
+  clean_count     number(6,0)   default 0  , 
+  pm_count        number(6,0)   default 0  , 
+  repair_count    number(6,0)   default 0  ,
+  setup_user      varchar2(10)             ,  
+  setup_date      date                     , 
+  start_date      date                     , 
+  txnstamp        integer       default 0  ,
+  reason_code     varchar2(40)  , 
+  comments        varchar2(255) , 
+  modify_user     varchar2(10)  ,
+  modify_date     date          default sysdate,
+  delete_flag     char(1)       default '0',
+  constraint pk_tooling_history primary key(txn_sysid)
+);
+create index idx_tooling_history_1 on mes_tol_tooling_history 
+(last_txn_sysid);
+create index idx_tooling_history_2 on mes_tol_tooling_history 
+(event_name,modify_date);
+create index idx_tooling_history_3 on mes_tol_tooling_history 
+(tooling_id,modify_date);
+
+--看板管理==================================================================================================
+--看板用戶端畫面
+create table mes_kan_screen
+(
+  sysid            varchar2(38)  ,
+  assembly_name    varchar2(40)  ,
+  description      varchar2(255) ,
+  refresh_interval number(5)     ,  
+  modify_user      varchar2(10)  ,
+  modify_date      date          default sysdate,
+  delete_flag      char(1)       default '0',
+  constraint pk_kan_screen primary key(sysid),
+  constraint uk_kan_screen unique(assembly_name)
+);
+
+--看板畫面參數
+create table mes_kan_screen_argu
+(
+  from_sysid       varchar2(38)  , --mes_kan_screen.sysid
+  argument_name    varchar2(40)  ,
+  description      varchar2(255) , 
+  constraint pk_kan_screen_argu primary key(from_sysid,argument_name)
+);
+
+--看板顯示用戶端
+create table mes_kan_client
+(
+  sysid           varchar2(38)  ,
+  computer_name   varchar2(40)  ,
+  seq             number(1)     default 0,
+  description     varchar2(255) ,
+  screen_split    number(1)     default 0, --0:單一畫面,1:分左右,2:左邊分上下,3:右邊分上下,4:4格,5:分上下,6:上面分左右,7:下面分左右
+  percent_ver     number(2)     default 0, --垂直比例
+  percent_hor     number(2)     default 0, --水平比例
+  client_id       varchar2(100) ,
+  modify_user     varchar2(10)  ,
+  modify_date     date          default sysdate,
+  delete_flag     char(1)       default '0',
+  constraint pk_kan_client primary key(sysid),
+  constraint uk_kan_client unique(computer_name,seq)
+);
+
+create table mes_kan_client_screen
+(
+  sysid           varchar2(38)  ,
+  client_sysid    varchar2(38)  ,
+  screen_sysid    varchar2(38)  ,
+  seq             number(1)     default 0,
+  constraint pk_kan_client_screen primary key(sysid)
+);
+create index idx_kan_client_screen_1 on mes_kan_client_screen
+(client_sysid,screen_sysid);
+
+create table mes_kan_client_screen_argu
+(
+  from_sysid      varchar2(38)  , --mes_kan_client_screen.sysid
+  argument_name   varchar2(40)  ,
+  value           varchar2(100) ,
+  constraint pk_kan_client_screen_argu primary key(from_sysid,argument_name)
+);

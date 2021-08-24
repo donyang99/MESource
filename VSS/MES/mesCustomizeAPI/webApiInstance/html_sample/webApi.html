@@ -1,0 +1,131 @@
+<html>
+<head>
+    <script src="./jquery-1.12.4.js"></script>
+    <script>
+        window.onload = function () {
+            
+            document.getElementById("btnXmlHttpRequestGet").onclick = xmlHttpRequestGet;
+            document.getElementById("btnXmlHttpRequestPost").onclick = xmlHttpRequestPost;
+            document.getElementById("btnAjaxByJsonpGet").onclick = ajaxByJsonpGet;
+        }
+        function getCommandJsonString()
+        {
+            var oJson = Object();
+            oJson.assemblyName = "eapAutoChangeState";
+            oJson.className = "eapAutoChangeState.CommandInstance";
+            oJson.sender = "auto";
+            oJson.result = "";
+            oJson.arguments = new Object();
+            oJson.arguments["time"] = "2018/6/9下午03:06:12";
+            oJson.arguments["tag"] = "totalstatus";
+            oJson.arguments["EqpId"] = "AXCELIS01";
+            oJson.arguments["before"] = "NONE";
+            oJson.arguments["now"] = eqState;
+            return JSON.stringify(oJson);
+        }
+        var eqState = "IDLE";
+
+        function xmlHttpRequestGet() {
+            document.getElementById("returnValue").innerText = "";
+            var surl = "http://localhost:5000/WebApi/MesCommand?msgFormat=JSON&message=" + getCommandJsonString();
+            
+            if (window.XMLHttpRequest) 
+                var oAjax = new XMLHttpRequest();
+            else 
+                var oAjax = new ActiveXObject("Microsoft.XMLHTTP");
+
+            oAjax.open('GET', surl, true);
+            oAjax.send();
+            oAjax.onreadystatechange = function () {
+                if (oAjax.readyState == 4) {
+                    if (oAjax.status == 200)
+                        document.getElementById("returnValue").innerText = JSON.parse(oAjax.responseText);
+                    else
+                        document.getElementById("returnValue").innerText = "FAIL";
+                }
+            };
+        }
+
+        function xmlHttpRequestPost() {
+            document.getElementById("returnValue").innerText = "";
+            var surl = "http://localhost:5000/WebApi/MesCommandByPost";
+            var parms = "msgFormat=JSON&message=" + getCommandJsonString();
+
+            if (window.XMLHttpRequest)
+                var oAjax = new XMLHttpRequest();
+            else
+                var oAjax = new ActiveXObject("Microsoft.XMLHTTP");
+
+            oAjax.open('POST', surl, true);
+            oAjax.send(parms);
+            oAjax.onreadystatechange = function () {
+                if (oAjax.readyState == 4) {
+                    if (oAjax.status == 200)
+                        document.getElementById("returnValue").innerText = JSON.parse(oAjax.responseText);
+                    else
+                        document.getElementById("returnValue").innerText = "FAIL";
+                }
+            };
+        }
+
+        function ajaxByJsonpGet() {
+            document.getElementById("returnValue").innerText = "";
+            var surl = "http://localhost:5000/WebApi/MesCommand?msgFormat=JSON&message=" + getCommandJsonString();
+            $.ajax({
+                type: "GET",
+                url: surl,
+                dataType: "jsonp",
+                contentType: 'application/json;charset=utf-8;'
+            }).success(function (res) {
+                console.log(res);
+                document.getElementById("returnValue").innerText = res;
+            }).error(function (xhr, status) {
+                console.log(xhr);
+                document.getElementById("returnValue").innerText = xhr;
+            });
+        }
+    </script>
+</head>
+<body>
+    <a href='http://localhost:5000/WebApi/MesCommand?msgFormat=JSON&message={"name":"","sysid":"","to":"","assemblyName":"eapAutoChangeState","className":"eapAutoChangeState.CommandInstance","errMessage":"","result":"","sender":"","arguments":{"time":"2018/6/9下午03:06:12","tag":"totalstatus","EqpId":"AXCELIS01","before":"NONE","now":"DOWN"}}'>
+        切機況DOWN
+    </a>&nbsp;
+    <a href='http://localhost:5000/WebApi/MesCommand?msgFormat=JSON&message={"name":"","sysid":"","to":"","assemblyName":"eapAutoChangeState","className":"eapAutoChangeState.CommandInstance","errMessage":"","result":"","sender":"","arguments":{"time":"2018/6/9下午03:06:12","tag":"totalstatus","EqpId":"AXCELIS01","before":"NONE","now":"IDLE"}}'>
+        切機況IDLE
+    </a>
+    <br /><br />
+    <input id="btnXmlHttpRequestGet" type="button" value="XmlHttpRequest(Get)" />
+    <input id="btnXmlHttpRequestPost" type="button" value="XmlHttpRequest(Post)" />
+    <input id="btnAjaxByJsonpGet" type="button" value="AjaxByJsonp(Get)" />
+
+    <br />
+    return value
+    <textarea id="returnValue" readonly style="width:100%;height:100px;"></textarea>
+    <br /><br />
+    <form action="http://localhost:5000/WebApi/MesCommandByPost" method="post">
+        <input name="msgFormat" value='JSON' /><input type="submit" />
+        <BR>
+        <textarea name="message" style="width:100%;height:100%;">
+{  
+	"name":"",
+	"sysid":"",
+	"to":"",
+	"assemblyName":"eapAutoChangeState",
+	"className":"eapAutoChangeState.CommandInstance",
+	"errMessage":"",
+	"result":"",
+	"sender":"",
+	"arguments":
+	{  
+		"time":"2018/6/9下午03:06:12",
+		"tag":"totalstatus",
+		"EqpId":"AXCELIS01",
+		"before":"NONE",
+		"now":"IDLE"
+	}
+}
+        </textarea>
+
+    </form>
+</body>
+</html>

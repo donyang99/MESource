@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5A420C80-8238-4E89-831C-A5F45A7B037D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>mesRelease</RootNamespace>
+    <AssemblyName>mesRelease</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+	<SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="classMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\classMessage.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ICommandWebApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\ICommandWebApi.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ImessageGuard, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\ImessageGuard.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mesCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\mesCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mesCoreWIP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\mesCoreWIP.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NPOI, Version=2.4.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\NPOI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.4.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\NPOI.OOXML.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.4.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\NPOI.OpenXml4Net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.4.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\NPOI.OpenXmlFormats.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="sqlUtility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\sqlUtility.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BAS\Fab.cs" />
+    <Compile Include="BAS\LotType.cs" />
+    <Compile Include="CAR\Carrier.cs" />
+    <Compile Include="CAR\Txn\AdjustCarrierQty.cs" />
+    <Compile Include="CAR\Txn\CarrierHistory.cs" />
+    <Compile Include="CAR\Txn\CleanCarrier.cs" />
+    <Compile Include="CAR\Txn\CleanOK.cs" />
+    <Compile Include="CAR\Txn\ProcessEnd.cs" />
+    <Compile Include="CAR\Txn\ProcessStart.cs" />
+    <Compile Include="CAR\Txn\ReleaseCarrier.cs" />
+    <Compile Include="CAR\Txn\TxnTemplate.cs" />
+    <Compile Include="CAR\Txn\UseCarrier.cs" />
+    <Compile Include="Controls\CarrierInformation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CarrierInformation.Designer.cs">
+      <DependentUpon>CarrierInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EquipmentInformation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EquipmentInformation.Designer.cs">
+      <DependentUpon>EquipmentInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\frmEditWorkInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\frmEditWorkInfo.Designer.cs">
+      <DependentUpon>frmEditWorkInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\frmIdentifyComponents.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\frmIdentifyComponents.designer.cs">
+      <DependentUpon>frmIdentifyComponents.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\frmSelectReason.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\frmSelectReason.Designer.cs">
+      <DependentUpon>frmSelectReason.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LotInfomation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LotInfomation.Designer.cs">
+      <DependentUpon>LotInfomation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NextStepInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\NextStepInfo.Designer.cs">
+      <DependentUpon>NextStepInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OutputInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\OutputInfo.Designer.cs">
+      <DependentUpon>OutputInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ReasonCode.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ReasonCode.Designer.cs">
+      <DependentUpon>ReasonCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\routeCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\routeCombo.designer.cs">
+      <DependentUpon>routeCombo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StepDC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\StepDC.Designer.cs">
+      <DependentUpon>StepDC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TaWorkInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TaWorkInfo.Designer.cs">
+      <DependentUpon>TaWorkInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackOutType.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TrackOutType.Designer.cs">
+      <DependentUpon>TrackOutType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WIPComponentInformation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WIPComponentInformation.Designer.cs">
+      <DependentUpon>WIPComponentInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WorkingInstruction.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\WorkingInstruction.Designer.cs">
+      <DependentUpon>WorkingInstruction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EQP\EqParameter.cs" />
+    <Compile Include="EQP\EqTypeParameter.cs" />
+    <Compile Include="EQP\Txn\EqParmDataCollect.cs" />
+    <Compile Include="EQP\Txn\EqReserve.cs" />
+    <Compile Include="EQP\Txn\SetupClear.cs" />
+    <Compile Include="MAT\MaterialPart.cs" />
+    <Compile Include="PARM\EqTooling.cs" />
+    <Compile Include="PARM\EqTrackMaterial.cs" />
+    <Compile Include="PRP\ProductType.cs" />
+    <Compile Include="utilities\CultureLanguage.cs" />
+    <Compile Include="EQP\EqGroup.cs" />
+    <Compile Include="EQP\EqType.cs" />
+    <Compile Include="EQP\Equipment.cs" />
+    <Compile Include="EQP\SetupInfo.cs" />
+    <Compile Include="EQP\SetupMaterial.cs" />
+    <Compile Include="EQP\State.cs" />
+    <Compile Include="EQP\Txn\ChangeCapacity.cs" />
+    <Compile Include="EQP\Txn\ChangeState.cs" />
+    <Compile Include="EQP\Txn\EqLogHistory.cs" />
+    <Compile Include="EQP\Txn\EquipmentHistory.cs" />
+    <Compile Include="EQP\Txn\Reset.cs" />
+    <Compile Include="EQP\Txn\Setup.cs" />
+    <Compile Include="MAT\StepMaterialType.cs" />
+    <Compile Include="Misc.cs" />
+    <Compile Include="PARM\EqRecipe.cs" />
+    <Compile Include="PARM\Parameter.cs" />
+    <Compile Include="PARM\ProductSpec.cs" />
+    <Compile Include="PARM\SpecMaterial.cs" />
+    <Compile Include="PARM\StepParameter.cs" />
+    <Compile Include="Updater\MESUpdater.cs" />
+    <Compile Include="USR\frmChangePassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="USR\frmChangePassword.designer.cs">
+      <DependentUpon>frmChangePassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="USR\frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="USR\frmLogin.designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="utilities\ExcelAgent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PRP\DCItem.cs" />
+    <Compile Include="PRP\Node.cs" />
+    <Compile Include="PRP\Product.cs" />
+    <Compile Include="PRP\Route.cs" />
+    <Compile Include="PRP\Rule.cs" />
+    <Compile Include="PRP\Step.cs" />
+    <Compile Include="BAS\ReasonCode.cs" />
+    <Compile Include="USR\PrivilegeString.cs" />
+    <Compile Include="USR\User.cs" />
+    <Compile Include="USR\UserGroup.cs" />
+    <Compile Include="utilities\frmTestData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="utilities\frmTestData.Designer.cs">
+      <DependentUpon>frmTestData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="utilities\TestAssistant.cs" />
+    <Compile Include="WF\WorkFlow.cs" />
+    <Compile Include="WIP\Carton.cs" />
+    <Compile Include="WIP\FutureHoldInfo.cs" />
+    <Compile Include="WIP\Pallet.cs" />
+    <Compile Include="WIP\Txn\AdjustQuantity.cs" />
+    <Compile Include="WIP\Txn\CancelTrackIn.cs" />
+    <Compile Include="WIP\Txn\ChangeEquipment.cs" />
+    <Compile Include="WIP\Txn\ChangeFab.cs" />
+    <Compile Include="WIP\Txn\ChangeProduct.cs" />
+    <Compile Include="WIP\Txn\DeleteLot.cs" />
+    <Compile Include="WIP\Txn\FinishLot.cs" />
+    <Compile Include="WIP\Txn\HoldLot.cs" />
+    <Compile Include="WIP\Txn\InventoryLot.cs" />
+    <Compile Include="WIP\Txn\LogLotHistory.cs" />
+    <Compile Include="WIP\Txn\LotHistory.cs" />
+    <Compile Include="WIP\Txn\MergeLot.cs" />
+    <Compile Include="WIP\Txn\ModifyAttribute.cs" />
+    <Compile Include="WIP\Txn\MoveIn.cs" />
+    <Compile Include="WIP\Txn\MoveOut.cs" />
+    <Compile Include="WIP\Txn\Packing.cs" />
+    <Compile Include="WIP\Txn\PullBack.cs" />
+    <Compile Include="WIP\Txn\RecordDefect.cs" />
+    <Compile Include="WIP\Txn\RecordFinishQuantity.cs" />
+    <Compile Include="WIP\Txn\ReleaseLot.cs" />
+    <Compile Include="WIP\Txn\RepositionRule.cs" />
+    <Compile Include="WIP\Txn\RepositionStep.cs" />
+    <Compile Include="WIP\Txn\Rework.cs" />
+    <Compile Include="WIP\Txn\ScrapLot.cs" />
+    <Compile Include="WIP\Txn\SplitLot.cs" />
+    <Compile Include="WIP\Txn\SplitLotInfo.cs" />
+    <Compile Include="WIP\Txn\StartLot.cs" />
+    <Compile Include="WIP\Txn\TerminateLot.cs" />
+    <Compile Include="WIP\Txn\TrackIn.cs" />
+    <Compile Include="WIP\Txn\TrackOut.cs" />
+    <Compile Include="WIP\WipComponent.cs" />
+    <Compile Include="WIP\Lot.cs" />
+    <Compile Include="WIP\ComponentInfo.cs" />
+    <Compile Include="WIP\WorkingInstruction.cs" />
+    <Compile Include="WIP\WorkOrder.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\CarrierInformation.resx">
+      <DependentUpon>CarrierInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EquipmentInformation.resx">
+      <DependentUpon>EquipmentInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\frmEditWorkInfo.resx">
+      <DependentUpon>frmEditWorkInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\frmIdentifyComponents.resx">
+      <DependentUpon>frmIdentifyComponents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\frmSelectReason.resx">
+      <DependentUpon>frmSelectReason.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LotInfomation.resx">
+      <DependentUpon>LotInfomation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\NextStepInfo.resx">
+      <DependentUpon>NextStepInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\OutputInfo.resx">
+      <DependentUpon>OutputInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ReasonCode.resx">
+      <DependentUpon>ReasonCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\routeCombo.resx">
+      <DependentUpon>routeCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\StepDC.resx">
+      <DependentUpon>StepDC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TaWorkInfo.resx">
+      <DependentUpon>TaWorkInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TrackOutType.resx">
+      <DependentUpon>TrackOutType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WIPComponentInformation.resx">
+      <DependentUpon>WIPComponentInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WorkingInstruction.resx">
+      <DependentUpon>WorkingInstruction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="USR\frmChangePassword.resx">
+      <DependentUpon>frmChangePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="USR\frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="utilities\frmTestData.resx">
+      <DependentUpon>frmTestData.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,2142 @@
+CREATE TABLE [mes_system_config](
+	[item]       [nvarchar](20)  ,
+	[value]      [char](1)      ,
+	[validation] [nvarchar](255) ,
+ CONSTRAINT [pk_system_config] PRIMARY KEY ([item]))
+GO
+
+CREATE TABLE [mes_system_config_file](
+	[item]       [nvarchar](20) ,
+	[user_id]    [nvarchar](20) ,
+	[file_name]  [nvarchar](50) ,
+  [contents]   [nvarchar](2000) ,
+ CONSTRAINT [pk_system_config_file] PRIMARY KEY ([item],[user_id]))
+GO
+
+CREATE TABLE [mes_system_version](
+  [name]        [nvarchar](60)  ,
+	[version]     [nvarchar](20)  ,
+	[active_date] [datetime]      ,
+  [previous_version]     [nvarchar](20)  ,
+	[modify_user] [nvarchar](10)  ,
+	[modify_date] [datetime]      ,
+ CONSTRAINT [pk_system_version] PRIMARY KEY ([name]))
+GO
+
+CREATE TABLE [mes_system_serial](
+  [item]        [nvarchar](40)  ,
+	[key]         [nvarchar](200) ,
+	[serial]      [int]           ,
+	[modify_date] [datetime]      ,
+ CONSTRAINT [pk_system_serial] PRIMARY KEY ([item],[key]))
+GO
+
+CREATE TABLE [language_map](
+	[language]     [nvarchar](10)  ,
+	[key]          [nvarchar](50)  ,
+	[value]        [nvarchar](255) ,
+ CONSTRAINT [pk_language_map] PRIMARY KEY ([language],[key]))
+GO
+
+CREATE TABLE [mes_client_sessions](
+	[client_id]     [nvarchar](255)  ,
+	[machine_id]    [nvarchar](100)  ,
+  [server_id]     [nvarchar](20)  ,
+	[start_date]    [datetime] ,
+ CONSTRAINT [pk_client_sessions] PRIMARY KEY ([client_id]))
+GO
+
+--廠別資訊
+CREATE TABLE [mes_fab](
+	[sysid]       [nvarchar](38)  ,
+	[fab]         [nvarchar](20)  ,
+  [fab_code]    [nvarchar](20)  ,
+  [org_id]      [nvarchar](20)  ,
+	[create_user] [nvarchar](10) ,
+	[create_date] [datetime] ,
+	[modify_user] [nvarchar](10) ,
+	[modify_date] [datetime] ,
+	[delete_flag] [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_fab] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_fab] UNIQUE ([fab]))
+GO
+
+CREATE TABLE [mes_lot_type](
+	[sysid]            [nvarchar](38)  ,
+	[lot_type]         [nvarchar](40)  ,
+    [description]      [nvarchar](255) ,
+    [check_future_hold][char](1)       ,
+    [check_q_time]     [char](1)       ,
+    [check_dc_self]    [char](1)       ,
+    [check_recipe]     [char](1)       ,
+    [check_dc_spec]    [char](1)       ,
+    [check_material]   [char](1)       ,
+	[check_tooling]    [char](1)       ,
+	[create_user] [nvarchar](10)       ,
+	[create_date] [datetime]           ,
+	[modify_user] [nvarchar](10)       ,
+	[modify_date] [datetime]           ,
+	[delete_flag] [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_lot_type] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_lot_type] UNIQUE ([lot_type]))
+GO
+
+CREATE TABLE [mes_reason_code](
+	[sysid] [nvarchar](38)  ,
+	[reason_code] [nvarchar](40) ,
+  [reason_type] [nvarchar](20) ,
+	[owner_dept]  [nvarchar](20) ,
+	[create_user] [nvarchar](10) ,
+	[create_date] [datetime] ,
+	[modify_user] [nvarchar](10) ,
+	[modify_date] [datetime] ,
+	[delete_flag] [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_reason_code] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_reason_code] UNIQUE ([reason_code]))
+GO
+CREATE NONCLUSTERED INDEX [idx_reason_code_1] ON [mes_reason_code] 
+([delete_flag])
+GO
+
+CREATE TABLE [mes_reason_group](
+	[sysid] [nvarchar](38)  ,
+	[group_id] [nvarchar](20)  ,
+	[description] [nvarchar](255) ,
+	[create_user] [nvarchar](10) ,
+	[create_date] [datetime] ,
+	[modify_user] [nvarchar](10) ,
+	[modify_date] [datetime] ,
+	[delete_flag] [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_reason_group] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_reason_group] UNIQUE ([group_id]))
+GO
+
+CREATE TABLE [mes_reason_group_link](
+	[reason_group_sysid] [nvarchar](38)  ,
+	[reason_code_sysid] [nvarchar](38)  ,
+ CONSTRAINT [pk_reason_group_link] PRIMARY KEY ([reason_group_sysid],[reason_code_sysid]))
+GO
+
+CREATE TABLE [mes_reason_category](
+	[sysid] [nvarchar](38)  ,
+	[reason_category] [nvarchar](40)  ,
+	[reason_class][nvarchar](40) ,
+	[reason_group][nvarchar](20) ,
+	[create_user] [nvarchar](10) ,
+	[create_date] [datetime] ,
+	[modify_user] [nvarchar](10) ,
+	[modify_date] [datetime] ,
+	[delete_flag] [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_reason_category] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_reason_category] UNIQUE ([reason_category],[reason_class]))
+GO
+CREATE NONCLUSTERED INDEX [idx_reason_category_1] ON [mes_reason_category] 
+([reason_group])
+GO
+
+CREATE TABLE [mes_txn_reason](
+	[txn_sysid]   [nvarchar](45)   ,
+	[reason_code] [nvarchar](40)   ,
+	[comments]    [nvarchar](255)  ,
+ CONSTRAINT [pk_txn_reason] PRIMARY KEY ([txn_sysid]))
+GO
+
+CREATE TABLE [mes_privilege_string](
+	[sysid]       [nvarchar](38)  ,
+	[privilege_string] [nvarchar](255)  ,
+	[description]      [nvarchar](255) ,
+	[create_user] [nvarchar](10) ,
+	[create_date] [datetime] DEFAULT(getdate()),
+	[modify_user] [nvarchar](10) ,
+	[modify_date] [datetime] DEFAULT(getdate()),
+	[delete_flag] [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_privilege_string] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_privilege_string] UNIQUE ([privilege_string]))
+GO
+
+CREATE TABLE [mes_user_profile](
+	[sysid]             [nvarchar](38)  ,
+	[user_id]           [nvarchar](10)  ,
+    [windows_account]   [nvarchar](30)  ,
+	[user_name]         [nvarchar](20)  ,
+	[fab]               [nvarchar](40)  ,
+	[division]          [nvarchar](40)  ,
+    [email]             [nvarchar](50)  ,
+    [email2]            [nvarchar](50)  ,
+    [mobile]            [nvarchar](15)  ,
+    [mobile2]           [nvarchar](15)  ,	
+    [pc_address]        [nvarchar](40)  ,
+    [password]          [nvarchar](50)  ,
+    [language]          [nvarchar](10)  ,
+    [privilege_group]   [nvarchar](40)  ,
+    [current_login_info][nvarchar](100) ,
+	[create_user]       [nvarchar](10) ,
+	[create_date]       [datetime]  DEFAULT(getdate()),
+	[modify_user]       [nvarchar](10) ,
+	[modify_date]       [datetime]  DEFAULT(getdate()),
+	[delete_flag]       [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_user_profile] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_user_profile] UNIQUE ([user_id]),
+ CONSTRAINT [uk_user_profile_2] UNIQUE ([windows_account])
+)
+GO
+
+--1. userGroup to userId
+--2. userGroup to mes_privilege_string
+--3. userId to mes_privilege_string
+CREATE TABLE [mes_group_user_privilege](
+	[from_id] [nvarchar](40)  ,
+	[to_id] [nvarchar](38)  ,
+ CONSTRAINT [pk_group_user_privilege] PRIMARY KEY ([from_id],[to_id]))
+GO
+CREATE NONCLUSTERED INDEX [ idx_group_user_1] ON [mes_group_user_privilege] 
+([from_id])
+GO
+CREATE NONCLUSTERED INDEX [ idx_group_user_2] ON [mes_group_user_privilege] 
+([to_id])
+GO
+
+--1. userGroup to stepId
+--2. userId to stepId
+CREATE TABLE [mes_group_user_step](
+    [from_id] [nvarchar](40)  ,
+    [to_id] [nvarchar](40)  ,
+ CONSTRAINT [pk_group_user_step] PRIMARY KEY ([from_id],[to_id]))
+GO
+CREATE NONCLUSTERED INDEX [idx_group_user_step_1] ON [mes_group_user_step] 
+([from_id])
+GO
+
+CREATE TABLE [mes_user_login](
+  [sysid]       [nvarchar](38)  ,
+	[user_id]     [nvarchar](10) ,
+	[pc_name]     [nvarchar](40) ,
+	[login_date]  [datetime] ,
+	[logout_date] [datetime] ,
+  CONSTRAINT [pk_user_login] PRIMARY KEY ([sysid]))
+GO
+
+CREATE TABLE [mes_misc](
+  [item]        [nvarchar](40) ,
+	[value]       [nvarchar](255),
+	[remark]      [nvarchar](255),
+	[modify_user] [nvarchar](20) ,
+	[modify_date] [datetime]  DEFAULT(getdate()),
+  CONSTRAINT [pk_misc] PRIMARY KEY ([item],[value]))
+GO
+
+CREATE TABLE [mes_carrier_type](
+	[sysid]          [nvarchar](38)  ,
+	[carrier_type]   [nvarchar](20)  ,
+	[component_size] [numeric](2,0)  ,
+	[capacity]       [numeric](5,0)  ,
+	[description]    [nvarchar](255) ,
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_carrier_type] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_carrier_type] UNIQUE ([carrier_type]))
+GO
+
+CREATE TABLE [mes_carrier_id](
+	[sysid]          [nvarchar](38)  ,
+	[carrier_id]     [nvarchar](40)  ,
+	[carrier_type]   [nvarchar](20)  ,
+	[rf_id]          [nvarchar](40)  ,
+	[status]         [nvarchar](20)  ,
+	[lot_id]         [nvarchar](40)  ,
+  [component_qty]  [numeric](5,0)  DEFAULT (0),	
+	[location]       [nvarchar](40)  ,
+	[used_count]     [numeric](5,0)  DEFAULT (0),
+	[clean_count]    [numeric](5,0)  DEFAULT (0),
+	[last_clean_user][nvarchar](10)  ,
+	[last_clean_date][datetime]      ,
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+	[tag]            [nvarchar](50)  ,
+  [txnstamp]       [int]           DEFAULT (0),
+	[last_txn_sysid] [nvarchar](38)  ,
+ CONSTRAINT [pk_carrier_id] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_carrier_id] UNIQUE ([carrier_id]))
+GO
+CREATE NONCLUSTERED INDEX [idx_carrier_id_1] ON [mes_carrier_id] 
+([carrier_type])
+GO
+CREATE NONCLUSTERED INDEX [idx_carrier_id_2] ON [mes_carrier_id] 
+([lot_id])
+GO
+CREATE NONCLUSTERED INDEX [idx_carrier_id_3] ON [mes_carrier_id] 
+([sysid],[txnstamp])
+GO
+
+CREATE TABLE [mes_carrier_history](
+	[txn_sysid]      [nvarchar](38)  ,
+	[main_txn_sysid] [nvarchar](38)  ,
+	[last_txn_sysid] [nvarchar](38)  ,
+	[carrier_id]     [nvarchar](40)  ,
+	[status]         [nvarchar](20)  ,
+	[activity]       [nvarchar](20)  ,
+	[lot_id]         [nvarchar](40)  ,
+	[component_qty]  [numeric](5,0)  DEFAULT (0),
+	[location]       [nvarchar](40)  ,
+	[used_count]     [numeric](5,0)  DEFAULT (0),
+	[clean_count]    [numeric](5,0)  DEFAULT (0),	
+	[txnstamp]       [int]           DEFAULT (0),
+	[grouphistkey]   [nvarchar](38)  ,
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_carrier_history] PRIMARY KEY ([txn_sysid]))
+GO
+CREATE NONCLUSTERED INDEX [idx_carrier_history_1] ON [mes_carrier_history] 
+([last_txn_sysid])
+GO
+
+--======Equipment Module======================================
+CREATE TABLE [mes_eqp_state](
+	[sysid]          [nvarchar](38)  ,
+	[state]          [nvarchar](40)  ,
+	[description]    [nvarchar](255) ,
+	[available]      [char](1)       ,
+	[color]          [int]           ,
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      DEFAULT(getdate()),	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      DEFAULT(getdate()),
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_eqp_state] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_eqp_state] UNIQUE ([state]))
+GO
+
+CREATE TABLE [mes_eqp_state_transfer](
+	[from_state] [nvarchar](40)  not null,
+	[to_state]   [nvarchar](40)  not null,
+	[division]   [nvarchar](40)  ,
+ CONSTRAINT [uk_eqp_state_transfer] UNIQUE ([from_state],[to_state],[division]))
+GO
+
+CREATE TABLE [mes_eqp_type](
+	[sysid]          [nvarchar](38)  ,
+	[eq_type]        [nvarchar](40)  ,
+	[description]    [nvarchar](255) ,
+	[owner]          [nvarchar](10)  ,
+	[tool_type]      [numeric](1,0)  DEFAULT (0),--0:生產機台，1:量測機台，2:機台內生產單元，3:Loader，4:Unlader，5:Both
+	[capacity]       [int]           ,
+    [track_count]    [numeric](3,0)  DEFAULT (0),--軌道數
+	[parameter_count][numeric](3,0)  DEFAULT (0),--設備參數數量
+	[consume_type]   [numeric](1,0)  DEFAULT (0),--0:by Lot，1:by Lot Qty
+    [counter_flag]   [char](1)     DEFAULT ('0'),
+    [create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      DEFAULT(getdate()),	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      DEFAULT(getdate()),
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_eqp_type] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_eqp_type] UNIQUE ([eq_type]))
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_type_1] ON [mes_eqp_type] 
+([tool_type])
+GO
+
+CREATE TABLE [mes_eqp_type_track]
+(
+	[eq_type]        [nvarchar](40)  ,
+	[track]          [nvarchar](20)  ,
+	[seq]            [numeric](3,0)  ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+ CONSTRAINT [pk_eqp_type_track] PRIMARY KEY ([eq_type],[track])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_type_track_1] ON [mes_eqp_type_track] 
+([eq_type])
+GO
+
+CREATE TABLE [mes_eqp_equipment](
+	[sysid]          [nvarchar](38)  ,
+	[equipment_id]   [nvarchar](40)  ,
+	[issue_state]    [nvarchar](10)  ,
+	[description]    [nvarchar](255) ,
+	[eq_type]        [nvarchar](40)  ,
+	[owner]          [nvarchar](10)  ,
+	[state]          [nvarchar](40)  ,
+  [reserved_by]    [nvarchar](40)  ,
+	[capacity_used]  [int]      DEFAULT (0),
+	[counter]        [int]      DEFAULT (0),
+  [last_order_id]  [nvarchar](40)  ,
+	[lot_id]         [nvarchar](40)  ,
+	[recipe]         [nvarchar](40)  ,
+	[fab]            [nvarchar](40)  ,
+	[line]           [nvarchar](40)  ,
+	[seq]            [numeric](2,0)  DEFAULT (0),
+  [txnstamp]       [int] DEFAULT (0),
+  [setup_info]     [nvarchar](38)  ,
+  [last_setup_info][nvarchar](40)  ,
+  [last_setup_date][datetime]      ,
+  [setup_info_flag] [char](1)  ,
+	[last_txn_sysid] [nvarchar](38)  ,
+	[last_change_state]      [nvarchar](38)  ,
+    [validated_spec_sysid]   [nvarchar](38)  ,
+    [tooling_setup_info]     [nvarchar](38)  ,
+    [validated_spec_tooling] [nvarchar](38)  ,
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_eqp_equipment] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_eqp_equipment] UNIQUE ([equipment_id]))
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_equipment_1] ON [mes_eqp_equipment] 
+([eq_type])
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_equipment_2] ON [mes_eqp_equipment] 
+([fab])
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_equipment_3] ON [mes_eqp_equipment] 
+([sysid],[txnstamp])
+GO
+
+CREATE TABLE [mes_eqp_equipment_link](
+	[from_sysid] [nvarchar](38)  ,
+	[to_sysid]   [nvarchar](38)  ,
+ CONSTRAINT [pk_eqp_equipment_link] PRIMARY KEY ([to_sysid]))
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_equipment_link_1] ON [mes_eqp_equipment_link] 
+([from_sysid])
+GO
+
+CREATE TABLE [mes_eqp_group_link](
+	[equipment_group]       [nvarchar](20)  ,
+	[equipment_sysid]        [nvarchar](38)  ,
+ CONSTRAINT [pk_eqp_group_link] PRIMARY KEY ([equipment_group],[equipment_sysid]))
+GO
+
+CREATE TABLE [mes_eqp_setup_info](
+	[sysid]          [nvarchar](38)  ,
+	[eqp_setup_info] [nvarchar](38)  ,
+	[material_type]  [nvarchar](40)  ,
+	[part_no]        [nvarchar](40)  ,
+	[material_lot_id][nvarchar](40)  ,
+	[position]       [nvarchar](20)  ,
+	[quantity]       [numeric](10,3)      DEFAULT (0),	
+	[setup_user]     [nvarchar](10)  ,
+	[setup_date]     [datetime]      ,
+  [modify_date]    [datetime]      ,
+ CONSTRAINT [pk_eqp_setup_info] PRIMARY KEY ([sysid])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_setup_info_1] ON [mes_eqp_setup_info] 
+([eqp_setup_info])
+GO
+
+CREATE TABLE [mes_eqp_history](
+	[txn_sysid]      [nvarchar](38)  ,
+  [main_txn_sysid] [nvarchar](38)  ,
+	[last_txn_sysid] [nvarchar](38)  ,
+	[last_change_state] [nvarchar](38)  ,
+	[equipment_id]   [nvarchar](40)  ,
+	[state]          [nvarchar](40)  ,
+  [reserved_by]    [nvarchar](40)  ,
+	[activity]       [nvarchar](20)  ,
+	[capacity_used]  [int]      DEFAULT (0),
+	[counter]        [int]      DEFAULT (0),
+	[lot_id]         [nvarchar](40)  ,
+	[recipe]         [nvarchar](40)  ,
+	[fab]            [nvarchar](40)  ,
+	[txnstamp]       [int] DEFAULT (0),
+	[setup_info]     [nvarchar](38)  ,
+	[grouphistkey]   [nvarchar](38)  ,
+	[eq_parm_seq]    [int]           ,
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,	
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_eqp_history] PRIMARY KEY ([txn_sysid]))
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_history_1] ON [mes_eqp_history] 
+([equipment_id])
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_history_2] ON [mes_eqp_history] 
+([last_change_state])
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_history_3] ON [mes_eqp_history] 
+([activity])
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_history_4] ON [mes_eqp_history] 
+([modify_date])
+GO
+
+CREATE TABLE [mes_eqp_history_setup_info](
+	[eqp_setup_info] [nvarchar](38)  ,
+	[material_type]  [nvarchar](40)  ,
+	[part_no]        [nvarchar](40)  ,
+	[material_lot_id][nvarchar](40)  ,
+	[position]       [nvarchar](20)  ,
+	[quantity]       [numeric](10,3)      DEFAULT (0),	
+	[setup_user]     [nvarchar](10)  ,
+  [modify_date]    [datetime]      
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_history_setup_info_1] ON [mes_eqp_history_setup_info] 
+([eqp_setup_info])
+GO
+
+CREATE TABLE [mes_eqp_setup_remain_info](
+	[sysid]          [nvarchar](38)  ,
+  [txn_sysid]      [nvarchar](38)  ,
+  [equipment_id]   [nvarchar](40)  ,
+	[material_type]  [nvarchar](40)  ,
+	[part_no]        [nvarchar](40)  ,
+	[material_lot_id][nvarchar](40)  ,
+	[quantity]       [numeric](10,3)      DEFAULT (0),	
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+  CONSTRAINT [pk_eqp_setup_remain_info] PRIMARY KEY ([sysid])  
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_setup_remain_info_1] ON [mes_eqp_setup_remain_info] 
+([equipment_id],[delete_flag])
+GO
+
+create table [mes_eqp_history_tooling_info](
+  [tooling_setup_info]  [nvarchar](38)  , 
+  [tooling_id]          [nvarchar](40)  , 
+  [part_no]             [nvarchar](40)	, 
+  [current_count]       [numeric](6,0)   , 
+  [use_count]           [numeric](6,0)   ,
+  [setup_user]          [nvarchar](10)  , 
+  [modify_date]         [datetime]          
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_history_tooling_info_1] ON [mes_eqp_history_tooling_info] 
+([tooling_setup_info])
+GO
+
+create table [mes_eqp_parameter](
+  [sysid]              [nvarchar](38)  , 
+  [parameter]          [nvarchar](40)  , 
+  [eq_data_id]         [nvarchar](40)  , 
+  [data_type]          [numeric](1,0)  , 
+  [length]             [numeric](3,0)  ,
+  [option_list]        [nvarchar](255) ,
+  [description]        [nvarchar](255) ,
+  [modify_user]        [nvarchar](10)  , 
+  [modify_date]        [datetime]      ,
+ CONSTRAINT [pk_eqp_parameter] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_eqp_parameter] UNIQUE ([parameter])  
+)
+GO
+
+create table [mes_eqp_type_parameter](
+  [eq_type]            [nvarchar](40)  , 
+  [parameter_sysid]    [nvarchar](38)  , 
+  [table_name]         [nvarchar](40)  , 
+  [column_name]        [nvarchar](40)  , 
+  [eq_data_id]         [nvarchar](40)  , 
+  [seq]                [numeric](3,0)  ,
+  [required]           [numeric](1)  DEFAULT(0),
+  [modify_user]        [nvarchar](10)  , 
+  [modify_date]        [datetime]      ,
+ CONSTRAINT [pk_eqp_type_parameter] PRIMARY KEY ([eq_type],[parameter_sysid]),
+ CONSTRAINT [uk_eqp_type_parameter] UNIQUE ([eq_type],[table_name],[column_name])  
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_type_parameter_1] ON [mes_eqp_type_parameter] 
+([eq_type])
+GO
+
+create table [mes_eqp_parm_seq](
+  [equipment_id]       [nvarchar](40)  , 
+  [eq_parm_seq]        [int]           ,
+ CONSTRAINT [pk_eqp_parm_seq] PRIMARY KEY ([equipment_id])
+)
+GO
+
+create table [mes_eqp_parm_data](
+  [equipment_id]       [nvarchar](40)  , 
+  [eq_parm_seq]        [int]           ,
+  [lot_id]             [nvarchar](40)  , 
+  [check_result]       [numeric](1,0)  DEFAULT(0), 
+  [fail_info]          [nvarchar](255) ,
+  [modify_user]        [nvarchar](10)  , 
+  [modify_date]        [datetime]      ,
+  [parm_1]             [nvarchar](40)  ,
+ CONSTRAINT [pk_eqp_parm_data] PRIMARY KEY ([equipment_id])
+)
+GO
+
+create table [mes_eqp_parm_data_his](
+  [equipment_id]       [nvarchar](40)  , 
+  [eq_parm_seq]        [int]           ,
+  [lot_id]             [nvarchar](40)  , 
+  [check_result]       [numeric](1,0)  DEFAULT(0), 
+  [fail_info]          [nvarchar](255) ,
+  [modify_user]        [nvarchar](10)  , 
+  [modify_date]        [datetime]      ,
+  [parm_1]             [nvarchar](40)  ,
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_parm_data_his_1] ON [mes_eqp_parm_data_his] 
+([equipment_id],[eq_parm_seq])
+GO
+CREATE NONCLUSTERED INDEX [idx_eqp_parm_data_his_2] ON [mes_eqp_parm_data_his] 
+([equipment_id],[modify_date])
+GO
+
+--======ProcessPlan Module======================================
+CREATE TABLE [mes_prp_rule](
+	[sysid]          [nvarchar](38)  ,
+	[rule_id]        [nvarchar](40)  ,
+	[program_class]  [nvarchar](255) ,
+	[description]    [nvarchar](255) ,
+	[dispatch_flag]  [char](1)       ,
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      DEFAULT(getdate()),	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      DEFAULT(getdate()),
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_prp_rule] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_prp_rule] UNIQUE ([rule_id]))
+GO
+
+CREATE TABLE [mes_prp_step](
+	[sysid]          [nvarchar](38)  ,
+	[step_id]        [nvarchar](40)  ,
+	[version]        [numeric](3,0)  ,
+	[description]    [nvarchar](255) ,
+	[stage]          [nvarchar](40)  ,
+	[step_code]      [nvarchar](40)  , --量測站代碼(多個量測站可同屬一個代碼-->定義同組量測項目)
+	[equipment_group][nvarchar](40)  ,
+	[component_type] [nvarchar](40)  , --站點可生產的物料型態(用以判斷Lot是否可進站，或可跳至此站)	
+	[issue_state]    [nvarchar](10)  ,
+	[fab]            [nvarchar](40)  ,
+  [extension_name] [nvarchar](40)  ,
+  [seq]            [nvarchar](40)  ,
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+	[flag]           [numeric](3,0)  ,
+ CONSTRAINT [pk_prp_step] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_prp_step] UNIQUE ([step_id],[version]))
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_step_1] ON [mes_prp_step] 
+([issue_state])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_step_2] ON [mes_prp_step] 
+([equipment_group])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_step_3] ON [mes_prp_step] 
+([step_id],[flag])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_step_4] ON [mes_prp_step] 
+([fab])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_step_5] ON [mes_prp_step] 
+([step_id],[issue_state],[stage])
+GO
+
+CREATE TABLE [mes_prp_step_rule](
+	[step_sysid] [nvarchar](38)  ,
+	[rule_sysid] [nvarchar](38)  ,
+	[seq]        [numeric](2,0)  ,
+ CONSTRAINT [pk_prp_step_rule] PRIMARY KEY ([step_sysid],[rule_sysid],[seq]))
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_step_rule_1] ON [mes_prp_step_rule] 
+([step_sysid])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_step_rule_2] ON [mes_prp_step_rule] 
+([rule_sysid])
+GO
+
+CREATE TABLE [mes_prp_routing](
+	[sysid]          [nvarchar](38)  ,
+	[route_id]       [nvarchar](40)  ,
+	[version]        [numeric](3,0)  ,
+	[description]    [nvarchar](255) ,
+	[route_type]     [nvarchar](40)  , 
+	[issue_state]    [nvarchar](10)  ,
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+	[flag]           [numeric](3,0)  ,
+ CONSTRAINT [pk_prp_routing] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_prp_routing] UNIQUE ([route_id],[version]))
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_routing_1] ON [mes_prp_routing] 
+([route_type])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_routing_2] ON [mes_prp_routing] 
+([issue_state])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_routing_3] ON [mes_prp_routing] 
+([delete_flag])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_routing_4] ON [mes_prp_routing] 
+([route_id],[flag])
+GO
+
+CREATE TABLE [mes_prp_routing_node](
+	[sysid]          [nvarchar](38)  ,
+	[route_sysid]    [nvarchar](38)  , --主流程
+	[parent_sysid]   [nvarchar](38)  , --node所在流程(主流程或子流程)
+	[node_id]        [nvarchar](40)  ,
+	[node_kind]      [nvarchar](10)  , --Entry, Interior, Exit
+	[node_type]      [nvarchar](10)  , --Route, Step
+	[pos_x]          [numeric](3,0)  ,
+	[pos_y]          [numeric](3,0)  ,
+	[node_ref]       [nvarchar](38)  ,  --sysid to mes_prp_step or mes_prp_routing
+	[handle]         [nvarchar](40)  ,
+	[iterate]        [numeric](2,0)  DEFAULT (1),
+	[is_rework]      [char](1)       ,  --是否為重工
+ CONSTRAINT [pk_prp_routing_node] PRIMARY KEY ([sysid]))
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_routing_node_1] ON [mes_prp_routing_node] 
+([route_sysid])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_routing_node_2] ON [mes_prp_routing_node] 
+([parent_sysid])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_routing_node_3] ON [mes_prp_routing_node] 
+([node_ref])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_routing_node_4] ON [mes_prp_routing_node] 
+([handle])
+GO
+
+CREATE TABLE [mes_prp_routing_path](
+	[route_sysid]    [nvarchar](38)  ,
+	[from_node]      [nvarchar](38)  , --sysid to mes_prp_routing_node
+	[path]           [nvarchar](40)  , 
+	[to_node]        [nvarchar](38)  , --sysid to mes_prp_routing_node
+	[color]          [int]           
+)	
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_routing_path_1] ON [mes_prp_routing_path] 
+([route_sysid])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_routing_path_2] ON [mes_prp_routing_path] 
+([from_node])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_routing_path_3] ON [mes_prp_routing_path] 
+([to_node])
+GO
+
+--料號類型
+CREATE TABLE [mes_prp_product_type](
+	[sysid]          [nvarchar](38)  ,
+  [product_type]   [nvarchar](20)  ,
+	[description]    [nvarchar](255) ,
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),           
+CONSTRAINT [pk_product_type] PRIMARY KEY ([sysid]),
+CONSTRAINT [uk_product_type] UNIQUE ([product_type]))
+GO
+
+CREATE TABLE [mes_prp_product](
+	[sysid]          [nvarchar](38)  ,
+	[product_id]     [nvarchar](40)  ,
+  [product_type]   [nvarchar](20)  ,
+  [fab]		         [nvarchar](40)	 ,
+  [route_id]       [nvarchar](40)  ,
+  [compose_size]	 [numeric](5,0)  , --內包數量，批號限定數量
+  [product_size]	 [nvarchar](40)  , --產品尺寸
+  [packing_quantity] [numeric](5,0), --外包規則，箱號限定數量
+	[issue_state]    [nvarchar](10)  ,
+	[description]    [nvarchar](255) ,
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),           
+CONSTRAINT [pk_prp_product] PRIMARY KEY ([sysid]),
+CONSTRAINT [uk_prp_product] UNIQUE ([product_id]))
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_product_1] ON [mes_prp_product] 
+([product_type])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_product_2] ON [mes_prp_product] 
+([issue_state])
+GO
+
+CREATE TABLE [mes_prp_product_link](
+	[product_sysid]  [nvarchar](38)  , --sysid to mes_prp_product
+	[route_id]       [nvarchar](40)  , --route_id to mes_prp_routing
+ CONSTRAINT [pk_prp_product_link] PRIMARY KEY ([product_sysid],[route_id]))
+GO
+
+CREATE TABLE [mes_prp_product_dc_skip](
+	[product_id]     [nvarchar](40)  , --mes_prp_product.product_id
+	[dc_item_sysid]  [nvarchar](38)  , --sysid to mes_prp_step_dc_item
+ CONSTRAINT [pk_prp_product_dc_skip] PRIMARY KEY ([product_id],[dc_item_sysid]))
+GO
+
+CREATE TABLE [mes_prp_step_dc_item](
+	[sysid]            [nvarchar](38)  ,
+	[name]             [nvarchar](40)  ,
+	[description]      [nvarchar](255) ,
+	[data_type]        [nvarchar](10)  , --Numeric, String, Options
+	[length]           [numeric](3,0)  ,
+	[option_list]      [nvarchar](255) ,
+  [modify_target]    [nvarchar](40)  ,
+  [attribute_name]   [nvarchar](40)  ,
+  [column_name]      [nvarchar](40)  ,
+  [assign_from]      [nvarchar](40)  , --自動帶入值的來源物件。Lot, Equipment, Order
+  [assign_attribute] [nvarchar](40)  , --自動帶入值的屬性名
+  [compare_value]    [nvarchar](500) , --比對來源。空白:即輸入的值，非空白:查詢結果為單一值的sql(條件中帶?代表輸入的值)
+  [compare_source_db][nvarchar](40)  , --查詢比對來源的資料來源(sqlExtension的dbName)
+  [compare_type]     [char](1) default ('0'), --比對目標值的方式。0:不比對，1:設定的方式(下列設定)，2:開發自定義組件的方式(組件名放在compare_to欄位)
+  [compare_to]       [nvarchar](40)  , --比對值的目標物件。Lot, Equipment, Order
+  [compare_attribute][nvarchar](40)  , --比對值的屬性名 
+  [compare_to_value] [nvarchar](500) , --比對目標。空白:即帶入值(compare_to.compare_attribute)，非空白:查詢結果為單一值的sql(條件中帶?代表帶入的值)
+  [compare_to_db]    [nvarchar](40)  , --查詢比對目標的資料來源(sqlExtension的dbName) 
+  [compare_operator] [nvarchar](2)   , 
+  [enabled]          [char](1)       default ('1'), --是否可編輯，只有自動帶值時，才能設為不可編輯
+  [visible]          [char](1)       default ('1'), --是否可見，只有自動帶值時，才能設為不可見
+	[create_user]      [nvarchar](10)  ,
+	[create_date]      [datetime]      ,	
+	[modify_user]      [nvarchar](10)  ,
+	[modify_date]      [datetime]      ,
+	[delete_flag]      [char](1)  DEFAULT ('0'),           
+CONSTRAINT [pk_prp_step_dc_item] PRIMARY KEY ([sysid]),
+CONSTRAINT [uk_prp_step_dc_item] UNIQUE ([name]))
+GO
+
+CREATE TABLE [mes_prp_step_dc_link](
+	[step_id]        [nvarchar](40)  ,
+	[dc_item_sysid]  [nvarchar](38)  ,
+	[seq]            [numeric](2,0)  ,
+	[required]       [char](1)       ,
+    [timing]         [char](1) default ('0') ,  --0=trackIn, 1=trackOut
+    [check_fail_path][nvarchar](40),            --檢查失敗時回傳交易的路徑(出機收集才有作用)
+    [check_seq]      [numeric](2,0) default (0),--多個有回傳交易路徑的項目同時失敗時要回傳的路徑優先級
+	[message]        [nvarchar](100),
+ CONSTRAINT [pk_prp_step_dc_link] PRIMARY KEY ([step_id],[dc_item_sysid]))
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_step_dc_link_1] ON [mes_prp_step_dc_link] 
+([step_id])
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_step_dc_link_2] ON [mes_prp_step_dc_link] 
+([dc_item_sysid])
+GO
+
+CREATE TABLE [mes_prp_step_station](
+	[step_id]        [nvarchar](40)  ,
+	[station]        [nvarchar](40)  ,
+	[seq]            [numeric](2,0)  ,
+ CONSTRAINT [pk_prp_step_station] PRIMARY KEY ([step_id],[station]))
+GO
+CREATE NONCLUSTERED INDEX [idx_prp_step_station_1] ON [mes_prp_step_station] 
+([step_id])
+GO
+
+--=====WIP Module==================================================================
+CREATE TABLE [mes_wip_lot](
+	[sysid]          [nvarchar](38)  ,
+	[order_id]       [nvarchar](40)  ,
+	[lot_id]         [nvarchar](40)  ,
+	[description]    [nvarchar](255) ,
+	[lot_type]       [nvarchar](40)  ,
+	[component_type] [nvarchar](40)  , --lot當下的原料型態(對應step的component_type)
+	[product_id]     [nvarchar](40)  ,
+  [product_type]   [nvarchar](20)  ,
+	[route_id]       [nvarchar](40)  ,
+	[route_version]  [numeric](3,0)  ,
+	[spec_id]        [nvarchar](40)  ,
+	[spec_sysid]     [nvarchar](38)  , --參數模組串接鍵
+	[status]         [nvarchar](40)  ,
+	[last_status]    [nvarchar](40)  ,
+	[fab]            [nvarchar](40)  ,	
+	[equipment_id]   [nvarchar](40)  ,
+	[last_equipment] [nvarchar](40)  ,
+	[step_id]        [nvarchar](40)  ,
+	[step_version]   [numeric](3,0)  ,
+	[iterate]        [numeric](2,0)  DEFAULT (1),
+	[node_handle]     [nvarchar](40)  , --handle to mes_prp_routing_node
+	[last_node_handle] [nvarchar](40) , --handle to mes_prp_routing_node
+	[rule_id]        [nvarchar](40)  ,
+	[rule_seq]       [numeric](2,0)  ,
+	[location]       [nvarchar](40)  , --bank時的儲位
+	[start_quantity] [numeric](10,3) ,
+	[quantity]       [numeric](10,3) ,
+  [finished_qty]   [numeric](10,3) , --當前站點已完工數
+	[unit]           [nvarchar](20)  ,
+	[component_info] [nvarchar](38)  , --lot_component_info to mes_wip_lot_component
+	[priority]       [numeric](2,0)  ,
+	[carrier_id]     [nvarchar](40)  ,
+	[carrier_position] [numeric](3,0),
+	[q_time_count]   [numeric](2,0)  , --queue control count
+	[rework_count]   [numeric](2,0)  ,
+	[last_hold_sysid] [nvarchar](45) , --sysid to mes_wip_lot_hold_release	
+	[customer_id]    [nvarchar](40)  ,
+	[customer_lot_id] [nvarchar](40) ,
+	[due_date]       [datetime]      ,
+	[customer_due_date]  [datetime]  ,
+	[lot_tracking_sysid] [nvarchar](38)  , --sysid to mes_wip_lot_tracking	
+	[batch_id]       [nvarchar](40)  ,
+	[txnstamp]       [int]     DEFAULT (0),
+	[last_txn_sysid] [nvarchar](45)  , --sysid to mes_wip_lot_history************************
+  [last_defect_txn][nvarchar](45)  ,
+	[last_move_date] [datetime]      , --最後一次移動的時間
+	[rule_result]		 [nvarchar](40)  , --最後一個TrackOut Rule的判定結果
+	[source_parent]  [nvarchar](38)  , --sysid to mes_wip_lot, 原料批
+	[top_parent]     [nvarchar](38)  , --sysid to mes_wip_lot, 分批的最上層母批
+	[split_parent]   [nvarchar](38)  , --sysid to mes_wip_lot, 母批(分批的母批)，由哪一批分出來的
+	[merge_parent]   [nvarchar](38)  , --sysid to mes_wip_lot, 母批(併批的母批)，併到哪一批了
+	[child_count]    [smallint] DEFAULT (0), --子批數量
+	[owner]          [nvarchar](10)  ,
+	[remark]         [nvarchar](255) ,
+	[isDispatching]  [nvarchar](255) ,
+  [create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),  --for ERP是否已回報(0: not yet, 1: reported)    
+CONSTRAINT [pk_wip_lot] PRIMARY KEY ([sysid]),
+CONSTRAINT [uk_wip_lot] UNIQUE ([lot_id]))
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_1] ON [mes_wip_lot] 
+([fab])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_2] ON [mes_wip_lot] 
+([step_id])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_3] ON [mes_wip_lot] 
+([batch_id])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_4] ON [mes_wip_lot] 
+([equipment_id])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_5] ON [mes_wip_lot] 
+([status])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_6] ON [mes_wip_lot] 
+([carrier_id])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_7] ON [mes_wip_lot] 
+([order_id])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_8] ON [mes_wip_lot] 
+([last_txn_sysid])
+GO
+
+CREATE TABLE [mes_wip_lot_delete](
+	[sysid]          [nvarchar](38)  ,
+	[order_id]       [nvarchar](40)  ,
+	[lot_id]         [nvarchar](40)  ,
+	[description]    [nvarchar](255) ,
+	[lot_type]       [nvarchar](40)  ,
+	[component_type] [nvarchar](40)  , --lot當下的原料型態(對應step的component_type)
+	[product_id]     [nvarchar](40)  ,
+  [product_type]   [nvarchar](20)  ,
+	[route_id]       [nvarchar](40)  ,
+	[route_version]  [numeric](3,0)  ,
+	[spec_id]        [nvarchar](40)  ,
+	[spec_sysid]     [nvarchar](38)  , --參數模組串接鍵
+	[status]         [nvarchar](40)  ,
+	[last_status]    [nvarchar](40)  ,
+	[fab]            [nvarchar](40)  ,	
+	[equipment_id]   [nvarchar](40)  ,
+	[last_equipment] [nvarchar](40)  ,
+	[step_id]        [nvarchar](40)  ,
+	[step_version]   [numeric](3,0)  ,
+	[iterate]        [numeric](2,0)  DEFAULT (1),
+	[node_handle]     [nvarchar](40)  , --handle to mes_prp_routing_node
+	[last_node_handle] [nvarchar](40) , --handle to mes_prp_routing_node
+	[rule_id]        [nvarchar](40)  ,
+	[rule_seq]       [numeric](2,0)  ,
+	[location]       [nvarchar](40)  , --bank時的儲位
+	[start_quantity] [numeric](10,3) ,
+	[quantity]       [numeric](10,3) ,
+  [finished_qty]   [numeric](10,3) , --當前站點已完工數
+	[unit]           [nvarchar](20)  ,
+	[component_info] [nvarchar](38)  , --lot_component_info to mes_wip_lot_component
+	[priority]       [numeric](2,0)  ,
+	[carrier_id]     [nvarchar](40)  ,
+	[carrier_position] [numeric](3,0),
+	[q_time_count]   [numeric](2,0)  , --queue control count
+	[rework_count]   [numeric](2,0)  ,
+	[last_hold_sysid] [nvarchar](45) , --sysid to mes_wip_lot_hold_release	
+	[customer_id]    [nvarchar](40)  ,
+	[customer_lot_id] [nvarchar](40) ,
+	[due_date]       [datetime]      ,
+	[customer_due_date]  [datetime]  ,
+	[lot_tracking_sysid] [nvarchar](38)  , --sysid to mes_wip_lot_tracking	
+	[batch_id]       [nvarchar](40)  ,
+	[txnstamp]       [int]     DEFAULT (0),
+	[last_txn_sysid] [nvarchar](45)  , --sysid to mes_wip_lot_history************************
+  [last_defect_txn][nvarchar](45)  ,
+	[last_move_date] [datetime]      , --最後一次移動的時間
+	[rule_result]		 [nvarchar](40)  , --最後一個TrackOut Rule的判定結果
+	[source_parent]  [nvarchar](40)  , --lotId to mes_wip_lot, 原料批
+	[top_parent]     [nvarchar](40)  , --lotId to mes_wip_lot, 分批的最上層母批
+	[split_parent]   [nvarchar](40)  , --lotId to mes_wip_lot, 母批(分批的母批)，由哪一批分出來的
+	[merge_parent]   [nvarchar](40)  , --lotId to mes_wip_lot, 母批(併批的母批)，併到哪一批了
+	[child_count]    [smallint] DEFAULT (0), --子批數量
+	[owner]          [nvarchar](10)  ,
+	[remark]         [nvarchar](255) ,
+	[isDispatching]  [char](1)  DEFAULT ('0'),
+  [create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),  --for ERP是否已回報(0: not yet, 1: reported)    
+CONSTRAINT [pk_wip_lot_delete] PRIMARY KEY ([sysid]),
+CONSTRAINT [uk_wip_lot_delete] UNIQUE ([lot_id]))
+GO
+
+CREATE TABLE [mes_wip_batch](
+	[sysid]          [nvarchar](38)  ,
+	[batch_id]       [nvarchar](40)  ,
+	[description]    [nvarchar](255) ,
+	[comments]       [nvarchar](255) ,
+	[start_step_id]  [nvarchar](40)  ,
+	[end_step_id]    [nvarchar](40)  ,
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),  --0:作用中，1:取消批次
+CONSTRAINT [pk_wip_batch] PRIMARY KEY ([sysid]),
+CONSTRAINT [uk_wip_batch] UNIQUE ([batch_id])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_batch_1] ON [mes_wip_batch] 
+([delete_flag])
+GO
+
+CREATE TABLE [mes_wip_lot_component](
+	[lot_component_info] [nvarchar](38)  ,
+	[component_sysid]    [nvarchar](38)  ,
+  [carrier_id]         [nvarchar](40)  ,
+  [position]           [smallint]      ,
+  [modify_date]        [datetime]      ,
+CONSTRAINT [pk_wip_lot_component] PRIMARY KEY ([component_sysid]))
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_component_1] ON [mes_wip_lot_component] 
+([lot_component_info])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_component_2] ON [mes_wip_lot_component] 
+([carrier_id])
+GO
+
+CREATE TABLE [mes_wip_component](
+	[sysid]          [nvarchar](38)  ,
+	[component_id]   [nvarchar](50)  ,
+  [status]         [nvarchar](40)  , --Active, Defect, Scrap
+  [integrity]      [numeric](4,3)  DEFAULT (1),
+  [original_lot]   [nvarchar](38)  , --sysid to mes_wip_lot 
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),          
+CONSTRAINT [pk_wip_component] PRIMARY KEY ([sysid]),
+CONSTRAINT [uk_wip_component] UNIQUE ([component_id]))
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_component_1] ON [mes_wip_component] 
+([delete_flag])
+GO
+	
+
+CREATE TABLE [mes_wip_lot_tracking](
+	[sysid]          [nvarchar](38)  ,
+	[lot_id]         [nvarchar](40)  ,
+	[sub_route_id]   [nvarchar](40)  ,
+  [step_id]        [nvarchar](40)  ,
+  [step_handle]    [nvarchar](40)  ,
+  [stage]          [nvarchar](40)  ,
+  [equipment_id]   [nvarchar](40)  ,
+  [spec_id]        [nvarchar](40)  ,  --進機時的Spec Id
+  [move_in_date]   [datetime]      ,
+  [track_in_date]  [datetime]      ,
+  [track_out_date] [datetime]      ,
+  [move_out_date]  [datetime]      ,
+  [move_in_qty]    [numeric](10,3)  ,
+  [track_in_qty]   [numeric](10,3)  ,
+  [track_out_qty]  [numeric](10,3)  ,
+  [move_out_qty]   [numeric](10,3)  ,
+  [move_in_sysid]  [nvarchar](45)  ,
+  [track_in_sysid] [nvarchar](45)  ,
+  [track_out_sysid] [nvarchar](45) ,
+  [move_out_sysid] [nvarchar](45)  ,
+  [is_rework]      [char](1)       ,
+  [seq]            [smallint]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),  --0:未完整完成站點作業，1:已完整完成站點作業         
+CONSTRAINT [pk_wip_lot_tracking] PRIMARY KEY ([sysid])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_tracking_1] ON [mes_wip_lot_tracking] 
+([lot_id],[seq])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_tracking_2] ON [mes_wip_lot_tracking] 
+([track_out_date])
+GO
+
+CREATE TABLE [mes_wip_future_hold](
+	[sysid]              [nvarchar](38)  ,
+	[id]                 [nvarchar](40)  , --order_id or lot_id or product_id or route_id
+	[kind]               [char](1)       , --0:order, 1:lot, 2:route, 3:product	
+  [step_id]            [nvarchar](40)  ,
+  [step_handle]        [nvarchar](40)  ,
+  [timing]             [char](1)  , --0=trackIn, 1=trackOut
+  [reason_code]        [nvarchar](40)  , 
+  [start_date]         [datetime]      ,
+  [expire_date]        [datetime]      ,
+  [create_user]        [nvarchar](10)  ,
+	[create_date]        [datetime]      ,	
+	[modify_user]        [nvarchar](10)  ,
+	[modify_date]        [datetime]      ,
+	[active]             [char](1)  DEFAULT ('1'), --是否作用中。1:還在作用中，0:已經執行過(不在作用中)
+	[delete_flag]        [char](1)  DEFAULT ('0'),    
+CONSTRAINT [pk_wip_future_hold] PRIMARY KEY ([sysid])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_future_hold_1] ON [mes_wip_future_hold] 
+([expire_date],[active],[delete_flag])
+GO
+
+CREATE TABLE [mes_wip_lot_hold_release](
+	[sysid]              [nvarchar](45)  ,
+	[lot_id]             [nvarchar](40)  ,
+	[step_id]            [nvarchar](40)  ,
+  [hold_reason]        [nvarchar](40)  , 
+  [release_reason]     [nvarchar](40)  ,  
+  [hold_user]          [nvarchar](10)  ,
+	[hold_date]          [datetime]      ,	
+	[release_user]       [nvarchar](10)  ,
+	[release_date]       [datetime]      ,
+	[future_hold_sysid]  [nvarchar](38)  , --sysid to mes_wip_future_hold,如果是手動即時扣押，就不會有值
+	[release_txn_sysid]  [nvarchar](45)  , --sysid to mes_wip_history(with Release Activity)
+	[delete_flag]        [char](1)  DEFAULT ('0'), --0:not release yet, 1:released already
+CONSTRAINT [pk_wip_lot_hold_release] PRIMARY KEY ([sysid])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_hold_release_1] ON [mes_wip_lot_hold_release] 
+([lot_id],[delete_flag])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_hold_release_2] ON [mes_wip_lot_hold_release] 
+([step_id],[delete_flag])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_hold_release_3] ON [mes_wip_lot_hold_release] 
+([delete_flag])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_hold_release_4] ON [mes_wip_lot_hold_release] 
+([hold_date])
+GO
+
+CREATE TABLE [mes_wip_q_time_setting](
+	[sysid]              [nvarchar](38)  ,
+	[product_id]         [nvarchar](40)  , 
+	[route_id]           [nvarchar](40)  , 
+	[from_step_id]       [nvarchar](40)  , 
+  [to_step_id]         [nvarchar](40)  ,
+  [q_time]             [int]           ,
+  [q_time_type]        [char](1)       , -- 0:在設定時間內，1:需超過設定時間
+  [action]             [char](1) DEFAULT ('0'), 
+  [create_user]        [nvarchar](10)  ,
+	[create_date]        [datetime]      ,	
+	[modify_user]        [nvarchar](10)  ,
+	[modify_date]        [datetime]      ,
+	[delete_flag]        [char](1)  DEFAULT ('0'),
+CONSTRAINT [pk_wip_q_time_setting] PRIMARY KEY ([sysid]),
+CONSTRAINT [uk_wip_q_time_setting] UNIQUE ([product_id],[route_id],[from_step_id],[to_step_id])
+)  
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_q_time_setting_1] ON [mes_wip_q_time_setting] 
+([product_id],[route_id],[from_step_id],[delete_flag])
+GO
+
+CREATE TABLE [mes_wip_q_time_monitor](
+	[sysid]              [nvarchar](38)  ,
+	[lot_id]             [nvarchar](40)  ,
+	[from_step_id]       [nvarchar](40)  ,
+  [from_step_handle]   [nvarchar](40)  , 
+  [to_step_id]         [nvarchar](40)  ,  
+  [to_step_handle]     [nvarchar](40)  ,
+	[start_date]         [datetime]      ,	
+	[close_date]         [datetime]      ,
+	[close_type]         [char](1)       , --0:pass, 1:over qTime, 2:人工關閉, 3:Lot Terminate Merge Scrap
+	[close_user]         [nvarchar](10)  ,
+	[q_time]             [int]           ,
+	[q_time_type]        [char](1)       , -- 0:在設定時間內，1:需超過設定時間
+	[q_time_setting_sysid] [nvarchar](38)  ,
+	[delete_flag]        [char](1)  DEFAULT ('0'), --0:監控中，1:已結束
+CONSTRAINT [pk_wip_q_time_monitor] PRIMARY KEY ([sysid])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_q_time_monitor_1] ON [mes_wip_q_time_monitor] 
+([lot_id],[to_step_handle],[delete_flag])
+GO
+
+CREATE TABLE [mes_wip_q_time_history](
+	[monitor_sysid]  [nvarchar](38)  ,
+	[time_pass]      [int]           ,
+	[check_result]   [char](1)       ,
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_q_time_history_1] ON [mes_wip_q_time_history] 
+([monitor_sysid])
+GO
+
+CREATE TABLE [mes_wip_lot_history](
+	[txn_sysid]      [nvarchar](45)  ,
+	[last_txn_sysid] [nvarchar](45)  ,
+	[main_txn_sysid] [nvarchar](38)  ,
+	[lot_sysid]      [nvarchar](38)  , --sysid to mes_wip_lot
+	[lot_id]         [nvarchar](40)  ,
+	[activity]       [nvarchar](20)  ,
+	[component_type] [nvarchar](40)  , --lot當下的原料型態(對應step的component_type)
+	[product_id]     [nvarchar](40)  ,
+  [product_type]   [nvarchar](20)  ,
+	[route_id]       [nvarchar](40)  ,
+	[route_version]  [numeric](3,0)  ,
+	[spec_id]        [nvarchar](40)  ,
+	[spec_sysid]     [nvarchar](38)  , --參數模組串接鍵
+	[status]         [nvarchar](40)  ,
+	[fab]            [nvarchar](40)  ,
+	[equipment_id]   [nvarchar](40)  ,
+	[step_id]        [nvarchar](40)  ,
+	[step_version]   [numeric](3,0)  ,
+	[iterate]        [numeric](2,0)  DEFAULT (1),
+	[is_rework]      [char](1)       , 
+	[node_handle]    [nvarchar](40)  , --handle to mes_prp_routing_node
+	[rule_id]        [nvarchar](40)  ,
+	[rule_seq]       [numeric](2,0)  ,
+	[rule_result]    [nvarchar](40)  , --rule執行結果
+	[location]       [nvarchar](40)  , --bank時的儲位
+	[quantity]       [numeric](10,3) ,
+	[unit]           [nvarchar](20)  ,
+	[component_info] [nvarchar](38)  , --lot_component_info to mes_wip_lot_component
+	[setup_info]     [nvarchar](38)  , --equipment setup info history
+    [ta_work_info]   [nvarchar](38)  , --ta_work_info to mes_ta_work_info
+	[tooling_setup_info]   [nvarchar](38)  ,
+    [finish_qty]     [numeric](10,3) , --完工數
+	[order_id]       [nvarchar](40)  ,
+	[carrier_id]     [nvarchar](40)  ,
+    [carrier_position] [numeric](3,0),	
+	[batch_id]       [nvarchar](40)  ,
+	[split_parent]   [nvarchar](40)  ,
+	[merge_parent]   [nvarchar](40)  ,
+	[txnstamp]       [int]           ,
+	[owner]          [nvarchar](10)  ,
+	[remark]         [nvarchar](255) ,
+	[grouphistkey]   [nvarchar](38)  ,
+	[eq_parm_seq]    [int]           ,
+	[hostname]       [nvarchar](60)  ,
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),           
+CONSTRAINT [pk_wip_lot_history] PRIMARY KEY ([txn_sysid])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_history_1] ON [mes_wip_lot_history] 
+([last_txn_sysid])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_history_2] ON [mes_wip_lot_history] 
+([activity],[modify_date])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_history_3] ON [mes_wip_lot_history] 
+([lot_id],[modify_date])
+GO
+
+CREATE TABLE [mes_wip_lot_history_component](
+	[lot_component_info] [nvarchar](38)  ,
+	[component_sysid]    [nvarchar](38)  ,
+  [carrier_id]         [nvarchar](40)  ,
+  [position]           [smallint]      ,
+	[status]             [nvarchar](40)  ,
+	[integrity]          [numeric](4,3)  ,
+  [modify_date]        [datetime]      
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_history_comp_1] ON [mes_wip_lot_history_component] 
+([lot_component_info])
+GO
+
+CREATE TABLE [mes_wip_lot_history_dc_item](
+	[txn_sysid]	[nvarchar](45)  ,
+	[dc_item_sysid]	[nvarchar](38)  ,
+	[value]		[nvarchar](255)  ,
+CONSTRAINT [pk_history_dc_item] PRIMARY KEY ([txn_sysid],[dc_item_sysid])
+)
+GO
+
+CREATE TABLE [mes_wip_lot_defect](
+	[txn_sysid]     [nvarchar](45)  ,
+  [reason_code]   [nvarchar](40)  ,
+	[quantity]      [numeric](10,3) ,
+  [comments]      [nvarchar](255)      
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_lot_defect_1] ON [mes_wip_lot_defect] 
+([txn_sysid])
+GO
+
+CREATE TABLE [mes_ta_work_info]
+(
+  [sysid]              [nvarchar](38)  ,
+  [ta_work_info]       [nvarchar](38)  ,
+  [step_id]            [nvarchar](40)  ,
+  [equipment_id]       [nvarchar](40)  ,
+  [shift]              [nvarchar](10)  ,  --班別
+  [ta_count]           [numeric](3,0)  ,
+  [modify_date]        [datetime]      ,
+  CONSTRAINT [pk_ta_work_info] PRIMARY KEY ([sysid]),
+  CONSTRAINT [uk_ta_work_info] UNIQUE ([ta_work_info]),
+  CONSTRAINT [uk_ta_work_info2] UNIQUE ([step_id],[equipment_id])
+)
+GO
+
+CREATE TABLE [mes_ta_work_info_history]
+(
+  [ta_work_info]       [nvarchar](38)  ,
+  [shift]              [nvarchar](10)  ,  --班別
+  [ta_count]           [numeric](3,0)  ,
+  [modify_date]        [datetime]      ,
+  CONSTRAINT [pk_work_info_his] PRIMARY KEY ([ta_work_info])
+)	
+GO
+CREATE NONCLUSTERED INDEX [idx_work_info_history_1] on [mes_ta_work_info_history] 
+([modify_date])
+GO
+
+CREATE TABLE [mes_ta_work_info_detail]
+(
+  [ta_work_info]       [nvarchar](38)  ,
+  [station]            [nvarchar](40)  ,
+  [user_id]            [nvarchar](10)
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_work_info_detail_1] on [mes_ta_work_info_detail] 
+([ta_work_info])
+GO
+
+CREATE TABLE [mes_ta_work_info_detail_his]
+(
+  [ta_work_info]       [nvarchar](38)  ,
+  [station]            [nvarchar](40)  ,
+  [user_id]            [nvarchar](10)
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_work_info_detail_his_1] on [mes_ta_work_info_detail_his] 
+([ta_work_info])
+GO
+
+CREATE TABLE [mes_wip_order](
+	[sysid]              [nvarchar](38)  ,
+	[order_id]           [nvarchar](40)  ,
+	[order_type]         [nvarchar](40)  ,
+	[product_id]         [nvarchar](40)  ,
+	[fab]                [nvarchar](40)  ,
+  [priority]           [numeric](2,0)  ,	
+	[route_id]           [nvarchar](40)  ,
+	[route_version]      [numeric](3,0)  ,
+	[start_step]         [nvarchar](40)  ,
+	[start_step_handle]  [nvarchar](40)  ,
+	[spec_id]            [nvarchar](40)  ,
+	[spec_sysid]         [nvarchar](38)  , --參數模組串接鍵
+	[quantity]           [int]           ,
+	[receive_quantity]   [int] DEFAULT (0),
+	[start_quantity]     [int] DEFAULT (0),
+  [scrap_quantity]     [int] DEFAULT (0),
+  [finish_quantity]    [int] DEFAULT (0),
+	[lot_count]          [numeric](6,0) DEFAULT (0),
+	[owner]              [nvarchar](10)  ,
+	[customer_id]        [nvarchar](40)  ,
+  [plan_start_date]    [datetime]      ,
+	[due_date]           [datetime]      ,
+	[customer_due_date]  [datetime]      ,
+	[remark]             [nvarchar](255) ,
+	[status]             [nvarchar](40)  , --Created, Confirm, Hold, Closed, Finished
+  [txnstamp]           [int] DEFAULT (0),
+  [create_user]        [nvarchar](10)  ,
+	[create_date]        [datetime]      ,	
+	[modify_user]        [nvarchar](10)  ,
+	[modify_date]        [datetime]      ,
+	[delete_flag]        [char](1)  DEFAULT ('0'),	--for ERP是否已回報(0: not yet, 1: reported)
+CONSTRAINT [pk_wip_order] PRIMARY KEY ([sysid]),
+CONSTRAINT [uk_wip_order] UNIQUE ([order_id])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_order_1] ON [mes_wip_order] 
+([fab])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_order_2] ON [mes_wip_order] 
+([status])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_order_3] ON [mes_wip_order] 
+([receive_quantity])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_order_4] ON [mes_wip_order] 
+([start_quantity])
+GO
+
+CREATE TABLE [mes_wip_instruction](
+	[sysid]              [nvarchar](38)  ,
+	[id]                 [nvarchar](40)  , --order_id or lot_id or product_id or route_id
+	[kind]               [char](1)       , --0:order, 1:lot, 2:route, 3:product
+	[step_id]            [nvarchar](40)  , 
+  [instruction]        [nvarchar](255) ,
+  [start_date]         [datetime]      ,
+  [expire_date]        [datetime]      ,
+  [create_user]        [nvarchar](10)  ,
+	[create_date]        [datetime]      ,	
+	[modify_user]        [nvarchar](10)  ,
+	[modify_date]        [datetime]      ,
+	[delete_flag]        [char](1)  DEFAULT ('0'),
+CONSTRAINT [pk_wip_instruction] PRIMARY KEY ([sysid])
+)  
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_instruction_1] ON [mes_wip_instruction] 
+([id],[kind])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_instruction_2] ON [mes_wip_instruction] 
+([step_id],[start_date],[expire_date],[delete_flag])
+GO
+
+CREATE TABLE [mes_wip_carton](
+	[sysid]              [nvarchar](38)  ,
+	[carton_id]          [nvarchar](40)  ,
+    [fab]                [nvarchar](40)  ,
+    [product_id]         [nvarchar](40)  ,
+	[order_id]           [nvarchar](40)  ,
+    [location_type]      [char](1)       ,
+	[location]           [nvarchar](40)  ,
+	[pallet_use_id]      [nvarchar](55)  ,
+    [status]             [nvarchar](10)  ,
+    [txnstamp]           [int] DEFAULT (0),
+    [create_user]        [nvarchar](10)  ,
+	[create_date]        [datetime]      ,	
+	[modify_user]        [nvarchar](10)  ,
+	[modify_date]        [datetime]      ,
+	[delete_flag]        [char](1)  DEFAULT ('0'),
+CONSTRAINT [pk_wip_carton] PRIMARY KEY ([sysid]),
+CONSTRAINT [uk_wip_carton] UNIQUE ([carton_id])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_carton_1] ON [mes_wip_carton] 
+([location])
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_carton_2] ON [mes_wip_carton] 
+([pallet_use_id])
+GO
+
+CREATE TABLE [mes_wip_pallet](
+	[sysid]              [nvarchar](38)  ,
+	[pallet_id]          [nvarchar](40)  ,
+	[use_id]             [nvarchar](55)  ,
+    [fab]                [nvarchar](40)  ,
+    [product_id]         [nvarchar](40)  ,
+	[order_id]           [nvarchar](40)  ,
+    [location_type]      [char](1)       ,
+	[location]           [nvarchar](40)  ,
+    [status]             [nvarchar](10)  ,
+    [txnstamp]           [int] DEFAULT (0),
+    [create_user]        [nvarchar](10)  ,
+	[create_date]        [datetime]      ,	
+	[modify_user]        [nvarchar](10)  ,
+	[modify_date]        [datetime]      ,
+	[delete_flag]        [char](1)  DEFAULT ('0'),
+CONSTRAINT [pk_wip_pallet] PRIMARY KEY ([sysid]),
+CONSTRAINT [uk_wip_pallet] UNIQUE ([pallet_id]),
+CONSTRAINT [uk_wip_pallet_2] UNIQUE ([use_id])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_wip_pallet_1] ON [mes_wip_pallet] 
+([location])
+GO
+--=====MaterialTracking Module==================================================================
+CREATE TABLE [mes_mat_step_material](
+  [sysid]          [nvarchar](38)  ,
+	[step_id]        [nvarchar](40)  ,
+	[material_type]  [nvarchar](40)  ,
+	[consume_rate]   [numeric](9,4)  DEFAULT(0),
+	[required]       [char](1)       ,
+  [create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_mat_step_material] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_mat_step_material] UNIQUE ([step_id],[material_type]))
+GO
+CREATE NONCLUSTERED INDEX [idx_mat_step_material_1] ON [mes_mat_step_material] 
+([step_id])
+GO
+
+CREATE TABLE [mes_mat_part]--耗用物料料號資訊
+(
+  [sysid]          [nvarchar](38)  ,
+	[part_no]        [nvarchar](40)  ,
+	[material_type]  [nvarchar](40)  ,
+	[description]    [nvarchar](255) ,
+  [create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_mat_part] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_mat_part] UNIQUE ([part_no])
+)
+GO
+--=====ProcessParameter Module==================================================================
+CREATE TABLE [mes_parm_parameter](
+  [sysid]          [nvarchar](38)  ,
+  [parameter_id]   [nvarchar](40)  ,
+  [description]    [nvarchar](255) ,
+  [parm_type]      [numeric](1)    ,
+  [dc_item_sysid]  [nvarchar](38)  ,
+  [eq_parm_sysid]  [nvarchar](38)  ,
+  [create_user]    [nvarchar](10)  ,
+  [create_date]    [datetime]      ,	
+  [modify_user]    [nvarchar](10)  ,
+  [modify_date]    [datetime]      ,
+  [delete_flag]    [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_parm_parameter] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk__parm_parameter] UNIQUE ([parameter_id]))
+GO
+
+CREATE TABLE [mes_parm_step_parameter](
+  [step_id]          [nvarchar](40)  ,
+	[parameter_sysid]  [nvarchar](38)  ,
+	[seq]              [numeric](2,0)  ,
+ CONSTRAINT [pk_parm_step_parameter] PRIMARY KEY ([step_id],[parameter_sysid]))
+GO
+
+CREATE TABLE [mes_parm_main](
+  [sysid]          [nvarchar](38)  ,
+	[name]           [nvarchar](40)  ,
+	[version]        [numeric](3)    ,
+	[description]    [nvarchar](255) ,
+	[issue_state]    [nvarchar](10)  ,
+  [create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+	[flag]           [numeric](3)    ,
+ CONSTRAINT [pk_parm_main] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_parm_main] UNIQUE ([name],[version]))
+GO
+CREATE NONCLUSTERED INDEX [idx_parm_main_1] ON [mes_parm_main] 
+([name],[flag])
+GO
+CREATE NONCLUSTERED INDEX [idx_parm_main_2] ON [mes_parm_main] 
+([name],[issue_state])
+GO
+
+CREATE TABLE [mes_parm_main_step](
+  [sysid]          [nvarchar](79)  ,
+  [main_sysid]     [nvarchar](38)  ,
+	[step_id]        [nvarchar](40)  ,
+	[std_process_time] [numeric](9,4),
+  [create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+ CONSTRAINT [pk_parm_main_step] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_parm_main_step] UNIQUE ([main_sysid],[step_id]))
+GO
+CREATE NONCLUSTERED INDEX [idx_parm_main_step_1] ON [mes_parm_main_step] 
+([main_sysid])
+GO
+
+CREATE TABLE [mes_parm_main_step_material](
+  [sysid]          [nvarchar](120) ,
+  [main_step_sysid][nvarchar](79)  ,
+	[material_type]  [nvarchar](40)  ,
+  [required]       [char](1)       , --0:false, 1:true
+  [create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+ CONSTRAINT [pk_parm_main_step_material] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_parm_main_step_material] UNIQUE ([main_step_sysid],[material_type]))
+GO
+CREATE NONCLUSTERED INDEX [idx_parm_main_step_material_1] ON [mes_parm_main_step_material] 
+([main_step_sysid])
+GO
+
+CREATE TABLE [mes_parm_main_step_mat_part](
+  [from_sysid]           [nvarchar](120) ,
+	[part_no]              [nvarchar](40)  ,
+	[consume_rate]         [numeric](9,4)  DEFAULT ('0'),
+	[seq]                  [numeric](2,0)  ,
+ CONSTRAINT [pk_step_material_part] PRIMARY KEY ([from_sysid],[part_no]))
+GO
+CREATE NONCLUSTERED INDEX [idx_step_material_part_1] ON [mes_parm_main_step_mat_part] 
+([from_sysid])
+GO
+
+CREATE TABLE [mes_parm_main_step_recipe](
+  [sysid]          [nvarchar](120) ,
+  [main_step_sysid][nvarchar](79)  ,
+	[eq_type]        [nvarchar](40)  ,
+	[recipe]         [nvarchar](40)  ,
+  [create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+ CONSTRAINT [pk_parm_main_step_recipe] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_parm_main_step_recipe] UNIQUE ([main_step_sysid],[eq_type]))
+GO
+CREATE NONCLUSTERED INDEX [idx_parm_main_step_recipe_1] ON [mes_parm_main_step_recipe] 
+([main_step_sysid])
+GO
+
+CREATE TABLE [mes_parm_main_step_eq_track]
+(
+  [sysid]          [nvarchar](38)  ,
+  [main_step_sysid][nvarchar](79)  ,
+	[eq_type]        [nvarchar](40)  ,
+  [track]          [nvarchar](20)  ,
+  [seq]            [numeric](3,0)  ,
+  [create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+ CONSTRAINT [pk_parm_main_step_eq_track] PRIMARY KEY ([sysid])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_parm_main_step_eq_track_1] ON [mes_parm_main_step_eq_track] 
+([main_step_sysid])
+GO
+
+CREATE TABLE [mes_parm_main_step_parameter](
+  [sysid]          [nvarchar](120) ,
+  [main_step_sysid][nvarchar](79)  ,
+	[parameter_sysid][nvarchar](38)  ,
+	[value]          [nvarchar](255) ,
+	[max]            [numeric](10,4) ,
+	[min]            [numeric](10,4) ,
+	[seq]            [numeric](2,0)  ,
+	[remark]         [nvarchar](255) ,
+  [create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+ CONSTRAINT [pk_parm_main_step_parameter] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_parm_main_step_parameter] UNIQUE ([main_step_sysid],[parameter_sysid]))
+GO
+CREATE NONCLUSTERED INDEX [idx_parm_main_step_parameter_1] ON [mes_parm_main_step_parameter] 
+([main_step_sysid])
+GO
+
+CREATE TABLE [mes_parm_product_spec](
+  [product_id]      [nvarchar](40) ,
+  [spec_name]       [nvarchar](40) ,
+	[restriction]     [nvarchar](255) ,
+ CONSTRAINT [pk_product_spec] PRIMARY KEY ([product_id],[spec_name])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_product_spec_1] ON [mes_parm_product_spec] 
+([product_id])
+GO
+CREATE NONCLUSTERED INDEX [idx_product_spec_2] ON [mes_parm_product_spec] 
+([spec_name])
+GO
+
+create table [mes_parm_main_step_eq_tooling]
+(
+  [sysid]              [nvarchar](120) ,
+  [main_step_sysid]    [nvarchar](79)  ,
+  [eq_type]            [nvarchar](40)  ,
+  [tooling_type]       [nvarchar](40)  ,
+  [create_user]        [nvarchar](10)  ,
+  [create_date]        [datetime]      default (getdate()),
+  [modify_user]        [nvarchar](10)  ,
+  [modify_date]        [datetime]      default (getdate()),
+  [delete_flag]        [char](1)       default ('0'),
+  constraint [pk_step_eq_tooling] primary key([sysid])
+)
+GO
+create index [idx_step_eq_tooling_1] on [mes_parm_main_step_eq_tooling]
+([main_step_sysid])
+GO
+
+create table [mes_parm_main_step_eq_tol_part]
+(
+  [from_sysid]    [nvarchar](120) ,
+  [part_no]       [nvarchar](40)  ,
+  [seq]           [numeric](2,0)  ,
+  constraint [pk_step_eq_tol_part] primary key([from_sysid],[part_no])
+)
+GO
+
+--======FAB Monitor Module======================================
+CREATE TABLE [fms_area](
+	[sysid]          [nvarchar](38)  ,
+	[area_id]        [nvarchar](40)  ,
+	[description]    [nvarchar](255) ,
+	[image_file]	   [nvarchar](40)  ,
+	[create_user]    [nvarchar](10)  ,
+	[create_date]    [datetime]      ,	
+	[modify_user]    [nvarchar](10)  ,
+	[modify_date]    [datetime]      ,
+	[delete_flag]    [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_fms_area] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_fms_area] UNIQUE ([area_id]))
+GO
+
+CREATE TABLE [fms_area_equipment](
+	[area_sysid]      [nvarchar](38)  ,
+	[equipment_sysid] [nvarchar](38)  ,
+	[pos_x]           [int]           ,
+	[pos_y]		        [int]  	        ,
+	[width]		        [int]	 	        ,
+	[height]          [int]           ,
+ 	[graph_type]      [numeric](2,0)  ,
+ CONSTRAINT [pk_area_equipment] PRIMARY KEY ([area_sysid],[equipment_sysid]))
+GO
+CREATE NONCLUSTERED INDEX [idx_area_equipment_1] ON [fms_area_equipment]
+([area_sysid])
+GO
+
+--標籤管理========================================================
+create table [mes_lbl_misc]  --標籤雜項，a ItemType:LabelType= Carton, Box, Pallet...
+(
+	[item]			[nvarchar](20)	,
+	[value]			[nvarchar](40)	,
+	[description]	[nvarchar](40)	,
+    [modify_user]   [nvarchar](10)  ,
+    [modify_date]   [datetime]      ,	
+	constraint [pk_lbl_misc] primary key([item],[value])
+)
+GO
+
+create table [mes_lbl_printer]
+(
+	[sysid]			[nvarchar](38)	,
+	[model_name]    [nvarchar](40)	,
+	[resolution]    [numeric](4)	,
+	[landscape]     [char](1)       ,
+	[description]	[nvarchar](100)	,
+    [modify_user]   [nvarchar](10)  ,
+    [modify_date]   [datetime]      ,	
+	constraint [pk_lbl_printer] primary key([sysid]),
+	constraint [uk_lbl_printer] unique([model_name],[resolution])
+)
+GO
+
+create table [mes_lbl_code]
+(
+	[sysid]			[nvarchar](38)	,
+	[code]			[nvarchar](40)	,
+	[description]	[nvarchar](40)	,
+    [modify_user]   [nvarchar](10)  ,
+    [modify_date]   [datetime]      ,	
+	constraint [pk_lbl_code] primary key([sysid]),
+	constraint [uk_lbl_code] unique([code])
+)
+GO
+
+create table [mes_lbl_label]
+(
+	[sysid]			[nvarchar](38)	,
+	[code_sysid]	[nvarchar](38)	,
+	[label_type]	[nvarchar](40)	, --Carton,Box,Pallet...
+	[printerModel]  [nvarchar](40)  , --印表機型號
+	[resolution]	[numeric](4,0)	, --解析度
+	[height]		[numeric](7,2)	, --標籤高度 
+	[width]			[numeric](7,2)	, --標籤寬度	
+    [modify_user]   [nvarchar](10)  ,
+    [modify_date]   [datetime]      ,
+	constraint [pk_lbl_label] primary key([sysid]),
+	constraint [uk_lbl_label] unique([code_sysid],[label_type],[printerModel],[resolution])
+)
+GO
+
+create table [mes_lbl_label_detail]
+(
+	[sysid]			[nvarchar](38)	,
+	[label_sysid]	[nvarchar](38)	,
+	[item_type]		[nvarchar](20)	, --項目類型 Text,Barcode,Image,Line,Ellipse,Rectangle
+	[item_value]	[nvarchar](100)	,
+	[seq]			[numeric](2,0)	,
+	[color]			[int]			,
+	[pos_x]			[numeric](7,2)	,
+	[pos_y]			[numeric](7,2)	,
+	[height]		[numeric](7,2)	,
+	[width]			[numeric](7,2)	,
+	[bar_type]		[nvarchar](20)	,
+	[bar_size]	    [numeric](1)	,
+	[bar_text_align][numeric](1)	,
+	[bar_rotation]  [numeric](1)	,
+	[font_name]		[nvarchar](40)	,
+	[font_size]		[numeric](4,2)	,
+	[data_source]	[nvarchar](40)	,
+	[data_member]	[nvarchar](40)	,
+    [modify_user]   [nvarchar](10)  ,
+    [modify_date]   [datetime]      ,	
+	constraint [pk_lbl_label_detail] primary key([sysid])
+)
+GO
+create index [idx_lbl_label_detail_1] on [mes_lbl_label_detail]([label_sysid])
+GO
+--其它==================================================================================================
+create table [mes_message_box_record]
+(
+	[msg_level]			[char](1)	      ,
+	[message]		    [nvarchar](255)	,
+	[result]			  [char](1)	      ,
+	[hostname]		  [nvarchar](40)	,
+  [modify_user]   [nvarchar](10)  ,
+  [modify_date]   [datetime]
+)
+GO
+create index [idx_message_box_1] on [mes_message_box_record]([modify_date])
+GO
+
+CREATE TABLE [mes_wip_lot_extension](
+        [item]       [nvarchar](40) ,
+        [step_id]    [nvarchar](40) ,
+        [ext_name]   [nvarchar](40) ,
+    [value]      [nvarchar](255) ,
+        [modify_date][datetime],
+ CONSTRAINT [pk_wip_lot_extension] PRIMARY KEY ([item],[step_id],[ext_name]))
+GO
+
+--警報管理==================================================================================================
+create table [mes_alm_type]
+(
+  [sysid]               [nvarchar](38)  ,
+  [alarm_type]          [nvarchar](40)  ,
+  [description]         [nvarchar](255) ,
+  [reason_group]        [nvarchar](40)  ,
+  [modify_user]         [nvarchar](10)  ,
+  [modify_date]         [datetime]      default (getdate()),
+  [delete_flag]         [char](1)       default ('0'),
+  constraint [pk_alm_type] primary key([sysid]),
+  constraint [uk_alm_type] unique([alarm_type])
+)
+GO
+
+create table [mes_alm_reason]
+(
+  [sysid]               [nvarchar](38)  ,
+  [type_sysid]          [nvarchar](38)  ,
+  [reason_code]         [nvarchar](40)  ,
+  [level_count]         [numeric](1,0)  ,
+  [modify_user]         [nvarchar](10)  ,
+  [modify_date]         [datetime]      ,
+  [delete_flag]         [char](1)       default ('0'),
+  constraint [pk_alm_reason] primary key([sysid]),
+  constraint [uk_alm_reason] unique([type_sysid],[reason_code])
+)
+GO
+
+create table [mes_alm_level]
+(
+  [sysid]               [nvarchar](38)  ,
+  [reason_sysid]        [nvarchar](38)  ,
+  [alm_level]           [numeric](1,0)  ,
+  [cycle]               [numeric](1,0)  ,
+  [interval_min]        [numeric](3,0)  , 
+  [send_wechat]         [nvarchar](255) ,
+  [send_email]          [nvarchar](1000),
+  [send_line]           [nvarchar](255) ,
+  [language]            [nvarchar](10)  ,
+  [modify_user]         [nvarchar](10)  ,
+  [modify_date]         [datetime]      ,
+  [delete_flag]         [char](1)       default ('0'),
+  constraint [pk_alm_level] primary key([sysid]),
+  constraint [uk_alm_level] unique([reason_sysid],[alm_level])
+)
+GO
+
+create table [mes_alm_message]
+(
+  [sysid]               [nvarchar](38)  ,
+  [alarm_type]          [nvarchar](40)  ,
+  [priority]            [numeric](3,0)  ,
+  [title]               [nvarchar](100) ,
+  [message]             [nvarchar](500) ,
+  [status]              [char](1)       , 
+  [object_id]           [nvarchar](40)  ,
+  [object_type]         [nvarchar](40)  ,
+  [reason_code]         [nvarchar](40)  ,
+  [comments]            [nvarchar](255) ,
+  [grouphistkey]        [nvarchar](45)  ,
+  [action_comments]     [nvarchar](255) ,
+  [clear_reason]        [nvarchar](40)  ,
+  [clear_comments]      [nvarchar](255) ,
+  [clear_grouphistkey]  [nvarchar](45)  ,
+  [cur_level]           [numeric](1,0)  ,
+  [cur_cycle]           [numeric](1,0)  ,
+  [last_send]           [datetime]      ,
+  [create_date]         [datetime]      ,
+  [modify_user]         [nvarchar](10)  ,
+  [modify_date]         [datetime]      ,
+  [clear_user]          [nvarchar](10)  ,
+  [clear_date]          [datetime]      ,
+  [delete_flag]         [char](1)       default ('0'),
+  constraint [pk_alm_message] primary key([sysid]),
+  constraint [uk_alm_message] unique([alarm_type],[object_id],[reason_code])
+)
+GO
+create NONCLUSTERED index [idx_alm_message_1] on [mes_alm_message]
+([object_type])
+GO
+
+create table [mes_alm_message_his]
+(
+  [sysid]               [nvarchar](38)  ,
+  [alarm_type]          [nvarchar](40)  ,
+  [priority]            [numeric](3,0)  ,
+  [title]               [nvarchar](100) ,
+  [message]             [nvarchar](500) ,
+  [object_id]           [nvarchar](40)  ,
+  [object_type]         [nvarchar](40)  ,
+  [reason_code]         [nvarchar](40)  ,
+  [comments]            [nvarchar](255) ,
+  [grouphistkey]        [nvarchar](45)  ,
+  [action_comments]     [nvarchar](255) ,
+  [clear_reason]        [nvarchar](40)  ,
+  [clear_comments]      [nvarchar](255) ,
+  [clear_grouphistkey]  [nvarchar](45)  ,
+  [cur_level]           [numeric](2,0)  ,
+  [create_date]         [datetime]      ,
+  [modify_user]         [nvarchar](10)  ,
+  [modify_date]         [datetime]      ,
+  [clear_user]          [nvarchar](10)  ,
+  [clear_date]          [datetime]      ,
+  constraint [pk_alm_message_his] primary key([sysid])
+)
+GO
+create NONCLUSTERED index [idx_alm_message_his_1] on [mes_alm_message_his]
+([alarm_type],[reason_code])
+GO
+create NONCLUSTERED index [idx_alm_message_his_2] on [mes_alm_message_his]
+([create_date])
+GO
+
+--治工具管理==================================================================================================
+CREATE TABLE [mes_tol_tooling_type]
+(
+	[sysid]           [nvarchar](38)  ,
+	[tooling_type]    [nvarchar](40)  ,
+	[description]     [nvarchar](255) ,
+	[control_type]    [char](1) DEFAULT ('0'),
+	[consume_type]    [char](1) DEFAULT ('0'),
+	[verify_flag]     [char](1) DEFAULT ('1'),
+	[runtime_flag]    [char](1) DEFAULT ('0'),
+	[owner_dept]      [nvarchar](20)  ,
+	[create_user]     [nvarchar](10) ,
+	[create_date]     [datetime] DEFAULT (getdate()),
+	[modify_user]     [nvarchar](10) ,
+	[modify_date]     [datetime] DEFAULT (getdate()),
+	[delete_flag]     [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_tooling_type] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_tooling_type] UNIQUE ([tooling_type])
+ )
+GO
+
+create table [mes_tol_tooling_type_link]
+(
+  [type_sysid]      [nvarchar](38)  ,       
+  [eq_type]         [nvarchar](40)  ,       
+  constraint [pk_tooling_type_link] primary key([type_sysid],[eq_type])
+)
+GO
+
+CREATE TABLE [mes_tol_part]
+(
+	[sysid]           [nvarchar](38)  ,
+	[part_no]         [nvarchar](40)  ,
+	[description]     [nvarchar](255) ,
+	[type_sysid]      [nvarchar](38) ,
+	[use_limit]       [numeric](6,0) DEFAULT (0),
+	[use_notice]      [numeric](6,0) DEFAULT (0),
+	[create_user]     [nvarchar](10) ,
+	[create_date]     [datetime] DEFAULT (getdate()),
+	[modify_user]     [nvarchar](10) ,
+	[modify_date]     [datetime] DEFAULT (getdate()),
+	[delete_flag]     [char](1)  DEFAULT ('0'),
+ CONSTRAINT [pk_tol_part] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_tol_part] UNIQUE ([part_no])
+ )
+GO
+CREATE NONCLUSTERED INDEX [idx_part_no_1] ON [mes_tol_part] 
+([type_sysid])
+GO
+
+create table [mes_tol_event]
+(
+  [sysid]           [nvarchar](38)  ,
+  [type_sysid]      [nvarchar](38)  ,       
+  [event_name]      [nvarchar](40)	,       
+  [last_status]     [nvarchar](10)	,       
+  [next_status]     [nvarchar](10)	,       
+  [reason_group]    [nvarchar](40)	,       
+  [location_list]	[nvarchar](1000),
+  [ide_flag]        [char](1)       DEFAULT ('1'),   
+  [create_user]     [nvarchar](10)  ,
+  [create_date]     [datetime]      DEFAULT (getdate()),
+  [modify_user]     [nvarchar](10)  ,
+  [modify_date]     [datetime]      DEFAULT (getdate()),
+  [delete_flag]     [char](1)       DEFAULT ('0'),
+  constraint [pk_tol_event] primary key([sysid]),
+  constraint [uk_tol_event] unique([type_sysid],[last_status],[event_name])
+)
+GO
+
+create table [mes_tol_tooling_id]
+(
+  [sysid]           [nvarchar](38)  ,
+  [tooling_id]      [nvarchar](40)  ,       
+  [part_no]         [nvarchar](40)	,       
+  [location]        [nvarchar](40)	,       
+  [location_type]   [char](1)       DEFAULT ('0')	,       
+  [status]          [nvarchar](10)	,       
+  [last_status]	    [nvarchar](10)  ,   
+  [current_count]   [numeric](6,0) DEFAULT (0),
+  [use_count]       [numeric](6,0) DEFAULT (0),
+  [total_count]     [numeric](10,0) DEFAULT (0),
+  [clean_count]     [numeric](6,0) DEFAULT (0),
+  [pm_count]        [numeric](6,0) DEFAULT (0),
+  [repair_count]    [numeric](6,0) DEFAULT (0),
+  [last_txn_sysid]  [nvarchar](38)  ,
+  [setup_user]      [nvarchar](10)  ,
+  [setup_date]      [datetime]      ,
+  [start_date]      [datetime]      ,
+  [txnstamp]        [int]          DEFAULT (0),
+  [create_user]     [nvarchar](10)  ,
+  [create_date]     [datetime]     DEFAULT (getdate()),
+  [modify_user]     [nvarchar](10)  ,
+  [modify_date]     [datetime]     DEFAULT (getdate()),
+  [delete_flag]     [char](1)      DEFAULT ('0'),
+  constraint [pk_tol_tooling_id] primary key([sysid]),
+  constraint [uk_tol_tooling_id] unique([tooling_id])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_tooling_id_1] ON [mes_tol_tooling_id] 
+([part_no])
+GO
+CREATE NONCLUSTERED INDEX [idx_tooling_id_2] ON [mes_tol_tooling_id] 
+([location])
+GO
+CREATE NONCLUSTERED INDEX [idx_tooling_id_3] ON [mes_tol_tooling_id] 
+([status])
+GO
+
+create table [mes_tol_tooling_history]
+(
+  [txn_sysid]           [nvarchar](38)  ,
+  [main_txn_sysid]      [nvarchar](38)  ,
+  [last_txn_sysid]      [nvarchar](38)  ,
+  [tooling_id]          [nvarchar](40)  ,   
+  [event_name]          [nvarchar](40)  ,   
+  [part_no]             [nvarchar](40)	,       
+  [location]            [nvarchar](40)	,       
+  [location_type]       [char](1)       DEFAULT ('0')	,
+  [lot_id]              [nvarchar](40)  ,   
+  [status]              [nvarchar](10)	,       
+  [last_status]	        [nvarchar](10)  ,   
+  [current_count]       [numeric](6,0) DEFAULT (0),
+  [use_count]           [numeric](6,0) DEFAULT (0),
+  [total_count]         [numeric](10,0) DEFAULT (0),
+  [clean_count]         [numeric](6,0) DEFAULT (0),
+  [pm_count]            [numeric](6,0) DEFAULT (0),
+  [repair_count]        [numeric](6,0) DEFAULT (0),
+  [setup_user]          [nvarchar](10)  ,
+  [setup_date]          [datetime]      ,
+  [start_date]          [datetime]      ,
+  [txnstamp]            [int]          DEFAULT (0),
+  [reason_code]         [nvarchar](40)  ,
+  [comments]            [nvarchar](255) ,
+  [modify_user]         [nvarchar](10)  ,
+  [modify_date]         [datetime]     DEFAULT (getdate()),
+  [delete_flag]         [char](1)      DEFAULT ('0'),
+  constraint [pk_tooling_history] primary key([txn_sysid])
+)
+GO
+CREATE NONCLUSTERED INDEX [idx_tooling_history_1] ON [mes_tol_tooling_history] 
+([last_txn_sysid])
+GO
+CREATE NONCLUSTERED INDEX [idx_tooling_history_2] ON [mes_tol_tooling_history] 
+([event_name],[modify_date])
+GO
+CREATE NONCLUSTERED INDEX [idx_tooling_history_3] ON [mes_tol_tooling_history] 
+([tooling_id],[modify_date])
+GO
+
+--看板管理==================================================================================================
+CREATE TABLE [mes_kan_screen]
+(
+	[sysid]           [nvarchar](38)  ,
+	[assembly_name]   [nvarchar](40)  ,
+	[description]     [nvarchar](255) ,
+	[refresh_interval][numeric] (5) ,
+	[modify_user]     [nvarchar](10)  ,
+    [modify_date]     [datetime]      default (getdate()),
+    [delete_flag]     [char](1)       default ('0'),
+ CONSTRAINT [pk_kan_screen] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_kan_screen] UNIQUE ([assembly_name])
+ )
+GO
+
+CREATE TABLE [mes_kan_screen_argu]
+(
+	[from_sysid]      [nvarchar](38)  ,
+	[argument_name]   [nvarchar](40)  ,
+	[description]     [nvarchar](255) ,
+ CONSTRAINT [pk_kan_screen_argu] PRIMARY KEY ([from_sysid],[argument_name])
+ )
+GO
+
+CREATE TABLE [mes_kan_client]
+(
+	[sysid]           [nvarchar](38)  ,
+	[computer_name]   [nvarchar](40)  ,
+	[seq]             [numeric] (1)   default (0),
+	[description]     [nvarchar](255) ,
+	[screen_split]    [numeric] (1)   default (0),
+	[percent_ver]     [numeric] (2)   default (0),
+	[percent_hor]     [numeric] (2)   default (0),
+	[client_id]       [nvarchar](100) ,
+	[modify_user]     [nvarchar](10)  ,
+    [modify_date]     [datetime]      default (getdate()),
+    [delete_flag]     [char](1)       default ('0'),
+ CONSTRAINT [pk_kan_client] PRIMARY KEY ([sysid]),
+ CONSTRAINT [uk_kan_client] UNIQUE ([computer_name],[seq])
+ )
+GO
+
+CREATE TABLE [mes_kan_client_screen]
+(
+	[sysid]          [nvarchar](38)  ,
+	[client_sysid]   [nvarchar](38)  ,
+	[screen_sysid]   [nvarchar](38)  ,
+	[seq]            [numeric] (1)   default (0),
+ CONSTRAINT [pk_kan_client_screen] PRIMARY KEY ([sysid])
+ )
+GO
+CREATE NONCLUSTERED INDEX [idx_kan_client_screen_1] ON [mes_kan_client_screen] 
+([client_sysid],[screen_sysid])
+GO
+
+CREATE TABLE [mes_kan_client_screen_argu]
+(
+	[from_sysid]      [nvarchar](38)  ,
+	[argument_name]   [nvarchar](40)  ,
+	[value]           [nvarchar](100) ,
+ CONSTRAINT [pk_kan_client_screen_argu] PRIMARY KEY ([from_sysid],[argument_name])
+ )
+GO

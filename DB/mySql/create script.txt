@@ -1,0 +1,1986 @@
+create table mes_system_config  (
+  item        nvarchar(20),
+  value       char(1),
+  validation  nvarchar(255),
+  constraint pk_system_config primary key(item)  
+);
+
+create table mes_system_config_file
+(
+	item          nvarchar(20),
+	user_id       nvarchar(20),
+	file_name     nvarchar(50),
+	contents	  nvarchar(2000),
+	constraint pk_system_config_file primary key(item,user_id)
+);
+
+create table mes_system_version
+(
+	name 			nvarchar(60),
+	version			nvarchar(20),
+	active_date	    datetime,
+  previous_version  nvarchar(20),
+	modify_user	    nvarchar(10),
+	modify_date	    datetime,
+	constraint pk_system_version primary key(name)
+);
+
+create table mes_system_serial
+(
+  item               nvarchar(40)  ,
+  `key`                nvarchar(200) ,
+  serial             integer       ,
+  modify_date        datetime          ,
+  constraint pk_system_serial primary key(item,`key`)
+);
+
+create table language_map  (
+  language  nvarchar(10),
+  `key`      nvarchar(50),
+  value     nvarchar(255),
+  constraint pk_language_map primary key(language,`key`)  
+);
+
+create table mes_client_sessions
+(
+  client_id   nvarchar(255),
+  machine_id  nvarchar(100),
+  server_id   nvarchar(20),
+  start_date  datetime,
+  constraint pk_client_sessions primary key(client_id)
+);
+
+create table mes_fab(
+  sysid         nvarchar(38)  ,
+  fab           nvarchar(20)  ,
+  fab_code      nvarchar(20)  ,
+  org_id        nvarchar(20)  ,
+  create_user   nvarchar(10)  ,
+  create_date   datetime          ,
+  modify_user   nvarchar(10)  ,
+  modify_date   datetime          ,
+  delete_flag   char(1)       default '0',
+  constraint pk_fab primary key(sysid),
+  constraint uk_fab unique(fab)
+);
+
+create table mes_lot_type
+(
+  sysid         			nvarchar(38)  ,
+  lot_type   				nvarchar(40)  ,
+  description				nvarchar(255)	,
+  check_future_hold    	    char(1)       ,
+  check_q_time    			char(1)       ,
+  check_dc_self    			char(1)       , 
+  check_recipe    			char(1)       ,
+  check_dc_spec				char(1)       , 
+  check_material 			char(1)       ,
+  check_tooling 			char(1)       ,
+  create_user   			nvarchar(10)  ,
+  create_date   			datetime          ,
+  modify_user   			nvarchar(10)  ,
+  modify_date   			datetime          ,
+  delete_flag   			char(1)       default '0',
+  constraint pk_lot_type primary key(sysid),
+  constraint uk_lot_type unique(lot_type)
+);
+
+
+create table mes_reason_code(
+  sysid         nvarchar(38)  ,
+  reason_code   nvarchar(40)  ,
+  reason_type   nvarchar(20)  ,
+  owner_dept    nvarchar(20)  ,
+  create_user   nvarchar(10)  ,
+  create_date   datetime          ,
+  modify_user   nvarchar(10)  ,
+  modify_date   datetime          ,
+  delete_flag   char(1)       default '0',
+  constraint pk_reason_code primary key(sysid),
+  constraint uk_reason_code unique(reason_code)
+);
+create index idx_reason_code_1 on mes_reason_code
+(delete_flag);
+
+create table mes_reason_group(
+  sysid         nvarchar(38)  ,
+  group_id      nvarchar(20)  ,
+  description   nvarchar(255)  ,
+  create_user   nvarchar(10)  ,
+  create_date   datetime          ,
+  modify_user   nvarchar(10)  ,
+  modify_date   datetime          ,
+  delete_flag   char(1)       default '0',
+  constraint pk_reason_group primary key(sysid),
+  constraint uk_reason_group unique(group_id)
+);
+
+create table mes_reason_group_link(
+  reason_group_sysid    nvarchar(38)  ,
+  reason_code_sysid     nvarchar(38)  ,
+  constraint pk_reason_group_link primary key(reason_group_sysid,reason_code_sysid)
+);
+
+create table mes_reason_category(
+  sysid           nvarchar(38)  ,
+  reason_category nvarchar(40)  ,
+  reason_class    nvarchar(40)  ,
+  reason_group    nvarchar(20)  ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  delete_flag     char(1)       default '0',
+  constraint pk_reason_category primary key(sysid),
+  constraint uk_reason_category unique(reason_category,reason_class)
+);
+create index idx_reason_category_1 on mes_reason_category
+(reason_group);
+
+create table mes_txn_reason(
+  txn_sysid       nvarchar(45)  ,
+  reason_code     nvarchar(40)  ,
+  comments        nvarchar(255) ,
+  constraint pk_txn_reason primary key(txn_sysid)
+);
+
+create table mes_privilege_string(
+  sysid             nvarchar(38)  ,
+  privilege_string  nvarchar(255) ,
+  description       nvarchar(255) ,
+  create_user       nvarchar(10)  ,
+  create_date       datetime      default CURRENT_TIMESTAMP,
+  modify_user       nvarchar(10)  ,
+  modify_date       datetime      default CURRENT_TIMESTAMP,
+  delete_flag       char(1)       default '0',
+  constraint pk_privilege_string primary key(sysid),
+  constraint uk_privilege_string unique(privilege_string)
+);
+
+create table mes_user_profile ( 
+    sysid                          nvarchar(38)  ,
+    user_id                        nvarchar(10)  ,    
+    windows_account				   nvarchar(30)	 ,		
+    user_name                      nvarchar(20)  ,    
+    fab                            nvarchar(40)  ,    
+    division                       nvarchar(40)  ,    
+    email                          nvarchar(50)  ,    
+    email2                         nvarchar(50)  ,    
+    mobile                         nvarchar(15)  ,    
+    mobile2                        nvarchar(15)  ,    
+    pc_address                     nvarchar(40)  ,    
+    password                       nvarchar(50)  ,    
+    language                       nvarchar(10)  ,
+	privilege_group                nvarchar(40)  ,
+    current_login_info			   nvarchar(100) ,		
+    create_user                    nvarchar(10)  ,
+    create_date                    datetime      default CURRENT_TIMESTAMP,
+    modify_user                    nvarchar(10)  ,
+    modify_date                    datetime      default CURRENT_TIMESTAMP,
+    delete_flag                    char(1)        default '0',  
+    Constraint pk_user_profile primary Key(sysid),
+    Constraint uk_user_profile unique(user_id),
+    Constraint uk_user_profile_2 unique(windows_account)
+);
+
+create table mes_group_user_privilege(
+  from_id    nvarchar(40)  ,
+  to_id     nvarchar(38)  ,
+  constraint pk_group_user_privilege primary key(from_id,to_id)
+);
+create index idx_group_user_1 on mes_group_user_privilege
+(from_id);
+create index idx_group_user_2 on mes_group_user_privilege
+(to_id);
+
+create table mes_group_user_step(
+  from_id    nvarchar(40)  ,
+  to_id     nvarchar(40)  ,
+  constraint pk_group_user_step primary key(from_id,to_id)
+);
+create index idx_group_user_step_1 on mes_group_user_step
+(from_id);
+
+create table mes_user_login(
+  sysid         nvarchar(38)  ,
+  user_id       nvarchar(10)  ,
+  pc_name       nvarchar(40)  ,
+  login_date    datetime          ,
+  logout_date   datetime          ,
+  constraint pk_user_login primary key(sysid)
+);
+
+create table mes_misc(
+  item          nvarchar(40)  ,
+  value         nvarchar(255) ,
+  remark        nvarchar(255) ,
+  modify_user   nvarchar(20)  ,
+  modify_date   datetime      default CURRENT_TIMESTAMP,
+  constraint pk_misc primary key(item,value)
+);
+
+create table mes_carrier_type(
+  sysid           nvarchar(38)  ,
+  carrier_type    nvarchar(20)  ,
+  component_size  numeric(2,0)   ,
+  capacity        numeric(5,0)   ,
+  description     nvarchar(255) ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  delete_flag     char(1)       default '0',
+  constraint pk_carrier_type primary key(sysid),
+  constraint uk_carrier_type unique(carrier_type)
+);
+
+create table mes_carrier_id(
+  sysid           nvarchar(38)  ,
+  carrier_id      nvarchar(40)  ,
+  carrier_type    nvarchar(20)  ,
+  rf_id           nvarchar(40)  ,
+  status          nvarchar(20)  ,
+  lot_id          nvarchar(40)  ,
+  component_qty   numeric(5,0)   default 0,
+  location        nvarchar(40)  ,
+  used_count      numeric(5,0)   default 0,
+  clean_count     numeric(5,0)   default 0,
+  last_clean_user nvarchar(10)  ,
+  last_clean_date datetime          ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  delete_flag     char(1)       default '0',
+  tag             nvarchar(50)  ,
+  txnstamp        integer       default 0,
+  last_txn_sysid  nvarchar(38)  ,
+  constraint pk_carrier_id primary key(sysid),
+  constraint uk_carrier_id unique(carrier_id)
+);
+create index idx_carrier_id_1 on mes_carrier_id
+(carrier_type);
+create index idx_carrier_id_2 on mes_carrier_id
+(lot_id);
+create index idx_carrier_id_3 on mes_carrier_id
+(sysid,txnstamp);
+
+create table mes_carrier_history(
+  txn_sysid       nvarchar(38)  ,
+  main_txn_sysid  nvarchar(38)  ,
+  last_txn_sysid  nvarchar(38)  ,
+  carrier_id      nvarchar(40)  ,
+  status          nvarchar(20)  ,
+  activity        nvarchar(20)  ,
+  lot_id          nvarchar(40)  ,
+  component_qty   numeric(5,0)   default 0,
+  location        nvarchar(40)  ,
+  used_count      numeric(5,0)   default 0,
+  clean_count     numeric(5,0)   default 0,
+  txnstamp        integer       default 0,
+  grouphistkey    nvarchar(38)  ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  delete_flag     char(1)       default '0',
+  constraint pk_carrier_history primary key(txn_sysid)
+);
+create index idx_carrier_history_1 on mes_carrier_history
+(last_txn_sysid);
+
+create table mes_eqp_state(
+  sysid           nvarchar(38)  ,
+  state           nvarchar(40)  ,
+  description     nvarchar(255) ,
+  available       char(1)       ,
+  color           int       ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime          default CURRENT_TIMESTAMP,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          default CURRENT_TIMESTAMP,
+  delete_flag     char(1)       default '0',
+  constraint pk_eqp_state primary key(sysid),
+  constraint uk_eqp_state unique(state)
+);
+
+create table mes_eqp_state_transfer(
+  from_state    nvarchar(40)  not null,
+  to_state      nvarchar(40)  not null,
+  division      nvarchar(40)  ,
+  constraint uk_eqp_state_transfer unique(from_state,to_state,division)
+);
+
+create table mes_eqp_type(
+  sysid           nvarchar(38)  ,
+  eq_type         nvarchar(40)  ,
+  description     nvarchar(255) ,
+  owner           nvarchar(10)  ,
+  tool_type       numeric(1,0)   default 0,
+  capacity        int       ,
+  track_count     numeric(3,0)   default 0,
+  parameter_count numeric(3,0)   default 0,
+  consume_type    numeric(1,0)   default 0,
+  counter_flag    char(1)      default '0',
+  create_user     nvarchar(10)  ,
+  create_date     datetime          default CURRENT_TIMESTAMP,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          default CURRENT_TIMESTAMP,
+  delete_flag     char(1)       default '0',
+  constraint pk_eqp_type primary key(sysid),
+  constraint uk_eqp_type unique(eq_type)
+);
+create index idx_eqp_type_1 on mes_eqp_type
+(tool_type);
+
+create table mes_eqp_type_track
+(
+  eq_type         nvarchar(40)  ,
+  track           nvarchar(20)  , 
+  seq             numeric(3,0)   ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  constraint pk_eqp_type_track primary key(eq_type,track)
+);
+create index idx_eqp_type_track_1 on mes_eqp_type_track
+(eq_type);
+
+create table mes_eqp_equipment(
+  sysid           nvarchar(38)  ,
+  equipment_id    nvarchar(40)  ,
+  issue_state     nvarchar(10)  ,
+  description     nvarchar(255) ,
+  eq_type         nvarchar(40)  ,
+  owner           nvarchar(10)  ,
+  state           nvarchar(40)  ,
+  reserved_by     nvarchar(40)  ,
+  capacity_used   int       default 0,
+  counter         int       default 0,
+  last_order_id   nvarchar(40)  ,
+  lot_id          nvarchar(40)  ,
+  recipe          nvarchar(40)  ,
+  fab             nvarchar(40)  ,
+  line            nvarchar(40)  ,
+  seq             numeric(2,0)   default 0,
+  txnstamp        int default 0,
+  setup_info      nvarchar(38)  ,
+  last_setup_info nvarchar(40)  , 
+  last_setup_date datetime          , 
+  setup_info_flag	char(1)				, 
+  last_txn_sysid  nvarchar(38)  ,
+  last_change_state       nvarchar(38)  ,
+  validated_spec_sysid    nvarchar(38)  , 
+  tooling_setup_info      nvarchar(38)  , 
+  validated_spec_tooling  nvarchar(38)  , 
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,  
+  delete_flag     char(1)       default '0',
+  constraint pk_eqp_equipment primary key(sysid),
+  constraint uk_eqp_equipment unique(equipment_id)
+);
+create index idx_eqp_equipment_1 on mes_eqp_equipment
+(eq_type);
+create index idx_eqp_equipment_2 on mes_eqp_equipment
+(fab);
+create index idx_eqp_equipment_3 on mes_eqp_equipment
+(sysid,txnstamp);
+
+create table mes_eqp_equipment_link(
+  from_sysid    nvarchar(38)  ,
+  to_sysid      nvarchar(38)  ,
+  constraint pk_eqp_equipment_link primary key(to_sysid)
+);
+create index idx_eqp_equipment_link_1 on mes_eqp_equipment_link
+(from_sysid);
+
+create table mes_eqp_group_link(
+  equipment_group        nvarchar(20)  ,
+  equipment_sysid         nvarchar(38)  ,
+  constraint pk_eqp_group_link primary key(equipment_group,equipment_sysid)
+);
+
+create table mes_eqp_setup_info(
+  sysid           nvarchar(38)  ,
+  eqp_setup_info  nvarchar(38)  , 
+  material_type   nvarchar(40)  , 
+  part_no         nvarchar(40)  , 
+  material_lot_id nvarchar(40)  , 
+  position        nvarchar(20)  , 
+  quantity        numeric(10,3) default 0, 
+  setup_user      nvarchar(10)  , 
+  setup_date      datetime          , 
+  modify_date     datetime          ,
+  constraint pk_eqp_setup_info primary key(sysid)
+);
+create index idx_eqp_setup_info_1 on mes_eqp_setup_info
+(eqp_setup_info);
+
+create table mes_eqp_history(
+  txn_sysid       nvarchar(38)  ,
+  main_txn_sysid  nvarchar(38)  ,
+  last_txn_sysid  nvarchar(38)  ,
+  last_change_state  nvarchar(38)  ,
+  equipment_id    nvarchar(40)  ,
+  state           nvarchar(40)  ,
+  reserved_by     nvarchar(40)  ,
+  activity        nvarchar(20)  ,
+  capacity_used   int       default 0,
+  counter         int       default 0,
+  lot_id          nvarchar(40)  ,
+  recipe          nvarchar(40)  ,
+  fab             nvarchar(40)  ,
+  txnstamp        int default 0,
+  setup_info      nvarchar(38)  ,
+  grouphistkey    nvarchar(38)  ,
+  eq_parm_seq     integer       ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  delete_flag     char(1)       default '0',
+  constraint pk_eqp_history primary key(txn_sysid)
+);
+create index idx_eqp_history_1 on mes_eqp_history
+(equipment_id);
+create index idx_eqp_history_2 on mes_eqp_history
+(last_change_state);
+create index idx_eqp_history_3 on mes_eqp_history
+(activity);
+create index idx_eqp_history_4 on mes_eqp_history
+(modify_date);
+
+create table mes_eqp_history_setup_info(
+  eqp_setup_info  nvarchar(38)  , 
+  material_type   nvarchar(40)  , 
+  part_no         nvarchar(40)  , 
+  material_lot_id nvarchar(40)  , 
+  position        nvarchar(20)  , 
+  quantity        numeric(10,3) default 0, 
+  setup_user      nvarchar(10)  , 
+  modify_date     datetime          
+);
+create index idx_history_setup_info_1 on mes_eqp_history_setup_info
+(eqp_setup_info);
+
+create table mes_eqp_setup_remain_info(
+  sysid           nvarchar(38)  ,
+  txn_sysid       nvarchar(38)  , 
+  equipment_id    nvarchar(40)  , 
+  material_type   nvarchar(40)  , 
+  part_no         nvarchar(40)  , 
+  material_lot_id nvarchar(40)  , 
+  quantity        numeric(10,3) default 0, 
+  create_user     nvarchar(10)  , 
+  create_date     datetime          , 
+  modify_user     nvarchar(10)  , 
+  modify_date     datetime          , 
+  delete_flag     char(1)       default '0', 
+  constraint pk_eqp_setup_remain_info primary key(sysid)
+);
+create index idx_eqp_setup_remain_info_1 on mes_eqp_setup_remain_info
+(equipment_id,delete_flag);
+
+create table mes_eqp_history_tooling_info(
+  tooling_setup_info  nvarchar(38)  , 
+  tooling_id          nvarchar(40)  , 
+  part_no             nvarchar(40)	, 
+  current_count       numeric(6,0)  , 
+  use_count           numeric(6,0)  ,
+  setup_user          nvarchar(10)  , 
+  modify_date         datetime          
+);
+create index idx_history_tooling_info_1 on mes_eqp_history_tooling_info
+(tooling_setup_info);
+
+create table mes_eqp_parameter
+(
+  sysid           nvarchar(38) ,
+  parameter       nvarchar(40) ,
+  eq_data_id      nvarchar(40) ,
+  data_type       numeric(1)    default 0,
+  length          numeric(3,0) ,
+  option_list     nvarchar(255),
+  description     nvarchar(255),
+  modify_user     nvarchar(10) ,
+  modify_date     datetime     ,
+  constraint pk_eqp_parameter primary key(sysid),
+  constraint uk_eqp_parameter unique(parameter)
+);
+
+create table mes_eqp_type_parameter
+(
+  eq_type         nvarchar(40)  ,
+  parameter_sysid nvarchar(38)  , 
+  table_name      nvarchar(40)  , 
+  column_name     nvarchar(40)  , 
+  eq_data_id      nvarchar(40)  , 
+  seq             numeric(3,0)  ,
+  required        numeric(1)     default 0, 
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime      ,
+  constraint pk_eqp_type_parameter primary key(eq_type,parameter_sysid),
+  constraint uk_eqp_type_parameter unique(eq_type,table_name,column_name)
+);
+create index idx_eqp_type_parameter_1 on mes_eqp_type_parameter
+(eq_type);
+
+create table mes_eqp_parm_seq
+(
+    equipment_id    nvarchar(40)  ,
+	eq_parm_seq     integer       , 
+	constraint pk_eqp_parm_seq primary key(equipment_id)
+);
+
+create table mes_eqp_parm_data
+(
+  equipment_id    nvarchar(40)  ,
+  eq_parm_seq     integer       ,  
+  lot_id          nvarchar(40)  , 
+  check_result    numeric(1)     default 0, 
+  fail_info       nvarchar(255) , 
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime      , 
+  parm_1          nvarchar(10)  , 
+  parm_2          nvarchar(20)  , 
+  parm_3          numeric(3,1)  , 
+  constraint pk_eqp_parm_data primary key(equipment_id)
+);
+
+create table mes_eqp_parm_data_his
+(
+  equipment_id    nvarchar(40)  , 
+  eq_parm_seq     integer       ,
+  lot_id          nvarchar(40)  , 
+  check_result    numeric(1)     default 0, 
+  fail_info       nvarchar(255) , 
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime      , 
+  parm_1          nvarchar(10)  , 
+  parm_2          nvarchar(20)  , 
+  parm_3          numeric(3,1)   
+);
+create index idx_eqp_parm_data_his_1 on mes_eqp_parm_data_his
+(equipment_id,eq_parm_seq);
+create index idx_eqp_parm_data_his_2 on mes_eqp_parm_data_his
+(equipment_id,modify_date);
+
+create table mes_prp_rule(
+  sysid           nvarchar(38)  ,
+  rule_id         nvarchar(40)  ,
+  program_class   nvarchar(255) ,  
+  description     nvarchar(255) ,
+  dispatch_flag       char(1)   ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime      default CURRENT_TIMESTAMP,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime      default CURRENT_TIMESTAMP,
+  delete_flag     char(1)       default '0',
+  constraint pk_prp_rule primary key(sysid),
+  constraint uk_prp_rule unique(rule_id)
+);
+
+create table mes_prp_step(
+  sysid           nvarchar(38)  ,
+  step_id         nvarchar(40)  ,
+  version         numeric(3,0)   , 
+  description     nvarchar(255) ,
+  stage           nvarchar(40)  ,
+  step_code       nvarchar(40)  ,
+  equipment_group nvarchar(40)  ,
+  component_type  nvarchar(40)  ,
+  issue_state     nvarchar(10)  ,
+  fab             nvarchar(40)  ,
+  extension_name  nvarchar(40)  ,
+  seq             nvarchar(40)  ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  delete_flag     char(1)       default '0',
+  flag            numeric(3,0)   ,
+  constraint pk_prp_step primary key(sysid),
+  constraint uk_prp_step unique(step_id,version)
+);
+create index idx_prp_step_1 on mes_prp_step
+(issue_state);
+create index idx_prp_step_2 on mes_prp_step
+(equipment_group);
+create index idx_prp_step_3 on mes_prp_step
+(step_id,flag);
+create index idx_prp_step_4 on mes_prp_step
+(fab);
+create index idx_prp_step_5 on mes_prp_step
+(step_id,issue_state,stage);
+
+create table mes_prp_step_rule(
+  step_sysid    nvarchar(38)  ,
+  rule_sysid    nvarchar(38)  ,
+  seq           numeric(2,0)   ,
+  constraint pk_prp_step_rule primary key(step_sysid,rule_sysid,seq)
+);
+create index idx_prp_step_rule_1 on mes_prp_step_rule
+(step_sysid);
+create index idx_prp_step_rule_2 on mes_prp_step_rule
+(rule_sysid);
+
+create table mes_prp_routing(
+  sysid           nvarchar(38)  ,
+  route_id        nvarchar(40)  ,
+  version         numeric(3,0)   ,  
+  description     nvarchar(255) ,
+  route_type      nvarchar(40)  ,
+  issue_state     nvarchar(10)  ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  delete_flag     char(1)       default '0',
+  flag            numeric(3,0)   ,
+  constraint pk_prp_routing primary key(sysid),
+  constraint uk_prp_routing unique(route_id,version)
+);
+create index idx_prp_routing_1 on mes_prp_routing
+(route_type);
+create index idx_prp_routing_2 on mes_prp_routing
+(issue_state);
+create index idx_prp_routing_3 on mes_prp_routing
+(delete_flag);
+create index idx_prp_routing_4 on mes_prp_routing
+(route_id,flag);
+
+create table mes_prp_routing_node(
+  sysid           nvarchar(38)  ,
+  route_sysid     nvarchar(38)  ,
+  parent_sysid    nvarchar(38)  ,  
+  node_id         nvarchar(40)  ,
+  node_kind       nvarchar(10)  ,
+  node_type       nvarchar(10)  ,
+  pos_x           numeric(3,0)   ,
+  pos_y           numeric(3,0)   ,
+  node_ref        nvarchar(38)  ,
+  handle          nvarchar(40)  ,
+  `iterate`         numeric(2,0)  default 1 ,
+  is_rework       char(1)       ,
+  constraint pk_prp_routing_node primary key(sysid)
+);
+create index idx_prp_routing_node_1 on mes_prp_routing_node
+(route_sysid);
+create index idx_prp_routing_node_2 on mes_prp_routing_node
+(parent_sysid);
+create index idx_prp_routing_node_3 on mes_prp_routing_node
+(node_ref);
+create index idx_prp_routing_node_4 on mes_prp_routing_node
+(handle);
+
+create table mes_prp_routing_path(
+  route_sysid     nvarchar(38)  ,
+  from_node       nvarchar(38)  ,
+  path            nvarchar(40)  ,
+  to_node         nvarchar(38)  ,
+  color           int       
+);
+create index idx_prp_routing_path_1 on mes_prp_routing_path
+(route_sysid);
+create index idx_prp_routing_path_2 on mes_prp_routing_path
+(from_node);
+create index idx_prp_routing_path_3 on mes_prp_routing_path
+(to_node);
+
+
+create table mes_prp_product_type(
+  sysid         nvarchar(38)  ,
+  product_type  nvarchar(20)  ,
+  description   nvarchar(255) ,
+  create_user   nvarchar(10)  ,
+  create_date   datetime          ,
+  modify_user   nvarchar(10)  ,
+  modify_date   datetime          ,
+  delete_flag   char(1)       default '0',
+  constraint pk_product_type primary key(sysid),
+  constraint uk_product_type unique(product_type)
+);
+
+create table mes_prp_product(
+  sysid           nvarchar(38)  ,
+  product_id      nvarchar(40)  ,
+  product_type    nvarchar(20)  ,
+  fab		          nvarchar(40)	,
+  route_id        nvarchar(40)  ,
+  compose_size	  numeric(5,0)	  , 
+  product_size	  nvarchar(40)	, 
+  packing_quantity numeric(5,0)  , 
+  issue_state     nvarchar(10)  ,
+  description     nvarchar(255) ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  delete_flag     char(1)       default '0',
+  constraint pk_prp_product primary key(sysid),
+  constraint uk_prp_product unique(product_id)
+);
+create index idx_prp_product_1 on mes_prp_product
+(product_type);
+create index idx_prp_product_2 on mes_prp_product
+(issue_state);
+
+create table mes_prp_product_link(
+  product_sysid     nvarchar(38)  , 
+  route_id          nvarchar(40)  , 
+  constraint pk_prp_product_link primary key(product_sysid,route_id)
+);
+
+create table mes_prp_product_dc_skip
+(
+  product_id        nvarchar(40)  , 
+  dc_item_sysid     nvarchar(38)  , 
+  constraint pk_prp_product_dc_skip primary key(product_id,dc_item_sysid)
+);
+
+create table mes_prp_step_dc_item(
+  sysid             nvarchar(38)  ,
+  name              nvarchar(40)  ,
+  description       nvarchar(255) ,
+  data_type         nvarchar(10)  , 
+  length            numeric(3,0)  ,
+  option_list       nvarchar(255) ,
+  modify_target     nvarchar(40)  , 
+  attribute_name    nvarchar(40)  , 
+  column_name       nvarchar(40)  , 
+  assign_from       nvarchar(40)  , 
+  assign_attribute  nvarchar(40)  , 
+  compare_value     nvarchar(500) , 
+  compare_source_db nvarchar(40)  , 
+  compare_type      char(1) default '0', 
+  compare_to        nvarchar(40)  , 
+  compare_attribute nvarchar(40)  , 
+  compare_to_value  nvarchar(500) , 
+  compare_to_db     nvarchar(40)  , 
+  compare_operator  nvarchar(2)   ,    
+  enabled           char(1)       default '1', 
+  visible           char(1)       default '1', 
+  create_user       nvarchar(10)  ,
+  create_date       datetime          ,
+  modify_user       nvarchar(10)  ,
+  modify_date       datetime          ,
+  delete_flag       char(1)       default '0',
+  constraint pk_prp_step_dc_item primary key(sysid),
+  constraint uk_prp_step_dc_item unique(name)
+);
+
+create table mes_prp_step_dc_link(
+  step_id         nvarchar(40)  ,
+  dc_item_sysid   nvarchar(38)  ,
+  seq             numeric(2,0)   ,
+  required        char(1)       ,
+  timing          char(1) default '0' ,  
+  check_fail_path nvarchar(40),          
+  check_seq       numeric(2,0) default 0, 
+  message         nvarchar(100),
+  constraint pk_prp_step_dc_link primary key(step_id,dc_item_sysid)
+);
+create index idx_prp_step_dc_link_1 on mes_prp_step_dc_link
+(step_id);
+create index idx_prp_step_dc_link_2 on mes_prp_step_dc_link
+(dc_item_sysid);
+
+create table mes_prp_step_station(
+  step_id         nvarchar(40)  ,
+  station         nvarchar(40)  ,
+  seq             numeric(2,0)   ,
+  constraint pk_prp_step_station primary key(step_id,station)
+);
+create index idx_prp_step_station_1 on mes_prp_step_station
+(step_id);
+
+
+create table mes_wip_lot(
+	sysid          nvarchar(38)  ,
+	order_id       nvarchar(40)  ,
+	lot_id         nvarchar(40)  ,
+	description    nvarchar(255) ,
+	lot_type       nvarchar(40)  ,
+	component_type nvarchar(40)  , 
+	product_id     nvarchar(40)  ,
+  product_type   nvarchar(20)  ,
+	route_id       nvarchar(40)  ,
+	route_version  numeric(3,0)   ,
+	spec_id        nvarchar(40)  ,
+	spec_sysid     nvarchar(38)  , 
+	status         nvarchar(40)  ,
+	last_status    nvarchar(40)  ,
+	fab            nvarchar(40)  ,	
+	equipment_id   nvarchar(40)  ,
+	last_equipment nvarchar(40)  ,
+	step_id        nvarchar(40)  ,
+	step_version   numeric(3,0)   ,
+	`iterate`        numeric(2,0)  default 1 ,
+	node_handle     nvarchar(40)  , 
+	last_node_handle nvarchar(40) , 
+	rule_id        nvarchar(40)  ,
+	rule_seq       numeric(2,0)   ,
+	location       nvarchar(40)  , 
+	start_quantity numeric(10,3)  ,
+	quantity       numeric(10,3)  ,
+  finished_qty   numeric(10,3)  , 
+	unit           nvarchar(20)  ,
+	component_info nvarchar(38)  , 
+	priority       numeric(2,0)   ,
+	carrier_id     nvarchar(40)  ,
+	carrier_position numeric(3)  ,
+	q_time_count   numeric(2,0)   , 
+	rework_count   numeric(2,0)   ,
+	last_hold_sysid nvarchar(45) , 
+	customer_id    nvarchar(40)  ,
+	customer_lot_id nvarchar(40) ,
+	due_date       datetime          ,
+	customer_due_date  datetime      ,
+	lot_tracking_sysid nvarchar(38)  , 	
+	batch_id       nvarchar(40)      ,
+	txnstamp       int default 0 ,
+	last_txn_sysid nvarchar(45)  , 
+  last_defect_txn  nvarchar(45),
+	last_move_date datetime          , 
+	rule_result		 nvarchar(40)  , 
+	source_parent  nvarchar(38)  , 
+	top_parent     nvarchar(38)  , 
+	split_parent   nvarchar(38)  , 
+	merge_parent   nvarchar(38)  , 
+	child_count    int default 0, 
+	owner          nvarchar(10)  ,
+	remark         nvarchar(255) ,
+	isDispatching  nvarchar(255) ,
+  create_user    nvarchar(10)  ,
+	create_date    datetime          ,	
+	modify_user    nvarchar(10)  ,
+	modify_date    datetime          ,
+	delete_flag    char(1)  default '0',     
+  constraint pk_wip_lot primary key(sysid),
+  constraint uk_wip_lot unique(lot_id)
+);
+create index idx_wip_lot_1 on mes_wip_lot
+(fab);
+create index idx_wip_lot_2 on mes_wip_lot
+(step_id);
+create index idx_wip_lot_3 on mes_wip_lot
+(batch_id);
+create index idx_wip_lot_4 on mes_wip_lot
+(equipment_id);
+create index idx_wip_lot_5 on mes_wip_lot
+(status);
+create index idx_wip_lot_6 on mes_wip_lot
+(carrier_id);
+create index idx_wip_lot_7 on mes_wip_lot
+(order_id);
+create index idx_wip_lot_8 on mes_wip_lot
+(last_txn_sysid);
+
+create table mes_wip_lot_delete(
+	sysid          nvarchar(38)  ,
+	order_id       nvarchar(40)  ,
+	lot_id         nvarchar(40)  ,
+	description    nvarchar(255) ,
+	lot_type       nvarchar(40)  ,
+	component_type nvarchar(40)  , 
+	product_id     nvarchar(40)  ,
+  product_type   nvarchar(20)  ,
+	route_id       nvarchar(40)  ,
+	route_version  numeric(3,0)   ,
+	spec_id        nvarchar(40)  ,
+	spec_sysid     nvarchar(38)  , 
+	status         nvarchar(40)  ,
+	last_status    nvarchar(40)  ,
+	fab            nvarchar(40)  ,	
+	equipment_id   nvarchar(40)  ,
+	last_equipment nvarchar(40)  ,
+	step_id        nvarchar(40)  ,
+	step_version   numeric(3,0)   ,
+	`iterate`         numeric(2,0)  default 1 ,
+	node_handle     nvarchar(40)  , 
+	last_node_handle nvarchar(40) , 
+	rule_id        nvarchar(40)  ,
+	rule_seq       numeric(2,0)   ,
+	location       nvarchar(40)  , 
+	start_quantity numeric(10,3)  ,
+	quantity       numeric(10,3)  ,
+  finished_qty   numeric(10,3)  , 
+	unit           nvarchar(20)  ,
+	component_info nvarchar(38)  , 
+	priority       numeric(2,0)   ,
+	carrier_id     nvarchar(40)  ,
+	carrier_position numeric(3)  ,
+	q_time_count   numeric(2,0)   , 
+	rework_count   numeric(2,0)   ,
+	last_hold_sysid nvarchar(45) , 
+	customer_id    nvarchar(40)  ,
+	customer_lot_id nvarchar(40) ,
+	due_date       datetime          ,
+	customer_due_date  datetime      ,
+	lot_tracking_sysid nvarchar(38)  , 	
+	batch_id       nvarchar(40)      ,
+	txnstamp       int default 0 ,
+	last_txn_sysid nvarchar(45)  , 
+  last_defect_txn  nvarchar(45),
+	last_move_date datetime          , 
+	rule_result		 nvarchar(40)  , 
+	source_parent  nvarchar(40)  , 
+	top_parent     nvarchar(40)  , 
+	split_parent   nvarchar(40)  , 
+	merge_parent   nvarchar(40)  , 
+	child_count    int default 0, 
+	owner          nvarchar(10)  ,
+	remark         nvarchar(255) ,
+	isDispatching  char(1)  default '0',
+  create_user    nvarchar(10)  ,
+	create_date    datetime          ,	
+	modify_user    nvarchar(10)  ,
+	modify_date    datetime          ,
+	delete_flag    char(1)  default '0',    
+  constraint pk_wip_lot_delete primary key(sysid),
+  constraint uk_wip_lot_delete unique(lot_id)
+);
+
+create table mes_wip_batch(
+	sysid          nvarchar(38)  ,
+	batch_id       nvarchar(40)  ,
+	description    nvarchar(255) ,
+	comments       nvarchar(255) ,
+	start_step_id  nvarchar(40)  ,
+	end_step_id    nvarchar(40)  ,
+	create_user    nvarchar(10)  ,
+	create_date    datetime          ,	
+	modify_user    nvarchar(10)  ,
+	modify_date    datetime          ,
+	delete_flag    char(1)  default '0',  
+  constraint pk_wip_batch primary key(sysid),
+  constraint uk_wip_batch unique (batch_id)
+);
+create index idx_wip_batch_1 on mes_wip_batch 
+(delete_flag);
+
+create table mes_wip_lot_component(
+	lot_component_info nvarchar(38)  ,
+	component_sysid    nvarchar(38)  ,
+  carrier_id         nvarchar(40)  ,
+  position           int      ,
+  modify_date        datetime          ,
+  constraint pk_wip_lot_component primary key(component_sysid)
+);
+create index idx_wip_lot_component_1 on mes_wip_lot_component 
+(lot_component_info);
+create index idx_wip_lot_component_2 on mes_wip_lot_component 
+(carrier_id);
+
+create table mes_wip_component(
+	sysid          nvarchar(38)  ,
+	component_id   nvarchar(50)  ,
+  status         nvarchar(40)  , 
+  integrity      numeric(4,3)   default 1,
+  original_lot   nvarchar(38)  , 
+	create_user    nvarchar(10)  ,
+	create_date    datetime          ,	
+	modify_user    nvarchar(10)  ,
+	modify_date    datetime          ,
+	delete_flag    char(1)  default '0',           
+  constraint pk_wip_component primary key(sysid),
+  constraint uk_wip_component unique (component_id)
+);
+create index idx_wip_component_1 on mes_wip_component 
+(delete_flag);
+
+create table mes_wip_lot_tracking(
+	sysid          nvarchar(38)  ,
+	lot_id         nvarchar(40)  ,
+	sub_route_id   nvarchar(40)  ,
+  step_id        nvarchar(40)  ,
+  step_handle    nvarchar(40)  ,
+  stage          nvarchar(40)  ,
+  equipment_id   nvarchar(40)  ,
+  spec_id        nvarchar(40)  ,  
+  move_in_date   datetime          ,
+  track_in_date  datetime          ,
+  track_out_date datetime          ,
+  move_out_date  datetime          ,
+  move_in_qty    numeric(10,3)   ,
+  track_in_qty   numeric(10,3)   ,
+  track_out_qty  numeric(10,3)   ,
+  move_out_qty   numeric(10,3)   ,
+  move_in_sysid  nvarchar(45)  ,
+  track_in_sysid nvarchar(45)  ,
+  track_out_sysid nvarchar(45) ,
+  move_out_sysid nvarchar(45)  ,
+  is_rework      char(1)       ,
+  seq            int       ,
+	delete_flag    char(1)  default '0',      
+  constraint pk_wip_lot_tracking primary key(sysid)
+);
+create index idx_wip_lot_tracking_1 on mes_wip_lot_tracking 
+(lot_id,seq);
+create index idx_wip_lot_tracking_2 on mes_wip_lot_tracking 
+(track_out_date);
+
+create table mes_wip_future_hold(
+	sysid              nvarchar(38)  ,
+	id                 nvarchar(40)  , 
+	kind               char(1)       , 
+  step_id            nvarchar(40)  ,
+  step_handle        nvarchar(40)  ,
+  timing             char(1)  , 
+  reason_code        nvarchar(40)  , 
+  start_date         datetime          ,
+  expire_date        datetime          ,
+  create_user        nvarchar(10)  ,
+	create_date        datetime          ,	
+	modify_user        nvarchar(10)  ,
+	modify_date        datetime          ,
+	active             char(1)  default '1', 
+	delete_flag        char(1)  default '0',    
+  constraint pk_wip_future_hold primary key(sysid)
+);
+create index idx_wip_future_hold_1 on mes_wip_future_hold 
+(expire_date,active,delete_flag);
+
+create table mes_wip_lot_hold_release(
+	sysid              nvarchar(45)  ,
+	lot_id             nvarchar(40)  ,
+	step_id            nvarchar(40)  ,
+  hold_reason        nvarchar(40)  , 
+  release_reason     nvarchar(40)  ,  
+  hold_user          nvarchar(10)  ,
+	hold_date          datetime          ,	
+	release_user       nvarchar(10)  ,
+	release_date       datetime          ,
+	future_hold_sysid  nvarchar(38)  , 
+	release_txn_sysid  nvarchar(45)  , 
+	delete_flag        char(1)  default '0', 
+  constraint pk_wip_lot_hold_release primary key(sysid)
+);
+create index idx_wip_lot_hold_release_1 on mes_wip_lot_hold_release 
+(lot_id,delete_flag);
+create index idx_wip_lot_hold_release_2 on mes_wip_lot_hold_release 
+(step_id,delete_flag);
+create index idx_wip_lot_hold_release_3 on mes_wip_lot_hold_release 
+(delete_flag);
+create index idx_wip_lot_hold_release_4 on mes_wip_lot_hold_release 
+(hold_date);
+
+create table mes_wip_q_time_setting(
+	sysid          nvarchar(38)  ,
+	product_id     nvarchar(40)  ,
+	route_id       nvarchar(40)  ,
+	from_step_id   nvarchar(40)  ,
+	to_step_id     nvarchar(40)  ,
+	q_time         int       , 
+	q_time_type    char(1)       , 
+	action         char(1) default '0', 
+	create_user    nvarchar(10)  ,
+	create_date    datetime          ,	
+	modify_user    nvarchar(10)  ,
+	modify_date    datetime          ,
+	delete_flag    char(1)  default '0',
+  constraint pk_wip_q_time_setting primary key(sysid),
+  constraint uk_wip_q_time_setting unique (product_id,route_id,from_step_id,to_step_id)
+);
+create index idx_wip_q_time_setting_1 on mes_wip_q_time_setting 
+(product_id,route_id,from_step_id,delete_flag);
+
+create table mes_wip_q_time_monitor(
+	sysid              nvarchar(38)  ,
+	lot_id             nvarchar(40)  ,
+	from_step_id       nvarchar(40)  ,
+  from_step_handle   nvarchar(40)  , 
+  to_step_id         nvarchar(40)  ,  
+  to_step_handle     nvarchar(40)  ,
+	start_date         datetime          ,	
+	close_date         datetime          ,
+	close_type         char(1)       , 
+	close_user         nvarchar(10)  ,
+	q_time             int       ,
+  q_time_type        char(1)       , 
+    q_time_setting_sysid nvarchar(38)  ,  
+	delete_flag        char(1)  default '0', 
+  constraint pk_wip_q_time_monitor primary key(sysid)
+);
+create index idx_wip_q_time_monitor_1 on mes_wip_q_time_monitor 
+(lot_id,to_step_handle,delete_flag);
+
+create table mes_wip_q_time_history
+(
+  monitor_sysid      nvarchar(38)  , 
+  time_pass          int       , 
+  check_result       char(1)       , 
+  create_user        nvarchar(10)  ,
+  create_date        datetime          
+);
+create index idx_wip_q_time_history_1 on mes_wip_q_time_history
+(monitor_sysid);
+
+create table mes_wip_lot_history(
+	txn_sysid      nvarchar(45)  ,
+	last_txn_sysid nvarchar(45)  ,
+	main_txn_sysid nvarchar(38)  ,
+	lot_sysid      nvarchar(38)  , 
+	lot_id         nvarchar(40)  ,
+	activity       nvarchar(20)  ,
+	component_type nvarchar(40)  , 
+	product_id     nvarchar(40)  ,
+    product_type   nvarchar(20)  ,
+	route_id       nvarchar(40)  ,
+	route_version  numeric(3,0)   ,
+	spec_id        nvarchar(40)  ,
+	spec_sysid     nvarchar(38)  , 
+	status         nvarchar(40)  ,
+	fab            nvarchar(40)  ,
+	equipment_id   nvarchar(40)  ,
+	step_id        nvarchar(40)  ,
+	step_version   numeric(3,0)   ,
+	`iterate`        numeric(2,0)  default 1 ,
+	is_rework      char(1)       , 
+	node_handle    nvarchar(40)  , 
+	rule_id        nvarchar(40)  ,
+	rule_seq       numeric(2,0)   ,
+	rule_result    nvarchar(40)  , 
+	location       nvarchar(40)  , 
+	quantity       numeric(10,3)  ,
+	unit           nvarchar(20)  ,
+	component_info nvarchar(38)  , 
+	setup_info     nvarchar(38)  , 
+    ta_work_info   nvarchar(38)  , 
+	tooling_setup_info   nvarchar(38)  , 
+    finish_qty     numeric(10,3) , 
+	order_id       nvarchar(40)  ,
+	carrier_id     nvarchar(40)  ,	
+	carrier_position numeric(3)  ,
+	batch_id       nvarchar(40)  ,
+	split_parent   nvarchar(40)  ,
+	merge_parent   nvarchar(40)  ,
+	txnstamp       int       ,
+	owner          nvarchar(10)  ,
+	remark         nvarchar(255) ,
+	grouphistkey   nvarchar(38)  ,
+	eq_parm_seq    integer       ,
+	hostname       nvarchar(60)  ,
+	modify_user    nvarchar(10)  ,
+	modify_date    timestamp(6)  ,
+	delete_flag    char(1)  default '0',           
+  constraint pk_wip_lot_history primary key(txn_sysid)
+);
+create index idx_wip_lot_history_1 on mes_wip_lot_history 
+(last_txn_sysid);
+create index idx_wip_lot_history_2 on mes_wip_lot_history 
+(activity,modify_date);
+create index idx_wip_lot_history_3 on mes_wip_lot_history 
+(lot_id,modify_date);
+
+create table mes_wip_lot_history_component(
+	lot_component_info nvarchar(38)  ,
+	component_sysid    nvarchar(38)  ,
+  carrier_id         nvarchar(40)  ,
+  position           int       ,
+	status             nvarchar(40)  ,
+	integrity          numeric(4,3)   ,
+  modify_date        datetime      
+);
+create index idx_wip_lot_history_comp_1 on mes_wip_lot_history_component 
+(lot_component_info);
+
+create table mes_wip_lot_history_dc_item(
+	txn_sysid      	nvarchar(45)  ,
+	dc_item_sysid	nvarchar(38)  ,
+	value		nvarchar(255) ,
+  constraint pk_history_dc_item primary key(txn_sysid,dc_item_sysid)
+);
+
+create table mes_wip_lot_defect
+(
+  txn_sysid    nvarchar(45),
+  reason_code  nvarchar(40),
+  quantity     numeric(10,3),
+  comments     nvarchar(255)
+);
+create index idx_wip_lot_defect_1 on mes_wip_lot_defect
+(txn_sysid);
+
+create table mes_ta_work_info
+(
+  sysid              nvarchar(38)  ,
+  ta_work_info       nvarchar(38)  ,
+  step_id            nvarchar(40)  ,
+  equipment_id       nvarchar(40)  ,
+  shift              nvarchar(10)  ,  
+  ta_count           numeric(3,0)   ,
+  modify_date        datetime          ,
+  constraint pk_ta_work_info primary key(sysid),
+  constraint uk_ta_work_info unique (ta_work_info),
+  constraint uk_ta_work_info2 unique (step_id,equipment_id)
+);
+
+create table mes_ta_work_info_history
+(
+  ta_work_info       nvarchar(38)  ,
+  shift              nvarchar(10)  ,  
+  ta_count           numeric(3,0)   ,
+  modify_date        datetime          ,
+  constraint pk_work_info_his primary key(ta_work_info)
+);
+create index idx_work_info_history_1 on mes_ta_work_info_history 
+(modify_date);
+
+create table mes_ta_work_info_detail
+(
+  ta_work_info       nvarchar(38)  ,
+  station            nvarchar(40)  ,
+  user_id            nvarchar(10)
+);
+create index idx_work_info_detail_1 on mes_ta_work_info_detail 
+(ta_work_info);
+
+create table mes_ta_work_info_detail_his
+(
+  ta_work_info       nvarchar(38)  ,
+  station            nvarchar(40)  ,
+  user_id            nvarchar(10)
+);
+create index idx_work_info_detail_his_1 on mes_ta_work_info_detail_his 
+(ta_work_info);
+
+create table mes_wip_order(
+	sysid              nvarchar(38)  ,
+	order_id           nvarchar(40)  ,
+	order_type         nvarchar(40)  ,
+	product_id         nvarchar(40)  ,
+	fab                nvarchar(40)  ,
+  priority           numeric(2,0)   ,	
+	route_id           nvarchar(40)  ,
+	route_version      numeric(3,0)   ,
+	start_step         nvarchar(40)  ,
+	start_step_handle  nvarchar(40)  ,
+	spec_id            nvarchar(40)  ,
+	spec_sysid         nvarchar(38)  , 
+	quantity           int       ,
+	receive_quantity   int default 0,
+	start_quantity     int default 0,
+  scrap_quantity     int default 0, 
+  finish_quantity    int default 0, 
+	lot_count          numeric(6,0) default 0,
+	owner              nvarchar(10)  ,
+	customer_id        nvarchar(40)  ,
+  plan_start_date    datetime          , 
+	due_date           datetime          ,
+	customer_due_date  datetime          ,
+	remark             nvarchar(255) ,
+	status             nvarchar(40)  , 
+  txnstamp           int default 0,
+  create_user        nvarchar(10)  ,
+	create_date        datetime          ,	
+	modify_user        nvarchar(10)  ,
+	modify_date        datetime          ,
+	delete_flag        char(1)  default '0',	
+  constraint pk_wip_order primary key(sysid),
+  constraint uk_wip_order unique (order_id)
+);
+create index idx_wip_order_1 on mes_wip_order 
+(fab);
+create index idx_wip_order_2 on mes_wip_order 
+(status);
+create index idx_wip_order_3 on mes_wip_order 
+(receive_quantity);
+create index idx_wip_order_4 on mes_wip_order 
+(start_quantity);
+
+create table mes_wip_instruction(
+	sysid              nvarchar(38)  ,
+	id                 nvarchar(40)  , 
+	kind               char(1)       , 
+	step_id            nvarchar(40)  , 
+  instruction        nvarchar(255) ,
+  start_date         datetime          ,
+  expire_date        datetime          ,
+  create_user        nvarchar(10)  ,
+	create_date        datetime          ,	
+	modify_user        nvarchar(10)  ,
+	modify_date        datetime          ,
+	delete_flag        char(1)  default '0',
+  constraint pk_wip_instruction primary key(sysid)
+) ;
+create index idx_wip_instruction_1 on mes_wip_instruction 
+(id,kind);
+create index idx_wip_instruction_2 on mes_wip_instruction 
+(step_id,start_date,expire_date,delete_flag);
+
+create table mes_wip_carton
+(
+  sysid              nvarchar(38)  ,
+  carton_id          nvarchar(40)  ,
+  fab                nvarchar(40)  ,
+  product_id         nvarchar(40)  ,
+  order_id           nvarchar(40)  ,
+  location_type      char(1)       , 
+  location           nvarchar(40)  ,
+  pallet_use_id      nvarchar(55)  ,  
+  status             nvarchar(10)  , 
+  txnstamp           int default 0,
+  create_user        nvarchar(10)  ,
+  create_date        datetime          ,	
+  modify_user        nvarchar(10)  ,
+  modify_date        datetime          ,
+  delete_flag        char(1)  default '0',
+  constraint pk_wip_carton primary key(sysid),
+  constraint uk_wip_carton unique (carton_id)
+);
+create index idx_wip_carton_1 on mes_wip_carton 
+(location);
+create index idx_wip_carton_2 on mes_wip_carton 
+(pallet_use_id);
+
+create table mes_wip_pallet
+(
+  sysid              nvarchar(38)  ,
+  pallet_id          nvarchar(40)  ,
+  use_id             nvarchar(55)  ,
+  fab                nvarchar(40)  ,
+  product_id         nvarchar(40)  ,
+  order_id           nvarchar(40)  ,
+  location_type      char(1)       , 
+  location           nvarchar(40)  , 
+  status             nvarchar(10)  , 
+  txnstamp           int default 0,
+  create_user        nvarchar(10)  ,
+  create_date        datetime          ,	
+  modify_user        nvarchar(10)  ,
+  modify_date        datetime          ,
+  delete_flag        char(1)  default '0',
+  constraint pk_wip_pallet primary key(sysid),
+  constraint uk_wip_pallet unique (pallet_id),
+  constraint uk_wip_pallet_2 unique (use_id)
+);
+create index idx_wip_pallet_1 on mes_wip_pallet 
+(location);
+
+create table mes_mat_step_material(
+  sysid           nvarchar(38)  ,
+  step_id         nvarchar(40)  ,
+  material_type   nvarchar(40)  ,
+  consume_rate    numeric(9,4)   default 0,
+  required        char(1)       ,
+  create_user     nvarchar(10)  ,
+	create_date     datetime          ,	
+	modify_user     nvarchar(10)  ,
+	modify_date     datetime          ,
+	delete_flag     char(1)  default '0',
+  constraint pk_mat_step_material primary key(sysid),
+  constraint uk_mat_step_material unique(step_id,material_type)
+);
+create index idx_mat_step_material_1 on mes_mat_step_material
+(step_id);
+
+create table mes_mat_part
+(
+  sysid           nvarchar(38)  ,
+  part_no         nvarchar(40)  ,
+  material_type   nvarchar(40)  ,
+  description     nvarchar(255) ,
+  create_user     nvarchar(10)  ,
+	create_date     datetime          ,	
+	modify_user     nvarchar(10)  ,
+	modify_date     datetime          ,
+	delete_flag     char(1)  default '0',
+  constraint pk_mat_part primary key(sysid),
+  constraint uk_mat_part unique(part_no)
+);
+
+
+create table mes_parm_parameter(
+  sysid           nvarchar(38)  ,
+  parameter_id    nvarchar(40)  ,
+  description     nvarchar(255) ,
+  parm_type       numeric(1)    , 
+  dc_item_sysid   nvarchar(38)  , 
+  eq_parm_sysid   nvarchar(38)  ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime      ,	
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime      ,
+  delete_flag     char(1)  default '0',
+  constraint pk_parm_parameter primary key(sysid),
+  constraint uk__parm_parameter unique(parameter_id)
+);
+
+create table mes_parm_step_parameter(
+  step_id         nvarchar(40)  ,
+  parameter_sysid nvarchar(38)  ,
+  seq             numeric(2,0)   ,
+  constraint pk_parm_step_parameter primary key(step_id,parameter_sysid)
+);
+
+create table mes_parm_main(
+  sysid           nvarchar(38)  ,
+  name            nvarchar(40)  ,
+  version         numeric(3)     ,
+  description     nvarchar(255) ,
+  issue_state     nvarchar(10)  ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  delete_flag     char(1)       default '0',
+  flag            numeric(3,0)   ,	
+  constraint pk_parm_main primary key(sysid),
+  constraint uk_parm_main unique(name,version)
+);
+create index idx_parm_main_1 on mes_parm_main
+(name,flag);
+create index idx_parm_main_2 on mes_parm_main
+(name,issue_state);
+
+create table mes_parm_main_step(
+  sysid           nvarchar(79)  , 
+  main_sysid      nvarchar(38)  , 
+  step_id         nvarchar(40)  ,
+  std_process_time numeric(9,4)  , 
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  constraint pk_parm_main_step primary key(sysid),
+  constraint uk_parm_main_step unique(main_sysid,step_id)
+);
+create index idx_parm_main_step_1 on mes_parm_main_step
+(main_sysid);
+
+create table mes_parm_main_step_material(
+  sysid           nvarchar(120) , 
+  main_step_sysid nvarchar(79)  , 
+  material_type   nvarchar(40)  ,
+  required        char(1)       , 
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  constraint pk_parm_main_step_material primary key(sysid),
+  constraint uk_parm_main_step_material unique(main_step_sysid,material_type)
+);
+create index idx_parm_main_step_material_1 on mes_parm_main_step_material
+(main_step_sysid);
+
+create table mes_parm_main_step_mat_part(
+  from_sysid          nvarchar(120) , 
+  part_no             nvarchar(40)  ,
+  consume_rate        numeric(9,4)  default 0,
+  seq                 numeric(2,0)   ,
+  constraint pk_step_material_part primary key(from_sysid,part_no)
+);
+create index idx_step_material_part_1 on mes_parm_main_step_mat_part
+(from_sysid);
+
+
+create table mes_parm_main_step_recipe(
+  sysid           nvarchar(120) , 
+  main_step_sysid nvarchar(79)  , 
+  eq_type         nvarchar(40)  ,
+  recipe          nvarchar(40)  ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  constraint pk_parm_main_step_recipe primary key(sysid),
+  constraint uk_parm_main_step_recipe unique(main_step_sysid,eq_type)
+);
+create index idx_parm_main_step_recipe_1 on mes_parm_main_step_recipe
+(main_step_sysid);
+
+create table mes_parm_main_step_eq_track
+(
+  sysid           nvarchar(38)  , 
+  main_step_sysid nvarchar(79)  , 
+  eq_type         nvarchar(40)  ,
+  track           nvarchar(20)  , 
+  seq             numeric(3,0)   ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  constraint pk_parm_main_step_eq_track primary key(sysid)
+);
+create index idx_parm_main_step_eq_track_1 on mes_parm_main_step_eq_track
+(main_step_sysid);
+
+create table mes_parm_main_step_parameter(
+  sysid           nvarchar(120) , 
+  main_step_sysid nvarchar(79)  , 
+  parameter_sysid nvarchar(38)  , 
+  value           nvarchar(255) ,
+  max             numeric(10,4)  ,
+  min             numeric(10,4)  ,
+  seq             numeric(2,0)   ,
+  remark          nvarchar(255) ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  constraint pk_parm_main_step_parameter primary key(sysid),
+  constraint uk_parm_main_step_parameter unique(main_step_sysid,parameter_sysid)
+);
+create index idx_parm_main_step_parameter_1 on mes_parm_main_step_parameter
+(main_step_sysid);
+
+create table mes_parm_product_spec(
+  product_id      nvarchar(40) ,
+  spec_name       nvarchar(40) ,
+  restriction     nvarchar(255),
+  constraint pk_product_spec primary key(product_id,spec_name)
+);
+create index idx_product_spec_1 on mes_parm_product_spec
+(product_id);
+create index idx_product_spec_2 on mes_parm_product_spec
+(spec_name);
+
+create table mes_parm_main_step_eq_tooling
+(
+  sysid              nvarchar(120) ,
+  main_step_sysid    nvarchar(79)  ,
+  eq_type            nvarchar(40)  ,
+  tooling_type       nvarchar(40)  ,
+  create_user        nvarchar(10)  ,
+  create_date        datetime      default CURRENT_TIMESTAMP,
+  modify_user        nvarchar(10)  ,
+  modify_date        datetime      default CURRENT_TIMESTAMP,
+  delete_flag        char(1)       default '0',
+  constraint pk_step_eq_tooling primary key(sysid)
+);
+create index idx_step_eq_tooling_1 on mes_parm_main_step_eq_tooling 
+(main_step_sysid);
+
+create table mes_parm_main_step_eq_tol_part
+(
+  from_sysid    nvarchar(120) ,
+  part_no       nvarchar(40)  ,
+  seq           numeric(2,0)  ,
+  constraint pk_step_eq_tol_part primary key(from_sysid,part_no)
+);
+
+#-------------------------------
+
+create table fms_area(
+  sysid           nvarchar(38)  ,
+  area_id         nvarchar(40)  ,
+  description     nvarchar(255) ,
+  image_file      nvarchar(40)  ,
+  create_user     nvarchar(10)  ,
+  create_date     datetime          ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime          ,
+  delete_flag     char(1)       default '0',
+  constraint pk_fms_area primary key(sysid),
+  constraint uk_fms_area unique(area_id)
+);
+
+create table fms_area_equipment(
+  area_sysid      nvarchar(38)  ,
+  equipment_sysid nvarchar(38)  ,
+  pos_x           int       ,
+  pos_y           int       ,
+  width           int       ,
+  height          int       ,
+  graph_type      numeric(2,0)   ,
+  constraint pk_area_equipment primary key(area_sysid,equipment_sysid)
+);
+create index idx_area_equipment_1 on fms_area_equipment
+(area_sysid);
+
+#標籤管理========================================================
+create table mes_lbl_misc  
+(
+	item		  nvarchar(20)	,
+	value	      nvarchar(40)	,
+	description	  nvarchar(40)	,
+    modify_user   nvarchar(10)  ,
+    modify_date   datetime          ,	
+	constraint pk_lbl_misc primary key(item,value)
+);
+
+create table mes_lbl_printer
+(
+    sysid           nvarchar(38)	,
+    model_name      nvarchar(40)    , 
+	resolution      numeric(4)		, 
+	landscape       char(1)         , 
+	description     nvarchar(100)   ,
+	modify_user     nvarchar(10)    ,
+    modify_date     datetime        ,	
+	constraint pk_lbl_printer primary key(sysid),
+	constraint uk_lbl_printer unique(model_name,resolution)
+);
+
+create table mes_lbl_code
+(
+	sysid			nvarchar(38)	,
+	code			nvarchar(40)	,
+	description		nvarchar(40)	,
+    modify_user     nvarchar(10)    ,
+    modify_date     datetime        ,	
+	constraint pk_lbl_code primary key(sysid),
+	constraint uk_lbl_code unique(code)
+);
+
+create table mes_lbl_label
+(
+	sysid			nvarchar(38)	,
+	code_sysid		nvarchar(38)	,
+	label_type		nvarchar(40)	, 
+	printerModel    nvarchar(40)    ,
+	resolution		numeric(4)		,	
+	height			numeric(7,2)	, 
+	width			numeric(7,2)	, 	
+    modify_user     nvarchar(10)    ,
+    modify_date     datetime        ,
+	constraint pk_lbl_label primary key(sysid),
+	constraint uk_lbl_label unique(code_sysid,label_type,printerModel,resolution)
+);
+
+create table mes_lbl_label_detail
+(
+	sysid			nvarchar(38)	,
+	label_sysid		nvarchar(38)	,
+	item_type		nvarchar(20)	, 
+	item_value		nvarchar(100)	,
+	seq				numeric(2)		,
+	color			int				,
+	pos_x			numeric(7,2)	,
+	pos_y			numeric(7,2)	,
+	height			numeric(7,2)	,
+	width			numeric(7,2)	,
+	bar_type		nvarchar(20)	,
+	bar_size        numeric(1)	    ,
+	bar_text_align  numeric(1)	    ,
+	bar_rotation    numeric(1)	    ,
+	font_name		nvarchar(40)	,
+	font_size		numeric(4,2)	,
+	data_source		nvarchar(40)	,
+	data_member		nvarchar(40)	,
+    modify_user     nvarchar(10)    ,
+    modify_date     datetime        ,	
+	constraint pk_lbl_label_detail primary key(sysid)
+);
+create index idx_lbl_label_detail_1 on mes_lbl_label_detail(label_sysid);
+#其它==================================================================================================
+create table mes_message_box_record
+(
+    msg_level    char(1), 
+    message        nvarchar(255),
+    result    char(1),  
+    hostname    nvarchar(40),
+    modify_user    nvarchar(10),
+    modify_date datetime
+);
+create index idx_message_box_1 on mes_message_box_record
+(modify_date);
+
+create table mes_wip_lot_extension
+(
+    item           nvarchar(40),
+    step_id        nvarchar(40),
+    ext_name       nvarchar(40),
+    value          nvarchar(255),
+    modify_date    datetime,
+    constraint pk_wip_lot_extension primary key(item,step_id,ext_name)
+);
+
+#警報管理================================================================================================
+create table mes_alm_type
+(
+  sysid               nvarchar(38)  ,
+  alarm_type          nvarchar(40)  ,
+  description         nvarchar(255) ,
+  reason_group        nvarchar(40)  ,
+  modify_user         nvarchar(10)  ,
+  modify_date         datetime      default CURRENT_TIMESTAMP,
+  delete_flag         char(1)       default '0',
+  constraint pk_alm_type primary key(sysid),
+  constraint uk_alm_type unique(alarm_type)
+);
+
+create table mes_alm_reason
+(
+  sysid               nvarchar(38)  ,
+  type_sysid          nvarchar(38)  ,
+  reason_code         nvarchar(40)  ,
+  level_count         numeric(1,0)  ,
+  modify_user         nvarchar(10)  ,
+  modify_date         datetime      ,
+  delete_flag         char(1)       default '0',
+  constraint pk_alm_reason primary key(sysid),
+  constraint uk_alm_reason unique(type_sysid,reason_code)
+);
+
+create table mes_alm_level
+(
+  sysid               nvarchar(38)  ,
+  reason_sysid        nvarchar(38)  ,
+  alm_level           numeric(1,0)  ,
+  cycle               numeric(1,0)  ,
+  interval_min        numeric(3,0)  , 
+  send_wechat         nvarchar(255) ,
+  send_email          nvarchar(1000),
+  send_line           nvarchar(255) ,
+  language            nvarchar(10)  ,
+  modify_user         nvarchar(10)  ,
+  modify_date         datetime      ,
+  delete_flag         char(1)       default '0',
+  constraint pk_alm_level primary key(sysid),
+  constraint uk_alm_level unique(reason_sysid,alm_level)
+);
+
+create table mes_alm_message
+(
+  sysid               nvarchar(38)  ,
+  alarm_type          nvarchar(40)  ,
+  priority            numeric(3,0)  ,
+  title               nvarchar(100) ,
+  message             nvarchar(500) ,
+  status              char(1)       , 
+  object_id           nvarchar(40)  ,
+  object_type         nvarchar(40)  ,
+  reason_code         nvarchar(40)  ,
+  comments            nvarchar(255) ,
+  grouphistkey        nvarchar(45)  ,
+  action_comments     nvarchar(255) ,
+  clear_reason        nvarchar(40)  ,
+  clear_comments      nvarchar(255) ,
+  clear_grouphistkey  nvarchar(45)  ,
+  cur_level           numeric(1,0)  ,
+  cur_cycle           numeric(1,0)  ,
+  last_send           datetime      ,
+  create_date         datetime      ,
+  modify_user         nvarchar(10)  ,
+  modify_date         datetime      ,
+  clear_user          nvarchar(10)  ,
+  clear_date          datetime      ,
+  delete_flag         char(1)       default '0',
+  constraint pk_alm_message primary key(sysid),
+  constraint uk_alm_message unique(alarm_type,object_id,reason_code)
+);
+create index idx_alm_message_1 on mes_alm_message
+(object_type);
+
+create table mes_alm_message_his
+(
+  sysid               nvarchar(38)  ,
+  alarm_type          nvarchar(40)  ,
+  priority            numeric(3,0)  ,
+  title               nvarchar(100) ,
+  message             nvarchar(500) ,
+  object_id           nvarchar(40)  ,
+  object_type         nvarchar(40)  ,
+  reason_code         nvarchar(40)  ,
+  comments            nvarchar(255) ,
+  grouphistkey        nvarchar(45)  ,
+  action_comments     nvarchar(255) ,
+  clear_reason        nvarchar(40)  ,
+  clear_comments      nvarchar(255) ,
+  clear_grouphistkey  nvarchar(45)  ,
+  cur_level           numeric(2,0)  ,
+  create_date         datetime      ,
+  modify_user         nvarchar(10)  ,
+  modify_date         datetime      ,
+  clear_user          nvarchar(10)  ,
+  clear_date          datetime      ,
+  constraint pk_alm_message_his primary key(sysid)
+);
+create index idx_alm_message_his_1 on mes_alm_message_his
+(alarm_type,reason_code);
+create index idx_alm_message_his_2 on mes_alm_message_his
+(create_date);
+
+#治工具管理================================================================================================
+create table mes_tol_tooling_type
+(
+  sysid           nvarchar(38)  ,
+  tooling_type	  nvarchar(40)  ,       
+  description     nvarchar(255) ,
+  control_type	  char(1) default '0',  
+  consume_type    char(1) default '0',  
+  verify_flag     char(1) default '1',
+  runtime_flag    char(1) default '0',  
+  owner_dept 	  nvarchar(20) 	,       
+  create_user     nvarchar(10)  ,
+  create_date     datetime      default CURRENT_TIMESTAMP,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime      default CURRENT_TIMESTAMP,
+  delete_flag     char(1)       default '0',
+  constraint pk_tooling_type primary key(sysid),
+  constraint uk_tooling_type unique(tooling_type)
+);
+
+create table mes_tol_tooling_type_link
+(
+  type_sysid      nvarchar(38)  ,       
+  eq_type         nvarchar(40)  ,       
+  constraint pk_tooling_type_link primary key(type_sysid,eq_type)
+);
+
+create table mes_tol_part
+(
+  sysid           nvarchar(38)  ,
+  part_no	      nvarchar(40)  ,  
+  description     nvarchar(255) ,  
+  type_sysid      nvarchar(38)  ,        
+  use_limit       numeric(6,0) default 0,
+  use_notice      numeric(6,0) default 0,
+  create_user     nvarchar(10)  ,
+  create_date     datetime     default CURRENT_TIMESTAMP,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime     default CURRENT_TIMESTAMP,
+  delete_flag     char(1)      default '0',
+  constraint pk_tol_part primary key(sysid),
+  constraint uk_tol_part unique(part_no)
+);
+create index idx_part_no_1 on mes_tol_part
+(type_sysid);
+
+create table mes_tol_event
+(
+  sysid           nvarchar(38)  ,
+  type_sysid      nvarchar(38)  ,       
+  event_name      nvarchar(40)	,       
+  last_status     nvarchar(10)	,       
+  next_status     nvarchar(10)	,       
+  reason_group    nvarchar(40)	,       
+  location_list	  nvarchar(1000), 
+  ide_flag        char(1)       default '1',  
+  create_user     nvarchar(10)  ,
+  create_date     datetime      default CURRENT_TIMESTAMP,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime      default CURRENT_TIMESTAMP,
+  delete_flag     char(1)       default '0',
+  constraint pk_tol_event primary key(sysid),
+  constraint uk_tol_event unique(type_sysid,last_status,event_name)
+);
+
+create table mes_tol_tooling_id
+(
+  sysid           nvarchar(38)  ,
+  tooling_id      nvarchar(40)  ,            #治工具編號
+  part_no         nvarchar(40)	,            #料號
+  location        nvarchar(40)	,            #當前位置
+  location_type   char(1)       default '0', #0:儲位, 1:機台
+  status          nvarchar(10)  ,            #狀態
+  last_status     nvarchar(10)  ,            #前狀態
+  current_count   numeric(6,0)  default 0  , #當前使用次數(lot生產次數累加在此，在Unload時才加到use_count)
+  use_count       numeric(6,0)  default 0  , #已使用次數(分鐘)。最後一次PM後已使用的次數(使用限制以此數量控卡)
+  total_count     numeric(10,0) default 0  , #總使用次數(分鐘)
+  clean_count     numeric(6,0)  default 0  , #總清洗次數
+  pm_count        numeric(6,0)  default 0  , #總保養次數
+  repair_count    numeric(6,0)  default 0  , #總維修次數
+  last_txn_sysid  nvarchar(38)  ,            #最後交易sysid
+  setup_user      nvarchar(10)  ,
+  setup_date      datetime                 , #上機時間(HWSETUP)
+  start_date      datetime                 , #開始生產時間(LOT_START)
+  txnstamp        integer       default 0,
+  create_user     nvarchar(10)  ,
+  create_date     datetime      default CURRENT_TIMESTAMP,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime      default CURRENT_TIMESTAMP,
+  delete_flag     char(1)       default '0',
+  constraint pk_tol_tooling_id primary key(sysid),
+  constraint uk_tol_tooling_id unique(tooling_id)
+);
+create index idx_tooling_id_1 on mes_tol_tooling_id
+(part_no);
+create index idx_tooling_id_2 on mes_tol_tooling_id
+(location);
+create index idx_tooling_id_3 on mes_tol_tooling_id
+(status);
+
+create table mes_tol_tooling_history
+(
+  txn_sysid       nvarchar(38)  ,
+  main_txn_sysid  nvarchar(38)  ,
+  last_txn_sysid  nvarchar(38)  ,
+  tooling_id      nvarchar(40)  ,     
+  event_name      nvarchar(40)  ,    
+  part_no         nvarchar(40)	,            
+  location        nvarchar(40)	,            
+  location_type   char(1)       default '0', 
+  lot_id          nvarchar(40)  , 
+  status          nvarchar(10)  ,            
+  last_status     nvarchar(10)  ,            
+  current_count   numeric(6,0)  default 0  , 
+  use_count       numeric(6,0)  default 0  , 
+  total_count     numeric(10,0) default 0  , 
+  clean_count     numeric(6,0)  default 0  , 
+  pm_count        numeric(6,0)  default 0  , 
+  repair_count    numeric(6,0)  default 0  ,          
+  setup_user      nvarchar(10)  ,
+  setup_date      datetime                 , 
+  start_date      datetime                 , 
+  txnstamp        integer       default 0  ,
+  reason_code     nvarchar(40)  , 
+  comments        nvarchar(255) , 
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime      default CURRENT_TIMESTAMP,
+  delete_flag     char(1)       default '0',
+  constraint pk_tooling_history primary key(txn_sysid)
+);
+create index idx_tooling_history_1 on mes_tol_tooling_history 
+(last_txn_sysid);
+create index idx_tooling_history_2 on mes_tol_tooling_history 
+(event_name,modify_date);
+create index idx_tooling_history_3 on mes_tol_tooling_history 
+(tooling_id,modify_date);
+
+#看板管理================================================================================================
+create table mes_kan_screen
+(
+  sysid            nvarchar(38)  ,
+  assembly_name    nvarchar(40)  ,
+  description      nvarchar(255) ,
+  refresh_interval numeric(5)    ,  
+  modify_user      nvarchar(10)  ,
+  modify_date      datetime      default CURRENT_TIMESTAMP,
+  delete_flag      char(1)       default '0',
+  constraint pk_kan_screen primary key(sysid),
+  constraint uk_kan_screen unique(assembly_name)
+);
+
+create table mes_kan_screen_argu
+(
+  from_sysid       nvarchar(38)  ,
+  argument_name    nvarchar(40)  ,
+  description      nvarchar(255) , 
+  constraint pk_kan_screen_argu primary key(from_sysid,argument_name)
+);
+
+create table mes_kan_client
+(
+  sysid           nvarchar(38)  ,
+  computer_name   nvarchar(40)  ,
+  seq             numeric(1) default 0,
+  description     nvarchar(255) ,
+  screen_split    numeric(1) default 0,
+  percent_ver     numeric(2) default 0,
+  percent_hor     numeric(2) default 0,
+  client_id       nvarchar(100) ,
+  modify_user     nvarchar(10)  ,
+  modify_date     datetime      default CURRENT_TIMESTAMP,
+  delete_flag     char(1)       default '0',
+  constraint pk_kan_client primary key(sysid),
+  constraint uk_kan_client unique(computer_name,seq)
+);
+
+create table mes_kan_client_screen
+(
+  sysid           nvarchar(38)  ,
+  client_sysid    nvarchar(38)  ,
+  screen_sysid    nvarchar(38)  ,
+  seq             numeric(1) default 0,
+  constraint pk_kan_client_screen primary key(sysid)
+);
+create index idx_kan_client_screen_1 on mes_kan_client_screen
+(client_sysid,screen_sysid);
+
+create table mes_kan_client_screen_argu
+(
+  from_sysid      nvarchar(38)  ,
+  argument_name   nvarchar(40)  ,
+  value           nvarchar(100) ,
+  constraint pk_kan_client_screen_argu primary key(from_sysid,argument_name)
+);

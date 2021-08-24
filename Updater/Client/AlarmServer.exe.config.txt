@@ -1,0 +1,104 @@
+﻿<?xml version="1.0"?>
+<configuration>
+  <configSections>
+    <section name="nlog" type="NLog.Config.ConfigSectionHandler, NLog"/>
+    <sectionGroup name="applicationSettings" type="System.Configuration.ApplicationSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" >
+      <section name="AlarmServer.Properties.Settings" type="System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+    </sectionGroup>
+  </configSections>
+  <nlog>
+    <targets>
+      <target name="dbLogger" type="File" fileName="${basedir}/log/dblog.txt"
+              layout="${longdate} ${threadid:padding=3} ${level:uppercase=true:padding=5} ${message}"
+              archiveAboveSize="5000000"  maxArchiveFiles="10"/>
+      <target name="mesMessageGuard" type="File" fileName="${basedir}/log/mesMessageGuard.txt"
+              layout="${longdate} ${threadid:padding=3} ${level:uppercase=true:padding=5} ${logger} ${message}"
+              archiveAboveSize="5000000"  maxArchiveFiles="10"/>
+      <target name="errLogger" type="File" fileName="${basedir}/log/errLogger.txt"
+              layout="${longdate} ${threadid:padding=3} ${level:uppercase=true:padding=5} ${logger} ${message}"
+              archiveAboveSize="5000000"  maxArchiveFiles="10"/>
+      <target name="serverMonitor" type="File" fileName="${basedir}/log/serverMonitor.txt"
+              layout="${longdate} ${threadid:padding=3} ${level:uppercase=true:padding=5} ${logger} ${message}"
+              archiveAboveSize="5000000"  maxArchiveFiles="10"/>
+      <target name="winClientLogger" type="File" fileName="${basedir}/log/winClient.txt"
+              layout="${longdate} ${threadid:padding=3} ${level:uppercase=true:padding=5} ${logger:padding=24} ${message}"
+              archiveAboveSize="5000000"  maxArchiveFiles="30"/>
+      <target name="AlarmServer" type="File" fileName="${basedir}/log/AlarmServer.txt"
+              layout="${longdate} ${threadid:padding=3} ${level:uppercase=true:padding=5} ${logger:padding=24} ${message}"
+              archiveAboveSize="5000000"  maxArchiveFiles="30"/>
+      <target name="defaultLogger" type="File" fileName="${basedir}/log/log.txt"
+              layout="${longdate} ${threadid:padding=3} ${level:uppercase=true:padding=5} ${logger:padding=24} ${message}"
+              archiveAboveSize="5000000"  maxArchiveFiles="30"/>
+    </targets>
+
+    <rules>
+      <logger name="idv.component.db.*" minlevel="Warn" writeTo="dbLogger" final="true" />
+      <logger name="messageGuardLogger" minlevel="Debug" writeTo="mesMessageGuard" final="true" />
+      <logger name="errLogger" minlevel="Warn" writeTo="errLogger" final="true" />
+      <logger name="serverMonitor" minlevel="Debug" writeTo="serverMonitor" final="true" />
+      <logger name="ClientRule.*" minlevel="Debug" writeTo="winClientLogger" final="true" />
+      <logger name="mesWinClient.*" minlevel="Debug" writeTo="winClientLogger" final="true" />
+      <logger name="AlarmServer.*" minlevel="Debug" writeTo="AlarmServer" final="true" />
+      <logger name="*" minlevel="Debug" writeTo="defaultLogger" />
+    </rules>
+  </nlog>
+  <startup>
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.0"/>
+  </startup>
+  <system.serviceModel>
+    <bindings>
+      <wsDualHttpBinding>
+        <binding name="WSDualHttpBinding_IMessageGuard" closeTimeout="00:00:05" openTimeout="00:00:15" receiveTimeout="Infinite" sendTimeout="00:00:20" bypassProxyOnLocal="false" transactionFlow="false" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="134217728" maxReceivedMessageSize="134217728" messageEncoding="Text" textEncoding="utf-8" useDefaultWebProxy="true">
+          <readerQuotas maxDepth="134217728" maxStringContentLength="134217728" maxArrayLength="134217728" maxBytesPerRead="134217728" maxNameTableCharCount="134217728"/>
+          <reliableSession ordered="true" inactivityTimeout="Infinite"/>
+          <security mode="None">
+            <message clientCredentialType="Windows" negotiateServiceCredential="true"/>
+          </security>
+        </binding>
+      </wsDualHttpBinding>
+      <netTcpBinding>
+        <binding name="tcpBinding_IMessageGuard" closeTimeout="00:00:05" openTimeout="00:00:15" receiveTimeout="Infinite" sendTimeout="00:00:20" maxBufferPoolSize="134217728" maxReceivedMessageSize="134217728">
+          <readerQuotas maxDepth="134217728" maxStringContentLength="134217728" maxArrayLength="134217728" maxBytesPerRead="134217728" maxNameTableCharCount="134217728"/>
+          <reliableSession inactivityTimeout="Infinite"/>
+          <security mode="None"/>
+        </binding>
+      </netTcpBinding>
+    </bindings>
+    <client>
+      <endpoint address="net.tcp://localhost:4503/messageGuard/MessageGuard"
+        binding="netTcpBinding" bindingConfiguration="tcpBinding_IMessageGuard"
+        contract="IMessageGuard" name="dualClientBinding1" />
+      <endpoint address="net.tcp://localhost:4504/messageGuard/MessageGuard"
+        binding="netTcpBinding" bindingConfiguration="tcpBinding_IMessageGuard"
+        contract="IMessageGuard" name="dualClientBinding2" />
+      <endpoint address="net.tcp://localhost:4505/messageGuard/MessageGuard"
+        binding="netTcpBinding" bindingConfiguration="tcpBinding_IMessageGuard"
+        contract="IMessageGuard" name="dualClientBinding3" />
+    </client>
+  </system.serviceModel>
+  <applicationSettings>
+    <AlarmServer.Properties.Settings>
+      <setting name="AlarmServerId" serializeAs="String">
+        <value>AlarmServer01</value>
+      </setting>
+      <setting name="MailSender" serializeAs="String">
+        <value>donyang99@hotmail.com</value>
+      </setting>
+      <setting name="SenderPassword" serializeAs="String">
+        <value>205zvL78o64Fn1thi12O1Q==</value>
+      </setting>
+      <setting name="PasswordEncrypted" serializeAs="String">
+        <value>True</value>
+      </setting>
+      <setting name="MailSmtp" serializeAs="String">
+        <value>smtp.live.com</value>
+      </setting>
+      <setting name="SmtpPort" serializeAs="String">
+        <value>587</value>
+      </setting>
+      <setting name="FilePath" serializeAs="String">
+        <value>{basedir}\Attachment</value>
+      </setting>
+    </AlarmServer.Properties.Settings>
+  </applicationSettings>
+</configuration>

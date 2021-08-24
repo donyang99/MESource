@@ -1,0 +1,4 @@
+EquipmentId	EquipmentType	FAB	Line	LineSeq	Owner	Description	Issue
+CVD05	Process	FAB-A	a	1	haley	5	0
+CVD06	Process	FAB-A	a	2	haley	6	0
+CVD07	Process	FAB-A				7	1
