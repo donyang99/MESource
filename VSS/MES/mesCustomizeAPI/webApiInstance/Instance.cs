@@ -336,7 +336,7 @@ namespace WebApi
         }
 
 
-        static string[] ignoreList = "objectType,name,sysid,to".Split(',');
+        static string[] ignoreList = "objectType,parent,name,sysid,to".Split(',');
         public static JObject msgItemToJObject(itemBase item, WebReplyMode mode = WebReplyMode.All)
         {
             bool isMesCommand = item is Command;
