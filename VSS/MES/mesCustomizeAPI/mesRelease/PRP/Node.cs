@@ -35,6 +35,10 @@ namespace mesRelease.PRP
 
         public Route GetRoute()
         {
+            return GetRoute(false);
+        }
+        internal Route GetRoute(bool byIssue)
+        {
             if (nodeType == idv.mesCore.PRP.NodeType.Step) return null;
             bool bNeedAssignParentNode = false;
             if (nodeRef == null)
@@ -44,7 +48,14 @@ namespace mesRelease.PRP
                 {
                     r = Route.GetRoute(name, -1);//取得最新版
                     if (r != null)
+                    {
                         nodeRefSysId = r.sysid;
+                        if (byIssue)
+                        {
+                            r = new Route();
+                            r.retrieveRoute(nodeRefSysId);
+                        }
+                    }
                 }
                 else
                 {

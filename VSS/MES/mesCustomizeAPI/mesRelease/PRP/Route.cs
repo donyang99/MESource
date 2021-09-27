@@ -43,7 +43,7 @@ namespace mesRelease.PRP
 
         private bool checkRouteTypeNodePaths(Node n)
         {
-            Route r = n.GetRoute();
+            Route r = n.GetRoute(true);
             foreach(Node exitNode in r.Items)
             {
                 if (exitNode.nodeKind == NodeKind.Exit)
@@ -96,6 +96,28 @@ namespace mesRelease.PRP
                         message = cultureLanguage.getValue("errExitNodeWithPassPath");
                         if (message.Equals(""))
                             message = "There is a 「PASS」 path in 【Exit】 node";
+                        message = addErrMsgAddNodeInfo(message, n);
+                        throw new Exception(message);
+                    }
+                }
+                else
+                {   //必需有路徑指向自己
+                    bool prevNode = false;
+                    foreach (Node n2 in Items)
+                    {
+                        if (n == n2) continue;
+                        foreach (string s in n2.availablePaths())
+                        {
+                            if (n2.NextNode(s) == n)
+                            {
+                                prevNode = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!prevNode)
+                    {
+                        message = "There is no Path to 【Interior Node】";
                         message = addErrMsgAddNodeInfo(message, n);
                         throw new Exception(message);
                     }
@@ -648,7 +670,7 @@ namespace mesRelease.PRP
 
                 if (n.nodeType == NodeType.Route)
                 {
-                    Route r = n.GetRoute();
+                    Route r = n.GetRoute(true);
                     if (r != null)
                     {
                         foreach (Node oNode in r.Items)
@@ -702,7 +724,7 @@ namespace mesRelease.PRP
 
                 if (n.nodeType == NodeType.Route)
                 {
-                    if (n.GetRoute() == null)
+                    if (n.GetRoute(true) == null)
                         throw new Exception("Can't find active version for Route 【" + n.name + "】");
                     nodeList.Add(n);
                 }
@@ -736,7 +758,7 @@ namespace mesRelease.PRP
             if (!systemConfig.useStepIdAsHandle)
             {
                 foreach (Node n in nodeList)
-                    addNodeToSqlTable(n.sysid, n.GetRoute(), sqlList, n.isRework);
+                    addNodeToSqlTable(n.sysid, n.GetRoute(true), sqlList, n.isRework);
             }
         }
 
