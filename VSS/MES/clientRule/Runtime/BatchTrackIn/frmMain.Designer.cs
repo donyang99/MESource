@@ -1,0 +1,637 @@
+﻿namespace ClientRule.TrackIn
+{
+    partial class frmMain
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label1 = new System.Windows.Forms.Label();
+            this.pnlEqAndDC = new System.Windows.Forms.Panel();
+            this.pnlEqList = new System.Windows.Forms.Panel();
+            this.lvwEquipment = new idv.mesCore.Controls.MESListView();
+            this.label3 = new System.Windows.Forms.Label();
+            this.pnlStepDC = new System.Windows.Forms.Panel();
+            this.stepDC1 = new mesRelease.Controls.StepDC();
+            this.label4 = new System.Windows.Forms.Label();
+            this.pnlSetupInfoAndComment = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.lvwSetupMaterial = new idv.mesCore.Controls.MESListView();
+            this.label5 = new System.Windows.Forms.Label();
+            this.pnlComments = new System.Windows.Forms.Panel();
+            this.reasonCode1 = new mesRelease.Controls.ReasonCode();
+            this.label6 = new System.Windows.Forms.Label();
+            this.pnlCustomize = new System.Windows.Forms.Panel();
+            this.pnlLeft = new System.Windows.Forms.Panel();
+            this.pnlRight = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnOK = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.pnlParameter = new System.Windows.Forms.Panel();
+            this.lvwParameter = new idv.mesCore.Controls.MESListView();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.chkConfirmParameter = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.workingInstruction1 = new mesRelease.Controls.WorkingInstruction();
+            this.label2 = new System.Windows.Forms.Label();
+            this.standardStatusbar1 = new idv.mesCore.Controls.StandardStatusbar();
+            this.lvwLots = new idv.mesCore.Controls.MESListView();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.pnlEqAndDC.SuspendLayout();
+            this.pnlEqList.SuspendLayout();
+            this.pnlStepDC.SuspendLayout();
+            this.pnlSetupInfoAndComment.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.pnlComments.SuspendLayout();
+            this.pnlCustomize.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.pnlParameter.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.lvwLots);
+            this.splitContainer1.Panel1.Controls.Add(this.label1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.pnlEqAndDC);
+            this.splitContainer1.Panel2.Controls.Add(this.pnlSetupInfoAndComment);
+            this.splitContainer1.Panel2.Controls.Add(this.pnlCustomize);
+            this.splitContainer1.Panel2.Controls.Add(this.panel1);
+            this.splitContainer1.Panel2.Controls.Add(this.pnlParameter);
+            this.splitContainer1.Panel2.Controls.Add(this.workingInstruction1);
+            this.splitContainer1.Panel2.Controls.Add(this.label2);
+            this.splitContainer1.Size = new System.Drawing.Size(889, 632);
+            this.splitContainer1.SplitterDistance = 229;
+            this.splitContainer1.TabIndex = 5;
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(889, 18);
+            this.label1.TabIndex = 3;
+            this.label1.Tag = "lotInformation";
+            this.label1.Text = "Lot Info";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pnlEqAndDC
+            // 
+            this.pnlEqAndDC.Controls.Add(this.pnlEqList);
+            this.pnlEqAndDC.Controls.Add(this.pnlStepDC);
+            this.pnlEqAndDC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlEqAndDC.Location = new System.Drawing.Point(0, 288);
+            this.pnlEqAndDC.Name = "pnlEqAndDC";
+            this.pnlEqAndDC.Size = new System.Drawing.Size(889, 0);
+            this.pnlEqAndDC.TabIndex = 22;
+            // 
+            // pnlEqList
+            // 
+            this.pnlEqList.Controls.Add(this.lvwEquipment);
+            this.pnlEqList.Controls.Add(this.label3);
+            this.pnlEqList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlEqList.Location = new System.Drawing.Point(0, 0);
+            this.pnlEqList.Name = "pnlEqList";
+            this.pnlEqList.Size = new System.Drawing.Size(610, 0);
+            this.pnlEqList.TabIndex = 10;
+            // 
+            // lvwEquipment
+            // 
+            this.lvwEquipment.allowUserFilter = false;
+            this.lvwEquipment.allowUserSorting = true;
+            this.lvwEquipment.autoSizeColumn = true;
+            this.lvwEquipment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.lvwEquipment.careModifyDate = false;
+            this.lvwEquipment.columnHide = null;
+            this.lvwEquipment.columnNames = new string[] {
+        "name",
+        "state",
+        "type",
+        "capacityUsed",
+        "capacity",
+        "lotId",
+        "recipe"};
+            this.lvwEquipment.columnTags = new string[] {
+        "Equipment",
+        "state",
+        "EquipmentType",
+        "capacityUsed",
+        "capacity",
+        "lotId",
+        "recipe"};
+            this.lvwEquipment.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvwEquipment.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lvwEquipment.FullRowSelect = true;
+            this.lvwEquipment.HideSelection = false;
+            this.lvwEquipment.imageKeyColumn = "imageKey";
+            this.lvwEquipment.keyPressSearch = true;
+            this.lvwEquipment.keyPressSearchColumn = "";
+            this.lvwEquipment.Location = new System.Drawing.Point(0, 18);
+            this.lvwEquipment.makesureNewItemVisible = false;
+            this.lvwEquipment.MultiSelect = false;
+            this.lvwEquipment.Name = "lvwEquipment";
+            this.lvwEquipment.OwnerDraw = true;
+            this.lvwEquipment.ShowItemTipSecond = ((byte)(3));
+            this.lvwEquipment.showRowNum = false;
+            this.lvwEquipment.Size = new System.Drawing.Size(610, 0);
+            this.lvwEquipment.TabIndex = 9;
+            this.lvwEquipment.UseCompatibleStateImageBehavior = false;
+            this.lvwEquipment.View = System.Windows.Forms.View.Details;
+            this.lvwEquipment.wndProcIgnoreError = false;
+            this.lvwEquipment.MESItemSelectionChanged += new idv.mesCore.Controls.MESListView.delMESItemSelectionChanged(this.lvwEquipment_MESItemSelectionChanged);
+            // 
+            // label3
+            // 
+            this.label3.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(0, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(610, 18);
+            this.label3.TabIndex = 8;
+            this.label3.Tag = "eqpEquipmentList";
+            this.label3.Text = "Equipment List";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pnlStepDC
+            // 
+            this.pnlStepDC.Controls.Add(this.stepDC1);
+            this.pnlStepDC.Controls.Add(this.label4);
+            this.pnlStepDC.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pnlStepDC.Location = new System.Drawing.Point(610, 0);
+            this.pnlStepDC.Name = "pnlStepDC";
+            this.pnlStepDC.Size = new System.Drawing.Size(279, 0);
+            this.pnlStepDC.TabIndex = 1;
+            // 
+            // stepDC1
+            // 
+            this.stepDC1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stepDC1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.stepDC1.Location = new System.Drawing.Point(0, 18);
+            this.stepDC1.Margin = new System.Windows.Forms.Padding(4);
+            this.stepDC1.Name = "stepDC1";
+            this.stepDC1.Size = new System.Drawing.Size(279, 0);
+            this.stepDC1.TabIndex = 17;
+            this.stepDC1.TabStop = false;
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(0, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(279, 18);
+            this.label4.TabIndex = 19;
+            this.label4.Tag = "stepDC";
+            this.label4.Text = "站點資料收集";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pnlSetupInfoAndComment
+            // 
+            this.pnlSetupInfoAndComment.Controls.Add(this.panel3);
+            this.pnlSetupInfoAndComment.Controls.Add(this.pnlComments);
+            this.pnlSetupInfoAndComment.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlSetupInfoAndComment.Location = new System.Drawing.Point(0, 279);
+            this.pnlSetupInfoAndComment.Name = "pnlSetupInfoAndComment";
+            this.pnlSetupInfoAndComment.Size = new System.Drawing.Size(889, 85);
+            this.pnlSetupInfoAndComment.TabIndex = 23;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.lvwSetupMaterial);
+            this.panel3.Controls.Add(this.label5);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(610, 85);
+            this.panel3.TabIndex = 17;
+            // 
+            // lvwSetupMaterial
+            // 
+            this.lvwSetupMaterial.allowUserFilter = false;
+            this.lvwSetupMaterial.allowUserSorting = false;
+            this.lvwSetupMaterial.autoSizeColumn = false;
+            this.lvwSetupMaterial.careModifyDate = false;
+            this.lvwSetupMaterial.columnHide = new string[0];
+            this.lvwSetupMaterial.columnNames = new string[] {
+        "name",
+        "partNo",
+        "materialLotId",
+        "position",
+        "quantity"};
+            this.lvwSetupMaterial.columnTags = new string[] {
+        "materialType",
+        "materialPartNo",
+        "materialLotId",
+        "position",
+        "quantity"};
+            this.lvwSetupMaterial.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvwSetupMaterial.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lvwSetupMaterial.FullRowSelect = true;
+            this.lvwSetupMaterial.HideSelection = false;
+            this.lvwSetupMaterial.imageKeyColumn = "";
+            this.lvwSetupMaterial.keyPressSearch = false;
+            this.lvwSetupMaterial.keyPressSearchColumn = "";
+            this.lvwSetupMaterial.Location = new System.Drawing.Point(0, 18);
+            this.lvwSetupMaterial.makesureNewItemVisible = true;
+            this.lvwSetupMaterial.MultiSelect = false;
+            this.lvwSetupMaterial.Name = "lvwSetupMaterial";
+            this.lvwSetupMaterial.OwnerDraw = true;
+            this.lvwSetupMaterial.ShowItemTipSecond = ((byte)(3));
+            this.lvwSetupMaterial.showRowNum = false;
+            this.lvwSetupMaterial.Size = new System.Drawing.Size(610, 67);
+            this.lvwSetupMaterial.TabIndex = 16;
+            this.lvwSetupMaterial.TabStop = false;
+            this.lvwSetupMaterial.UseCompatibleStateImageBehavior = false;
+            this.lvwSetupMaterial.View = System.Windows.Forms.View.Details;
+            this.lvwSetupMaterial.wndProcIgnoreError = false;
+            // 
+            // label5
+            // 
+            this.label5.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(0, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(610, 18);
+            this.label5.TabIndex = 18;
+            this.label5.Tag = "currentSetupInfo";
+            this.label5.Text = "機台上料信息";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pnlComments
+            // 
+            this.pnlComments.Controls.Add(this.reasonCode1);
+            this.pnlComments.Controls.Add(this.label6);
+            this.pnlComments.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pnlComments.Location = new System.Drawing.Point(610, 0);
+            this.pnlComments.Name = "pnlComments";
+            this.pnlComments.Size = new System.Drawing.Size(279, 85);
+            this.pnlComments.TabIndex = 16;
+            // 
+            // reasonCode1
+            // 
+            this.reasonCode1.comments = "";
+            this.reasonCode1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.reasonCode1.Location = new System.Drawing.Point(0, 18);
+            this.reasonCode1.maxDropDownItemCount = 20;
+            this.reasonCode1.Name = "reasonCode1";
+            this.reasonCode1.required = false;
+            this.reasonCode1.showCommentOnly = true;
+            this.reasonCode1.Size = new System.Drawing.Size(279, 67);
+            this.reasonCode1.TabIndex = 15;
+            // 
+            // label6
+            // 
+            this.label6.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(0, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(279, 18);
+            this.label6.TabIndex = 14;
+            this.label6.Tag = "comments";
+            this.label6.Text = "Comments";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pnlCustomize
+            // 
+            this.pnlCustomize.Controls.Add(this.pnlLeft);
+            this.pnlCustomize.Controls.Add(this.pnlRight);
+            this.pnlCustomize.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlCustomize.Location = new System.Drawing.Point(0, 196);
+            this.pnlCustomize.Name = "pnlCustomize";
+            this.pnlCustomize.Size = new System.Drawing.Size(889, 92);
+            this.pnlCustomize.TabIndex = 21;
+            // 
+            // pnlLeft
+            // 
+            this.pnlLeft.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlLeft.Location = new System.Drawing.Point(0, 0);
+            this.pnlLeft.Name = "pnlLeft";
+            this.pnlLeft.Size = new System.Drawing.Size(610, 92);
+            this.pnlLeft.TabIndex = 0;
+            // 
+            // pnlRight
+            // 
+            this.pnlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pnlRight.Location = new System.Drawing.Point(610, 0);
+            this.pnlRight.Name = "pnlRight";
+            this.pnlRight.Size = new System.Drawing.Size(279, 92);
+            this.pnlRight.TabIndex = 1;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.btnOK);
+            this.panel1.Controls.Add(this.btnCancel);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 364);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(889, 35);
+            this.panel1.TabIndex = 1;
+            // 
+            // btnOK
+            // 
+            this.btnOK.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnOK.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnOK.Location = new System.Drawing.Point(735, 0);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(77, 35);
+            this.btnOK.TabIndex = 0;
+            this.btnOK.Tag = "buttonOK";
+            this.btnOK.Text = "OK";
+            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnCancel.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnCancel.Location = new System.Drawing.Point(812, 0);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(77, 35);
+            this.btnCancel.TabIndex = 1;
+            this.btnCancel.Tag = "buttonCancel";
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // pnlParameter
+            // 
+            this.pnlParameter.Controls.Add(this.lvwParameter);
+            this.pnlParameter.Controls.Add(this.tableLayoutPanel1);
+            this.pnlParameter.Controls.Add(this.label7);
+            this.pnlParameter.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlParameter.Location = new System.Drawing.Point(0, 91);
+            this.pnlParameter.Name = "pnlParameter";
+            this.pnlParameter.Size = new System.Drawing.Size(889, 105);
+            this.pnlParameter.TabIndex = 24;
+            // 
+            // lvwParameter
+            // 
+            this.lvwParameter.allowUserFilter = false;
+            this.lvwParameter.allowUserSorting = true;
+            this.lvwParameter.autoSizeColumn = false;
+            this.lvwParameter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.lvwParameter.careModifyDate = false;
+            this.lvwParameter.columnHide = null;
+            this.lvwParameter.columnNames = new string[] {
+        "name",
+        "displayValue",
+        "remark"};
+            this.lvwParameter.columnTags = new string[] {
+        "parameter",
+        "specRef",
+        "remark"};
+            this.lvwParameter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvwParameter.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lvwParameter.FullRowSelect = true;
+            this.lvwParameter.HideSelection = false;
+            this.lvwParameter.imageKeyColumn = "";
+            this.lvwParameter.keyPressSearch = true;
+            this.lvwParameter.keyPressSearchColumn = "";
+            this.lvwParameter.Location = new System.Drawing.Point(0, 18);
+            this.lvwParameter.makesureNewItemVisible = false;
+            this.lvwParameter.MultiSelect = false;
+            this.lvwParameter.Name = "lvwParameter";
+            this.lvwParameter.OwnerDraw = true;
+            this.lvwParameter.ShowItemTipSecond = ((byte)(3));
+            this.lvwParameter.showRowNum = false;
+            this.lvwParameter.Size = new System.Drawing.Size(760, 87);
+            this.lvwParameter.TabIndex = 10;
+            this.lvwParameter.UseCompatibleStateImageBehavior = false;
+            this.lvwParameter.View = System.Windows.Forms.View.Details;
+            this.lvwParameter.wndProcIgnoreError = false;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.Controls.Add(this.chkConfirmParameter, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(760, 18);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(129, 87);
+            this.tableLayoutPanel1.TabIndex = 12;
+            // 
+            // chkConfirmParameter
+            // 
+            this.chkConfirmParameter.AutoSize = true;
+            this.chkConfirmParameter.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.chkConfirmParameter.ForeColor = System.Drawing.Color.Red;
+            this.chkConfirmParameter.Location = new System.Drawing.Point(3, 3);
+            this.chkConfirmParameter.Name = "chkConfirmParameter";
+            this.chkConfirmParameter.Size = new System.Drawing.Size(123, 20);
+            this.chkConfirmParameter.TabIndex = 11;
+            this.chkConfirmParameter.Text = "確認生產參數";
+            this.chkConfirmParameter.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.chkConfirmParameter.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(0, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(889, 18);
+            this.label7.TabIndex = 9;
+            this.label7.Tag = "parameter";
+            this.label7.Text = "生產參數";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // workingInstruction1
+            // 
+            this.workingInstruction1.autoSize = true;
+            this.workingInstruction1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.workingInstruction1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.workingInstruction1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.workingInstruction1.isNowMinimum = false;
+            this.workingInstruction1.Location = new System.Drawing.Point(0, 18);
+            this.workingInstruction1.Multiline = true;
+            this.workingInstruction1.Name = "workingInstruction1";
+            this.workingInstruction1.ReadOnly = true;
+            this.workingInstruction1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.workingInstruction1.Size = new System.Drawing.Size(889, 73);
+            this.workingInstruction1.TabIndex = 5;
+            // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(0, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(889, 18);
+            this.label2.TabIndex = 4;
+            this.label2.Tag = "workingInstruction";
+            this.label2.Text = "Working Instruction";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // standardStatusbar1
+            // 
+            this.standardStatusbar1.AutoSize = false;
+            this.standardStatusbar1.errorBackColor = System.Drawing.SystemColors.Control;
+            this.standardStatusbar1.errorForeColor = System.Drawing.Color.Black;
+            this.standardStatusbar1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.standardStatusbar1.Location = new System.Drawing.Point(0, 632);
+            this.standardStatusbar1.Name = "standardStatusbar1";
+            this.standardStatusbar1.Size = new System.Drawing.Size(889, 25);
+            this.standardStatusbar1.SizingGrip = false;
+            this.standardStatusbar1.TabIndex = 4;
+            this.standardStatusbar1.Text = "standardStatusbar1";
+            this.standardStatusbar1.warnBackColor = System.Drawing.SystemColors.Control;
+            this.standardStatusbar1.warnForeColor = System.Drawing.Color.Black;
+            // 
+            // lvwLots
+            // 
+            this.lvwLots.allowUserFilter = true;
+            this.lvwLots.allowUserSorting = true;
+            this.lvwLots.autoSizeColumn = true;
+            this.lvwLots.careModifyDate = false;
+            this.lvwLots.CheckBoxes = true;
+            this.lvwLots.columnHide = null;
+            this.lvwLots.columnNames = null;
+            this.lvwLots.columnTags = null;
+            this.lvwLots.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvwLots.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lvwLots.FullRowSelect = true;
+            this.lvwLots.HideSelection = false;
+            this.lvwLots.imageKeyColumn = "";
+            this.lvwLots.keyPressSearch = false;
+            this.lvwLots.keyPressSearchColumn = "";
+            this.lvwLots.Location = new System.Drawing.Point(0, 18);
+            this.lvwLots.makesureNewItemVisible = false;
+            this.lvwLots.MultiSelect = false;
+            this.lvwLots.Name = "lvwLots";
+            this.lvwLots.OwnerDraw = true;
+            this.lvwLots.ShowItemTipSecond = ((byte)(3));
+            this.lvwLots.showRowNum = false;
+            this.lvwLots.Size = new System.Drawing.Size(889, 211);
+            this.lvwLots.TabIndex = 4;
+            this.lvwLots.UseCompatibleStateImageBehavior = false;
+            this.lvwLots.View = System.Windows.Forms.View.Details;
+            this.lvwLots.wndProcIgnoreError = false;
+            // 
+            // frmMain
+            // 
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.ClientSize = new System.Drawing.Size(889, 657);
+            this.ControlBox = false;
+            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.standardStatusbar1);
+            this.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
+            this.Name = "frmMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Tag = "TrackIn";
+            this.Text = "TrackIn";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
+            this.Load += new System.EventHandler(this.frmMain_Load);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.pnlEqAndDC.ResumeLayout(false);
+            this.pnlEqList.ResumeLayout(false);
+            this.pnlStepDC.ResumeLayout(false);
+            this.pnlSetupInfoAndComment.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.pnlComments.ResumeLayout(false);
+            this.pnlCustomize.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.pnlParameter.ResumeLayout(false);
+            this.pnlParameter.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnOK;
+        internal idv.mesCore.Controls.StandardStatusbar standardStatusbar1;
+        private System.Windows.Forms.Label label2;
+        private mesRelease.Controls.WorkingInstruction workingInstruction1;
+        private idv.mesCore.Controls.MESListView lvwEquipment;
+        private System.Windows.Forms.Label label3;
+        private mesRelease.Controls.ReasonCode reasonCode1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Panel pnlEqList;
+        private System.Windows.Forms.Panel pnlComments;
+        private System.Windows.Forms.Panel pnlCustomize;
+        private System.Windows.Forms.Panel pnlLeft;
+        private System.Windows.Forms.Panel pnlRight;
+        private System.Windows.Forms.Panel pnlEqAndDC;
+        private System.Windows.Forms.Panel pnlStepDC;
+        private mesRelease.Controls.StepDC stepDC1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Panel pnlSetupInfoAndComment;
+        private System.Windows.Forms.Panel panel3;
+        private idv.mesCore.Controls.MESListView lvwSetupMaterial;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Panel pnlParameter;
+        private idv.mesCore.Controls.MESListView lvwParameter;
+        private System.Windows.Forms.CheckBox chkConfirmParameter;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private idv.mesCore.Controls.MESListView lvwLots;
+    }
+}
