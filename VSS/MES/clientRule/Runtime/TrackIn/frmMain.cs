@@ -287,10 +287,45 @@ namespace ClientRule.TrackIn
                 }
                 if (!WorkFlow.TxnBegin(currentLot, selEqp, stepDC1, ref judgePath))
                     return false;
+
+                ////父機台治工具檢查
+                //if (currentLot.IsCheckTooling() && !idv.mesCore.systemConfig.singleEqType)
+                //{
+                //    selEqp.retrieveRelatedEquipment();//取得父機台
+                //    if (selEqp.parent != null)
+                //    {
+                //        mesRelease.PARM.StepParameter parms = currentLot.GetCurrentStepParameter();//取得當前站點生產規範
+                //        mesRelease.TOL.ToolingId[] tools = mesRelease.TOL.ToolingId.GetToolings("", "", selEqp.parent.name, "", false);//機台上的tooling
+
+                //        foreach (mesRelease.PARM.EqTooling parmTool in parms.GetEqToolings(selEqp.parent.type))//生產參數設定的tooling規格
+                //        {
+                //            bool findToolType = false;
+                //            foreach (mesRelease.TOL.ToolingId tool in tools)//機台上的tooling
+                //            {
+                //                if (parmTool.toolingType.Equals(tool.toolingType))
+                //                {
+                //                    findToolType = true;
+                //                    if (!parmTool.partNOs.Contains(tool.partNo))
+                //                    {
+                //                        messageBox.showMessageById("msgWrongEqTooling", parmTool.toolingType);
+                //                        return false;
+                //                    }
+                //                }
+                //            }
+                //            if (!findToolType)
+                //            {
+                //                messageBox.showMessageById("msgWrongEqTooling", parmTool.toolingType);
+                //                return false;
+                //            }
+                //        }
+                //    }
+                //}
             }
 
             return true;
         }
+
+
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
