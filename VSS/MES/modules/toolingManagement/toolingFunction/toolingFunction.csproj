@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4D4D96E9-5AF7-47D9-A4C8-A7E00F92C08C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>toolingFunction</RootNamespace>
+    <AssemblyName>toolingFunction</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="classMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\classMessage.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ImessageGuard, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\ImessageGuard.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mesCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\mesCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mesCoreWIP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\mesCoreWIP.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mesRelease, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\mesRelease.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\NLog.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="toolingCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\toolingCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="toolingRelease, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\toolingRelease.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="appInstance.cs" />
+    <Compile Include="Forms\frmToolingId.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmToolingId.Designer.cs">
+      <DependentUpon>frmToolingId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmToolingType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmToolingType.Designer.cs">
+      <DependentUpon>frmToolingType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmToolingPart.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmToolingPart.Designer.cs">
+      <DependentUpon>frmToolingPart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmToolingEvent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmToolingEvent.Designer.cs">
+      <DependentUpon>frmToolingEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmCopyEvent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmCopyEvent.Designer.cs">
+      <DependentUpon>frmCopyEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmTxnEvent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmTxnEvent.designer.cs">
+      <DependentUpon>frmTxnEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmProperty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmProperty.Designer.cs">
+      <DependentUpon>frmProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\frmCopyEvent.resx">
+      <DependentUpon>frmCopyEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmProperty.resx">
+      <DependentUpon>frmProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmToolingEvent.resx">
+      <DependentUpon>frmToolingEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmToolingId.resx">
+      <DependentUpon>frmToolingId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmToolingPart.resx">
+      <DependentUpon>frmToolingPart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmToolingType.resx">
+      <DependentUpon>frmToolingType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmTxnEvent.resx">
+      <DependentUpon>frmTxnEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tooling.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
