@@ -50,6 +50,7 @@ namespace mesWinClient.Ext
 
         public override bool userLogin(string userId)
         {
+            adjustLotColumn(WorkFlow.CurrentStep);
             return true;
         }
 
@@ -60,7 +61,22 @@ namespace mesWinClient.Ext
 
         public override bool workingAreaChange(string originalArea, string newArea)
         {
+            adjustLotColumn(newArea);
             return true;
+        }
+
+        void adjustLotColumn(string stepId)
+        {
+            if (stepId.EndsWith("EPI"))
+            {
+                _LotList.Columns["status"].DisplayIndex = 3;
+                _LotList.Columns["productId"].DisplayIndex = 4;
+            }
+            else
+            {
+                _LotList.Columns["status"].DisplayIndex = 1;
+                _LotList.Columns["productId"].DisplayIndex = 2;
+            }
         }
 
         public override void dispatchByEquipment(Equipment eqp)
