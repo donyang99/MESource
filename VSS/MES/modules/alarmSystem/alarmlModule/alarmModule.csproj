@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4D4D96E9-5AF7-47D9-A4C8-A7E00F92C08C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>alarmModule</RootNamespace>
+    <AssemblyName>alarmModule</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="classMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\01.Bin\classMessage.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ImessageGuard, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\01.Bin\ImessageGuard.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mesCore, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\mesCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mesRelease, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\mesRelease.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\01.Bin\NLog.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="appInstance.cs" />
+    <Compile Include="frmAlarmHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAlarmHistory.Designer.cs">
+      <DependentUpon>frmAlarmHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAlarmMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAlarmMessage.Designer.cs">
+      <DependentUpon>frmAlarmMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAlarmReason.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAlarmReason.Designer.cs">
+      <DependentUpon>frmAlarmReason.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAlarmType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAlarmType.Designer.cs">
+      <DependentUpon>frmAlarmType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmEditAlarmMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEditAlarmMessage.designer.cs">
+      <DependentUpon>frmEditAlarmMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmEditLineGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEditLineGroup.Designer.cs">
+      <DependentUpon>frmEditLineGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="frmAlarmHistory.resx">
+      <DependentUpon>frmAlarmHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAlarmMessage.resx">
+      <DependentUpon>frmAlarmMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAlarmReason.resx">
+      <DependentUpon>frmAlarmReason.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAlarmType.resx">
+      <DependentUpon>frmAlarmType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEditAlarmMessage.resx">
+      <DependentUpon>frmEditAlarmMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEditLineGroup.resx">
+      <DependentUpon>frmEditLineGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\alarmlCore\alarmCore.csproj">
+      <Project>{E2C1656C-108F-4379-8C3C-037CEA847CF5}</Project>
+      <Name>alarmCore</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\alarmlRelease\alarmRelease.csproj">
+      <Project>{7A8BFC5B-03CD-483D-A207-338E8140F17A}</Project>
+      <Name>alarmRelease</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\alarm.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
